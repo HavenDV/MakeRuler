@@ -45,6 +45,13 @@ namespace Example1
         }
 
 
+        private Color getColor1(int mediumID)
+        {
+            if (mediumID == 1)
+                return Color.DarkGray;
+            else
+                return Color.Blue;
+        }
 
         private Color getColor(int mediumID)
         {            
@@ -301,87 +308,6 @@ namespace Example1
 
 
         }
-        private Color getColor1(int mediumID)
-        {
-            if (mediumID==1)
-                return Color.DarkGray;
-            else
-                return Color.Blue;            
-        }
 
-    }
-
-    public class GeometryObject
-    {
-        public int m_centerX { get; set; }
-        public int m_centerY { get; set; }
-
-        public double m_minY { get; set; }
-        public double m_maxY { get; set; }
-        public int p_minY { get; set; }
-        public int p_maxY { get; set; }
-        public List<StartEndPixel> p_seList;
-
-        public GeometryObject()
-        {
-            p_seList = new List<StartEndPixel>();
-        }
-        public static int ConvertToPixelX(double mx){
-            double xL = 0.5;
-            return (int)(mx/xL)+1;
-        }
-    }
-
-    public class StartEndPixel{
-        public int start{get;set;}
-        public int end{get;set;}
-        public StartEndPixel(int start,int end){
-            this.start=start;
-            this.end=end;
-        }
-    }
-
-
-    public class GeometryData
-    {
-        public int RowID { get; set; }
-        public int FirstPixel { get; set; }
-        public int NumberOfAreas { get; set; }
-        public GeometryData() { }
-        public List<Datas> datas;
-        public GeometryData(int RowID, int FirstPixel, int NumberOfAreas)
-        {
-            this.RowID = RowID;
-            this.FirstPixel = FirstPixel;
-            this.NumberOfAreas = NumberOfAreas;
-            this.datas = new List<Datas>();
-        }
-        public GeometryData(string RowID, string FirstPixel, string NumberOfAreas)
-        {
-            this.RowID = int.Parse(RowID);
-            this.FirstPixel = int.Parse(FirstPixel);
-            this.NumberOfAreas = int.Parse(NumberOfAreas);
-            this.datas = new List<Datas>();
-        }
-    }
-    public class Datas
-    {
-        public int EndPixel { get; set; }
-        public int medium { get; set; }
-        public Datas()
-        {
-
-        }
-        public Datas(int EndPixel, int medium)
-        {
-            this.EndPixel = EndPixel;
-            this.medium = medium;
-        }
-        public Datas(string EndPixel, string medium)
-        {
-            this.EndPixel = int.Parse(EndPixel);
-            this.medium = int.Parse(medium);
-        }
-    
     }
 }
