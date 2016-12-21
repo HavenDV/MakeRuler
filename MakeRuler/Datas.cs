@@ -18,6 +18,6 @@
             this.EndPixel = int.Parse(EndPixel);
             this.medium = int.Parse(medium);
         }
-    
+
     }
 }

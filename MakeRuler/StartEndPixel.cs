@@ -1,11 +1,13 @@
 ﻿namespace Example1
 {
-    public class StartEndPixel{
-        public int start{get;set;}
-        public int end{get;set;}
-        public StartEndPixel(int start,int end){
-            this.start=start;
-            this.end=end;
+    public class Line
+    {
+        public int Start { get; set; }
+        public int End { get; set; }
+        public Line(int start, int end)
+        {
+            Start = start;
+            End = end;
         }
     }
 }

@@ -14,9 +14,10 @@ namespace Example1
 {
     public partial class Form1 : Form
     {
-        private List<GeometryData> datalist;
-        private List<GeometryData> datalist1;
-        GeometryObject[] geoObj = new GeometryObject[41];
+        public Form1()
+        {
+            InitializeComponent();
+        }
 
         static public string AppPath {
             get
@@ -26,18 +27,12 @@ namespace Example1
             }
         }
 
-        public Form1()
+        private List<GeometryData> ReadData(string path)
         {
-            InitializeComponent();
-        }
+            var datalist = new List<GeometryData>();
+            var lines = File.ReadAllLines(path);
 
-
-        private void readData(string fn)
-        {
-            datalist = new List<GeometryData>();
-            string[] lines = File.ReadAllLines(fn);
             // Display the file contents by using a foreach loop.
-            
             for (int i=0;i<lines.Length;i+=2)
             {
                 // Use a tab to indent each line of the file.
@@ -49,10 +44,12 @@ namespace Example1
                     datalist[datalist.Count - 1].datas.Add(new Datas(args1[2 * j], args1[2 * j + 1]));
                 }
             }
+
+            return datalist;
         }
 
 
-        private Color getColor1(int mediumID)
+        private Color GetColor1(int mediumID)
         {
             if (mediumID == 1)
                 return Color.DarkGray;
@@ -60,34 +57,28 @@ namespace Example1
                 return Color.Blue;
         }
 
-        private Color getColor(int mediumID)
+        private Color GetColor(int mediumID)
         {            
             switch (mediumID)
             {
                 case 1:
                     return Color.DarkGray;
-                    break;
                 case 2:
                     return Color.Blue;
-                    break;
                 case 3:
                     return Color.Red;
-                    break;
                 case 4:
                     return Color.Green;
-                    break;
                 case 5:
                     return Color.Yellow;
-                    break;
                 case 6:
                     return Color.Pink;
-                    break;
                 case 7:
                     return Color.MediumSeaGreen;
-                    break;
             }
             return Color.White; ;
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             //-------------
@@ -101,12 +92,13 @@ namespace Example1
             double xL = 0.5;
             double yL = 0.5;
             double zL = 0.25;
+            int n_pY0 = (int)(diameter0 / yL);
+            int n_pY1 = (int)(height / xL);
 
+            var geoObj = new GeometryObject[41];
             geoObj[1] = new GeometryObject();
             geoObj[1].m_centerX = diameter0 / 2;
             geoObj[1].m_centerY = 30;
-            int n_pY0 = (int)(diameter0 / yL);
-            int n_pY1 = (int)(height / xL);
             geoObj[1].p_minY = (n_pY0 - n_pY1) / 2 + 1;
             geoObj[1].p_maxY = (n_pY0 - n_pY1) / 2 + n_pY1;
             for (int i = geoObj[1].p_minY; i <= geoObj[1].p_maxY; i++)
@@ -118,16 +110,15 @@ namespace Example1
                 double x2 = geoObj[1].m_centerX + x;
                 int px1 = GeometryObject.ConvertToPixelX(x1);
                 int px2 = GeometryObject.ConvertToPixelX(x2);
-                geoObj[1].p_seList.Add(new StartEndPixel(px1, px2));
+                geoObj[1].Lines.Add(new Line(px1, px2));
             }
+            int n_pY = (int)(diameter / yL);
+            int n_pY11 = geoObj[1].p_maxY - geoObj[1].p_minY + 1;
             for (int i_obj = 2; i_obj <= holds + 1; i_obj++)
             {
                 geoObj[i_obj] = new GeometryObject();
                 geoObj[i_obj].m_centerX = margin + (i_obj - 2) * grid;
                 geoObj[i_obj].m_centerY = 30;
-                int n_pY = (int)(diameter / yL);
-                int n_pY11 = geoObj[1].p_maxY - geoObj[1].p_minY + 1;
-
                 geoObj[i_obj].p_minY = geoObj[1].p_minY + (n_pY11 - n_pY) / 2 + 1;
                 geoObj[i_obj].p_maxY = geoObj[1].p_minY + (n_pY11 + n_pY) / 2;
                 for (int i = geoObj[i_obj].p_minY; i <= geoObj[i_obj].p_maxY; i++)
@@ -139,32 +130,34 @@ namespace Example1
                     double x2 = geoObj[i_obj].m_centerX + x;
                     int px1 = GeometryObject.ConvertToPixelX(x1);
                     int px2 = GeometryObject.ConvertToPixelX(x2);
-                    geoObj[i_obj].p_seList.Add(new StartEndPixel(px1, px2));
+                    geoObj[i_obj].Lines.Add(new Line(px1, px2));
                 }
             }
 
-            datalist1 = new List<GeometryData>();
+            var datalist1 = new List<GeometryData>();
             for (int r = geoObj[1].p_minY; r <= geoObj[1].p_maxY; r++)
             {
-                int firstPixel = geoObj[1].p_seList[r - geoObj[1].p_minY].start;
-                int endPixel = geoObj[1].p_seList[r - geoObj[1].p_minY].end;
+                var line = geoObj[1].Lines[r - geoObj[1].p_minY];
+                int firstPixel = line.Start;
+                int endPixel = line.End;
                 int numberArea = 1;
                 if (r >= geoObj[2].p_minY && r <= geoObj[2].p_maxY) numberArea += 2 * 39;
-                GeometryData tmp = new GeometryData(r, firstPixel, numberArea);
+                var tmp = new GeometryData(r, firstPixel, numberArea);
                 if (numberArea > 1)
                 {
                     for (int i = 2; i <= holds + 1; i++)
                     {
-                        tmp.datas.Add(new Datas(geoObj[i].p_seList[r - geoObj[i].p_minY].start, 1));
-                        tmp.datas.Add(new Datas(geoObj[i].p_seList[r - geoObj[i].p_minY].end, i));
+                        tmp.datas.Add(new Datas(geoObj[i].Lines[r - geoObj[i].p_minY].Start, 1));
+                        tmp.datas.Add(new Datas(geoObj[i].Lines[r - geoObj[i].p_minY].End, i));
                     }
                 }
                 tmp.datas.Add(new Datas(endPixel, 1));
                 datalist1.Add(tmp);
             }
-            draw1();
-            makeDatafile(20);
+            DrawData(datalist1);
+            MakeDatafile(datalist1, 20, geoObj[1].p_minY);
         }
+
         private void button2_Click(object sender, EventArgs e)
         {
             //-------------
@@ -178,12 +171,13 @@ namespace Example1
             double xL = 0.5;
             double yL = 0.5;
             double zL = 0.25;
-            
+            int n_pY0 = (int)(diameter0 / yL);
+            int n_pY1 = (int)(height / xL);
+
+            var geoObj = new GeometryObject[41];
             geoObj[1] = new GeometryObject();
             geoObj[1].m_centerX = diameter0/2;
             geoObj[1].m_centerY = 30;
-            int n_pY0 = (int)(diameter0 / yL);
-            int n_pY1 = (int)(height / xL);
             geoObj[1].p_minY = (n_pY0 - n_pY1) / 2 + 1;
             geoObj[1].p_maxY = (n_pY0 - n_pY1) / 2 + n_pY1;
             for (int i=geoObj[1].p_minY;i<=geoObj[1].p_maxY;i++)
@@ -195,7 +189,7 @@ namespace Example1
                 double x2 = geoObj[1].m_centerX + x;
                 int px1 = GeometryObject.ConvertToPixelX(x1);
                 int px2 = GeometryObject.ConvertToPixelX(x2);
-                geoObj[1].p_seList.Add(new StartEndPixel(px1,px2));
+                geoObj[1].Lines.Add(new Line(px1,px2));
             }
             for (int i_obj = 2; i_obj <= holds+1; i_obj++)
             {
@@ -216,64 +210,64 @@ namespace Example1
                     double x2 = geoObj[i_obj].m_centerX + x;
                     int px1 = GeometryObject.ConvertToPixelX(x1);
                     int px2 = GeometryObject.ConvertToPixelX(x2);
-                    geoObj[i_obj].p_seList.Add(new StartEndPixel(px1, px2));
+                    geoObj[i_obj].Lines.Add(new Line(px1, px2));
                 }
             }
 
-            datalist1 = new List<GeometryData>();
+            var datalist1 = new List<GeometryData>();
             for (int r = geoObj[1].p_minY; r <= geoObj[1].p_maxY; r++)
             {
-                int firstPixel = geoObj[1].p_seList[r - geoObj[1].p_minY].start;
-                int endPixel = geoObj[1].p_seList[r - geoObj[1].p_minY].end;
+                int firstPixel = geoObj[1].Lines[r - geoObj[1].p_minY].Start;
+                int endPixel = geoObj[1].Lines[r - geoObj[1].p_minY].End;
                 int numberArea=1;
                 if (r >= geoObj[2].p_minY && r <= geoObj[2].p_maxY) numberArea += 2 * 39;
-                GeometryData tmp = new GeometryData(r, firstPixel, numberArea);
+                var tmp = new GeometryData(r, firstPixel, numberArea);
                 if (numberArea>1){
                     for (int i = 2; i <= holds+1; i++)
                     {
-                        tmp.datas.Add(new Datas(geoObj[i].p_seList[r - geoObj[i].p_minY].start, 1));
-                        tmp.datas.Add(new Datas(geoObj[i].p_seList[r - geoObj[i].p_minY].end, i));
+                        tmp.datas.Add(new Datas(geoObj[i].Lines[r - geoObj[i].p_minY].Start, 1));
+                        tmp.datas.Add(new Datas(geoObj[i].Lines[r - geoObj[i].p_minY].End, i));
                     }
                 }
                 tmp.datas.Add(new Datas(endPixel, 1));
                 datalist1.Add(tmp);
             }
-            draw1();
-            makeDatafile(40);
+            DrawData(datalist1);
+            MakeDatafile(datalist1, 40, geoObj[1].p_minY);
         }
 
-        public static string toString(int value, int lenght)
+        public static string ToString(int value, int lenght)
         {
             return value.ToString().PadLeft(lenght);
         }
 
-        private void makeDatafile(int holds)
+        private void MakeDatafile(List<GeometryData> datalist, int holds, int firstRow)
         {
             var lines = new List<string>();
             for (int i = 1; i <= 6; ++i)
             {
                 //SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:320
-                lines.Add($"SLICE NUMBER:{toString(i, 3)}  FIRST ROW:{toString(geoObj[1].p_minY, 4)}  LAST ROW:{toString(geoObj[1].p_maxY, 4)}");
+                lines.Add($"SLICE NUMBER:{ToString(i, 3)}  FIRST ROW:{ToString(firstRow, 4)}  LAST ROW:{ToString(firstRow + datalist.Count - 1, 4)}");
                 if (i == 1 || i == 6)
                 {
                     //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  1
                     //  173   1
-                    for (int j = 0; j < datalist1.Count; j++)
+                    for (int j = 0; j < datalist.Count; j++)
                     {
-                        lines.Add("ROW NR." + toString(j + geoObj[1].p_minY, 4) + "  FIRST PIXEL:" + toString(datalist1[j].FirstPixel, 4) + "  NUMBER OF AREAS:" + toString(1, 3));
-                        lines.Add(toString(datalist1[j].datas.Last().EndPixel, 5) + toString(1, 4));                                    
+                        lines.Add("ROW NR." + ToString(j + firstRow, 4) + "  FIRST PIXEL:" + ToString(datalist[j].FirstPixel, 4) + "  NUMBER OF AREAS:" + ToString(1, 3));
+                        lines.Add(ToString(datalist[j].datas.Last().EndPixel, 5) + ToString(1, 4));                                    
                     }
                 }
                 else
                 {
                     //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  3
                     //  152   1  168   6  247   1
-                    for (int j = 0; j < datalist1.Count; j++)
+                    for (int j = 0; j < datalist.Count; j++)
                     {
-                        lines.Add("ROW NR." + toString(j + geoObj[1].p_minY, 4) + "  FIRST PIXEL:" + toString(datalist1[j].FirstPixel, 4) + "  NUMBER OF AREAS:" + toString(datalist1[j].datas.Count, 3));                        
+                        lines.Add("ROW NR." + ToString(j + firstRow, 4) + "  FIRST PIXEL:" + ToString(datalist[j].FirstPixel, 4) + "  NUMBER OF AREAS:" + ToString(datalist[j].datas.Count, 3));                        
                         var tmp = "";
-                        foreach (var data in datalist1[j].datas)
-                            tmp += toString(data.EndPixel, 5) + toString(data.medium, 4);
+                        foreach (var data in datalist[j].datas)
+                            tmp += ToString(data.EndPixel, 5) + ToString(data.medium, 4);
                         lines.Add(tmp);
                     }
                 }
@@ -282,28 +276,25 @@ namespace Example1
             File.WriteAllLines(Path.Combine(AppPath, filename), lines);
         }
 
-        private void draw1()
+        private void DrawData(List<GeometryData> datalist)
         {
             pictureBox2.Refresh();
 
-            //create a new Bitmap object
-            Bitmap map = (Bitmap)pictureBox2.Image;
-            //create a graphics object
-            Graphics g = pictureBox2.CreateGraphics();
+            var map = (Bitmap)pictureBox2.Image;
+            var g = pictureBox2.CreateGraphics();
 
-            for (int i = 0; i < datalist1.Count; i++)
+            for (int i = 0; i < datalist.Count; i++)
             {
-                Point st = new Point(datalist1[i].FirstPixel, i + 1);
+                var start = new Point(datalist[i].FirstPixel, i + 1);
                 //create a pen object and setting the color and width for the pen
 
                 //draw line between  point p1 and p2
-                for (int j = 0; j < datalist1[i].datas.Count; j++)
+                foreach (var data in datalist[i].datas)
                 {
-                    Point en = new Point(datalist1[i].datas[j].EndPixel, i + 1);
-
-                    Pen p = new Pen(getColor1(datalist1[i].datas[j].medium), 1);
-                    g.DrawLine(p, st, en);
-                    st = en;
+                    var end = new Point(data.EndPixel, i + 1);
+                    Pen p = new Pen(GetColor1(data.medium), 1);
+                    g.DrawLine(p, start, end);
+                    start = end;
                 }
                 //pictureBox2.Image = map;
                 //dispose pen and graphics object

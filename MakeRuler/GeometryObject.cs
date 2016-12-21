@@ -11,11 +11,11 @@ namespace Example1
         public double m_maxY { get; set; }
         public int p_minY { get; set; }
         public int p_maxY { get; set; }
-        public List<StartEndPixel> p_seList;
+        public List<Line> Lines { get; set; }
 
         public GeometryObject()
         {
-            p_seList = new List<StartEndPixel>();
+            Lines = new List<Line>();
         }
         public static int ConvertToPixelX(double mx){
             double xL = 0.5;
