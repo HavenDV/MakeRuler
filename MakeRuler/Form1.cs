@@ -18,7 +18,7 @@ namespace Example1
         private List<GeometryData> datalist1;
         GeometryObject[] geoObj = new GeometryObject[41];
 
-        static public string appPath {
+        static public string AppPath {
             get
             {
                 var path = Assembly.GetExecutingAssembly().CodeBase;
@@ -241,50 +241,47 @@ namespace Example1
             draw1();
             makeDatafile(40);
         }
+
+        public static string toString(int value, int lenght)
+        {
+            return value.ToString().PadLeft(lenght);
+        }
+
         private void makeDatafile(int holds)
         {
-            string[] allLines = new string[6 * (1 + 2 * datalist1.Count)];
-            int n = 0;
-            for (int i_slice = 1; i_slice <= 6; i_slice++)
+            var lines = new List<string>();
+            for (int i = 1; i <= 6; ++i)
             {
                 //SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:320
-                allLines[n++] = "SLICE NUMBER:" + makeStr(3, i_slice) + "  FIRST ROW:" + makeStr(4, geoObj[1].p_minY) + "  LAST ROW:" + makeStr(4, geoObj[1].p_maxY);
-                if (i_slice == 1 || i_slice == 6)
+                lines.Add($"SLICE NUMBER:{toString(i, 3)}  FIRST ROW:{toString(geoObj[1].p_minY, 4)}  LAST ROW:{toString(geoObj[1].p_maxY, 4)}");
+                if (i == 1 || i == 6)
                 {
                     //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  1
                     //  173   1
                     for (int j = 0; j < datalist1.Count; j++)
                     {
-                        allLines[n++] = "ROW NR." + makeStr(4, (j + geoObj[1].p_minY)) + "  FIRST PIXEL:" + makeStr(4, datalist1[j].FirstPixel) + "  NUMBER OF AREAS:" + makeStr(3, 1);                        
-                        allLines[n++] = " " + makeStr(4, datalist1[j].datas[datalist1[j].datas.Count - 1].EndPixel) + "   1";                                    
+                        lines.Add("ROW NR." + toString(j + geoObj[1].p_minY, 4) + "  FIRST PIXEL:" + toString(datalist1[j].FirstPixel, 4) + "  NUMBER OF AREAS:" + toString(1, 3));
+                        lines.Add(toString(datalist1[j].datas.Last().EndPixel, 5) + toString(1, 4));                                    
                     }
                 }
                 else
                 {
-                    //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  1
+                    //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  3
                     //  152   1  168   6  247   1
                     for (int j = 0; j < datalist1.Count; j++)
                     {
-                        int nArea = datalist1[j].datas.Count;
-                        allLines[n++] = "ROW NR." + makeStr(4, (j + geoObj[1].p_minY)) + "  FIRST PIXEL:" + makeStr(4, datalist1[j].FirstPixel) + "  NUMBER OF AREAS:" + makeStr(3, nArea);                        
-                        string tmp="";
-                        for (int k = 0; k < nArea;k++ )
-                            tmp += makeStr(5, datalist1[j].datas[k].EndPixel) + makeStr(4, datalist1[j].datas[k].medium);
-                        allLines[n++] = tmp;
+                        lines.Add("ROW NR." + toString(j + geoObj[1].p_minY, 4) + "  FIRST PIXEL:" + toString(datalist1[j].FirstPixel, 4) + "  NUMBER OF AREAS:" + toString(datalist1[j].datas.Count, 3));                        
+                        var tmp = "";
+                        foreach (var data in datalist1[j].datas)
+                            tmp += toString(data.EndPixel, 5) + toString(data.medium, 4);
+                        lines.Add(tmp);
                     }
                 }
             }
-            string wfn=appPath+"\\out"+holds+".txt";
-            File.WriteAllLines(wfn, allLines);
+            var filename = $"out{holds}.txt";
+            File.WriteAllLines(Path.Combine(AppPath, filename), lines);
         }
 
-        private string makeStr(int a,int  istr)
-        {
-            string str = istr.ToString();
-            int b = str.Length;
-            if (b == a) return str;
-            return new String(' ', a - b) + str;
-        }
         private void draw1()
         {
             pictureBox2.Refresh();
