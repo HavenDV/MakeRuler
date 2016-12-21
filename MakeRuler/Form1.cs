@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Example1
 {
@@ -16,12 +17,18 @@ namespace Example1
         private List<GeometryData> datalist;
         private List<GeometryData> datalist1;
         GeometryObject[] geoObj = new GeometryObject[41];
-        string appPath;
+
+        static public string appPath {
+            get
+            {
+                var path = Assembly.GetExecutingAssembly().CodeBase;
+                return Path.GetDirectoryName(path).Substring(6);
+            }
+        }
+
         public Form1()
         {
             InitializeComponent();
-            string path = System.Reflection.Assembly.GetExecutingAssembly().CodeBase;
-            appPath = System.IO.Path.GetDirectoryName(path).Substring(6);
         }
 
 
