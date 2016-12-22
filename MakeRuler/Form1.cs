@@ -44,6 +44,10 @@ namespace Example1
             {
                 scene.Add(new Circle(margin + i * grid, bigCircle.Min.Y + height, radius), i + 2);
             }
+            for (int i = 0; i < holds; i++)
+            {
+                scene.Add(new Rect(margin + i * grid, bigCircle.Min.Y + margin + i * grid, margin + i * grid + 10, bigCircle.Min.Y + margin + i * grid + 10), i + 2);
+            }
 
             return scene;
         }

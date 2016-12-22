@@ -36,11 +36,11 @@ namespace Example1
             });
         }
 
-        public void Add(Circle circle, int mediumId)
+        public void Add(Object obj, int mediumId)
         {
-            for (int rowId = circle.Min.Y; rowId <= circle.Max.Y; rowId++)
+            for (int rowId = obj.Min.Y; rowId <= obj.Max.Y; rowId++)
             {
-                var line = circle.Lines[rowId];
+                var line = obj.Lines[rowId];
                 if (RowExists(rowId))
                 {
                     AddToRow(line, rowId, mediumId);

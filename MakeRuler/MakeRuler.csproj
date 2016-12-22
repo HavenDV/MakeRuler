@@ -45,13 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Area.cs" />
+    <Compile Include="Cylinder.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Object.cs" />
     <Compile Include="Point2D.cs" />
+    <Compile Include="Rect.cs" />
     <Compile Include="Row.cs" />
     <Compile Include="Circle.cs" />
     <Compile Include="Program.cs" />

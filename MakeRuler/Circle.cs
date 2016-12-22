@@ -3,13 +3,10 @@ using System.Collections.Generic;
 
 namespace Example1
 {
-    public class Circle
+    public class Circle : Object
     {
         public Point2D Center { get; set; }
         public int Radius { get; set; }
-        public Point2D Min { get; set; }
-        public Point2D Max { get; set; }
-        public Dictionary<int, Line> Lines { get; set; }
         
         public Circle(Point2D center, int radius)
         {
