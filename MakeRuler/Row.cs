@@ -9,13 +9,15 @@ namespace Example1
         public List<Area> Areas { get; set; }
 
         public Row()
-        {}
+        {
+            Areas = new List<Area>();
+        }
 
-        public Row(int id, int firstPixel)
+        public Row(int id, int firstPixel) :
+            this()
         {
             Id = id;
             FirstPixel = firstPixel;
-            Areas = new List<Area>();
         }
 
         public Row(string id, string firstPixel) :

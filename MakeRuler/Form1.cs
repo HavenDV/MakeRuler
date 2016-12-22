@@ -34,15 +34,15 @@ namespace Example1
             int height = 60;
             int radius = 9;
 
-            var bigCircle = new Circle(diameter0 / 2, diameter0 + 1, diameter0);
-            bigCircle.p_minY = diameter0 - height;
-            bigCircle.p_maxY = bigCircle.p_minY + height * 2;
+            var bigCircle = new Circle(diameter0 / 2, diameter0 + 1, diameter0/2);
+            bigCircle.Min.Y = diameter0 - height;
+            bigCircle.Max.Y = bigCircle.Min.Y + height * 2;
 
             var scene = new Scene();
             scene.Add(bigCircle, 1);
             for (int i = 0; i < holds; i++)
             {
-                scene.Add(new Circle(margin + i * grid, bigCircle.p_minY + height, radius), i + 2);
+                scene.Add(new Circle(margin + i * grid, bigCircle.Min.Y + height, radius), i + 2);
             }
 
             return scene;

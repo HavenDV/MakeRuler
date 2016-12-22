@@ -38,7 +38,7 @@ namespace Example1
 
         public void Add(Circle circle, int mediumId)
         {
-            for (int rowId = circle.p_minY; rowId <= circle.p_maxY; rowId++)
+            for (int rowId = circle.Min.Y; rowId <= circle.Max.Y; rowId++)
             {
                 var line = circle.Lines[rowId];
                 if (RowExists(rowId))
