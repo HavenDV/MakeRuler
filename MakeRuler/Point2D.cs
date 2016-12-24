@@ -1,10 +1,19 @@
+using System;
+using MakeRuler.Extensions;
+
 namespace Example1
 {
     public class Point2D
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public Point2D(int x, int y)
+        public double X { get; set; }
+        public double Y { get; set; }
+        public int iX {
+            get { return X.Round(); }
+        }
+        public int iY {
+            get { return Y.Round(); }
+        }
+        public Point2D(double x, double y)
         {
             X = x;
             Y = y;
