@@ -5,10 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
+using System.Threading;
 
 namespace Example1
 {
@@ -19,104 +21,48 @@ namespace Example1
             InitializeComponent();
         }
 
-        static public string AppPath {
-            get {
-                var path = Assembly.GetExecutingAssembly().CodeBase;
-                return Path.GetDirectoryName(path).Substring(6);
-            }
-        }
-
-        private Scene CreateScene(int holds)
+        private Scene CreateLayer(int height)
         {
-            int diameter0 = 780;
-            int grid = diameter0 / holds;
-            int margin = grid / 2;
-            int height = 60;
-            int radius = 9;
-
-            var bigCircle = new Circle(diameter0 / 2, diameter0 + 1, diameter0/2);
-            bigCircle.Min.Y = diameter0 - height;
-            bigCircle.Max.Y = bigCircle.Min.Y + height * 2;
-
             var scene = new Scene();
-            scene.Add(bigCircle, 1);
-            for (int i = 0; i < holds; i++)
-            {
-                scene.Add(new Circle(margin + i * grid, bigCircle.Min.Y + height, radius), i + 2);
-            }
-            for (int i = 0; i < holds; i++)
-            {
-                scene.Add(new Rect(margin + i * grid, bigCircle.Min.Y + margin + i * grid, margin + i * grid + 10, bigCircle.Min.Y + margin + i * grid + 10), i + 2);
-            }
-
+            var h = height / 300.0;
+            var scale = 1 / 0.5;
+            scene.Add(new Rect(scale * (80 + 80 * h), scale * 40 * h, scale * (280 - 80 * h), scale * (160 - 40 * h), 1));
+            scene.Add(new Circle(scale * (80 + 80 * h), scale * 80, scale * (80 - 40 * h), 1));
+            scene.Add(new Circle(scale * (280 - 80 * h), scale * 80, scale * (80 - 40 * h), 1));
+            scene.Add(new Circle(scale * (180), scale * (20 + 40 * h), scale * 5.5, 2));
+            scene.Add(new Circle(scale * (180), scale * (140 - 40 * h), scale * 5.5, 3));
+            scene.Add(new Circle(scale * (45 + 90 * h), scale * 80, scale * 5.5, 4));
+            scene.Add(new Circle(scale * (315 - 90 * h), scale * 80, scale * 5.5, 5));
+            scene.Add(new Circle(scale * 180, scale * 80, scale * 5.5, 6));
             return scene;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void CreateButton_Click(object sender, EventArgs e)
         {
-            var scene = CreateScene(20);
-            DrawScene(scene);
-            scene.ToFile(Path.Combine(AppPath, "output20.txt"));
-        }
+            var step = 5;
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            var scene = CreateScene(40);
-            DrawScene(scene);
-            scene.ToFile(Path.Combine(AppPath, "output40.txt"));
-        }
-
-
-        private Color GetColor1(int mediumID)
-        {
-            if (mediumID == 1)
-                return Color.DarkGray;
-            else
-                return Color.Blue;
-        }
-
-        private Color GetColor(int mediumID)
-        {
-            switch (mediumID)
+            var lines = new List<string>();
+            for (var i = 0; i < 300; i += step)
             {
-                case 1:
-                    return Color.DarkGray;
-                case 2:
-                    return Color.Blue;
-                case 3:
-                    return Color.Red;
-                case 4:
-                    return Color.Green;
-                case 5:
-                    return Color.Yellow;
-                case 6:
-                    return Color.Pink;
-                case 7:
-                    return Color.MediumSeaGreen;
+                var layer = CreateLayer(i);
+                var bitmap = layer.ToBitmap();
+                var slice = 1 + i / step;
+                Directory.CreateDirectory("slicesTest");
+                bitmap.Save($"slicesTest/slice{slice}.png");
+                DrawBitmap(bitmap);
+                lines.Add(layer.ToText(slice, false));
+                progressBar1.Value = (int)(100.0 * slice / (1 + 300.0 / step));
+                Refresh();
             }
-            return Color.White; ;
+
+            File.WriteAllLines("outputTest.txt", lines);
         }
 
-        private void DrawScene(Scene scene)
-        {
-            pictureBox2.Refresh();
-            var rows = scene.Rows;
-            var map = (Bitmap)pictureBox2.Image;
-            var g = pictureBox2.CreateGraphics();
 
-            var i = 0;
-            foreach (var row in rows)
-            {
-                var start = new Point(row.Value.FirstPixel, i + 1);
-                foreach (var data in row.Value.Areas)
-                {
-                    var end = new Point(data.EndPixel, i + 1);
-                    Pen p = new Pen(GetColor1(data.Medium), 1);
-                    g.DrawLine(p, start, end);
-                    start = end;
-                }
-                ++i;
-            }
+        private void DrawBitmap(Bitmap bitmap)
+        {
+            pictureBox2.Image = bitmap;
+            Thread.Sleep(30);
         }
 
     }
