@@ -1,4 +1,3 @@
-using System;
 using MakeRuler.Extensions;
 
 namespace Example1
