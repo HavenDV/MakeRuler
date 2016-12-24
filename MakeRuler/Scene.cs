@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -8,6 +9,7 @@ namespace Example1
     class Scene
     {
         public Dictionary<int, Row> Rows { get; set; }
+        private Bitmap m_bitmap = null;
 
         public Scene()
         {
@@ -19,36 +21,16 @@ namespace Example1
             return Rows.ContainsKey(rowId);
         }
 
-        private void AddNewRow(Line line, int rowId, int mediumId)
+        public void Add(Object obj)
         {
-            var row = new Row(rowId, line.Start);
-            row.Areas.Add(new Area(line.End, mediumId));
-            Rows.Add(rowId, row);
-        }
-
-        private void AddToRow(Line line, int rowId, int mediumId)
-        {
-            Rows[rowId].Areas.Add(new Area(line.Start, 1));
-            Rows[rowId].Areas.Add(new Area(line.End, mediumId));
-            Rows[rowId].Areas.Sort((area1, area2) =>
+            foreach (var line in obj.Lines)
             {
-                return area1.EndPixel.CompareTo(area2.EndPixel);
-            });
-        }
-
-        public void Add(Object obj, int mediumId)
-        {
-            for (int rowId = obj.Min.Y; rowId <= obj.Max.Y; rowId++)
-            {
-                var line = obj.Lines[rowId];
-                if (RowExists(rowId))
+                var rowId = line.Key;
+                if (!RowExists(rowId))
                 {
-                    AddToRow(line, rowId, mediumId);
+                    Rows.Add(rowId, new Row());
                 }
-                else
-                {
-                    AddNewRow(line, rowId, mediumId);
-                }
+                Rows[rowId].AddLine(line.Value);
             }
         }
 
@@ -78,38 +60,94 @@ namespace Example1
             return value.ToString().PadLeft(lenght);
         }
 
+        //SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:320
+        //Simple row
+        //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  1
+        //  173   1
+        //No simple row
+        //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  3
+        public string ToText(int slice, bool isSimple)
+        {
+            var lines = new List<string>();
+            //  152   1  168   6  247   1
+            lines.Add($"SLICE NUMBER:{ToString(slice, 3)}  FIRST ROW:{ToString(Rows.First().Key, 3)}  LAST ROW:{ToString(Rows.Last().Key, 3)}");
+            foreach (var row in Rows)
+            {
+                var rowLines = row.Value.ToLines();
+                lines.Add("ROW NR." + ToString(row.Key, 4) + "  FIRST PIXEL:" + ToString(rowLines.First().Start, 4) + "  NUMBER OF AREAS:" + ToString(isSimple ? 1 : rowLines.Count, 3));
+
+                if (isSimple)
+                    lines.Add(ToString(rowLines.Last().End, 5) + ToString(1, 4));
+                else
+                    lines.Add(string.Concat(
+                            rowLines.Select(rowLine =>
+                            {
+                                return ToString(rowLine.End, 5) + ToString(rowLine.Medium, 4);
+                            })
+                        )
+                    );
+            }
+
+            return string.Join(Environment.NewLine, lines);
+        }
+
         public void ToFile(string path)
         {
             var lines = new List<string>();
             for (int i = 1; i <= 6; ++i)
             {
-                //SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:320
-                lines.Add($"SLICE NUMBER:{ToString(i, 3)}  FIRST ROW:{ToString(Rows.First().Key, 4)}  LAST ROW:{ToString(Rows.Last().Key, 4)}");
-                if (i == 1 || i == 6)
-                {
-                    //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  1
-                    //  173   1
-                    foreach (var row in Rows)
-                    {
-                        lines.Add("ROW NR." + ToString(row.Key, 4) + "  FIRST PIXEL:" + ToString(row.Value.FirstPixel, 4) + "  NUMBER OF AREAS:" + ToString(1, 3));
-                        lines.Add(ToString(row.Value.Areas.Last().EndPixel, 5) + ToString(1, 4));
-                    }
-                }
-                else
-                {
-                    //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  3
-                    //  152   1  168   6  247   1
-                    foreach (var row in Rows)
-                    {
-                        lines.Add("ROW NR." + ToString(row.Key, 4) + "  FIRST PIXEL:" + ToString(row.Value.FirstPixel, 4) + "  NUMBER OF AREAS:" + ToString(row.Value.Areas.Count, 3));
-                        var tmp = "";
-                        foreach (var area in row.Value.Areas)
-                            tmp += ToString(area.EndPixel, 5) + ToString(area.Medium, 4);
-                        lines.Add(tmp);
-                    }
-                }
+                lines.Add(ToText(i, i == 1 || i == 6));
             }
             File.WriteAllLines(path, lines);
+        }
+
+        private Color GetColor(int mediumID)
+        {
+            switch (mediumID)
+            {
+                case 1:
+                    return Color.DarkGray;
+                case 2:
+                    return Color.Blue;
+                case 3:
+                    return Color.Red;
+                case 4:
+                    return Color.Green;
+                case 5:
+                    return Color.Yellow;
+                case 6:
+                    return Color.Pink;
+                case 7:
+                    return Color.MediumSeaGreen;
+            }
+            return Color.White;
+        }
+
+        public Bitmap ToBitmap()
+        {
+            if (m_bitmap != null)
+            {
+                return m_bitmap;
+            }
+
+            var yOffset = Rows.First().Key;
+            var bitmap = new Bitmap(800, 400);
+            var g = Graphics.FromImage(bitmap);
+            var i = 0;
+            foreach (var row in Rows)
+            {
+                var rowLines = row.Value.ToLines();
+                foreach (var line in rowLines)
+                {
+                    var pen = new Pen(GetColor(line.Medium), 1);
+                    g.DrawLine(pen, line.Start, i + yOffset, line.End, i + yOffset);
+                }
+                ++i;
+            }
+
+            m_bitmap = bitmap;
+
+            return bitmap;
         }
     }
 }
