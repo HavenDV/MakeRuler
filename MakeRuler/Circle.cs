@@ -1,37 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using MakeRuler.Extensions;
 
 namespace Example1
 {
     public class Circle : Object
     {
         public Point2D Center { get; set; }
-        public int Radius { get; set; }
+        public double Radius { get; set; }
         
-        public Circle(Point2D center, int radius)
+        public Circle(Point2D center, double radius, int medium) :
+            base(medium)
         {
             Center = center;
             Radius = radius;
-            Min = new Point2D(Center.X - Radius + 1, Center.Y - Radius + 1);
-            Max = new Point2D(Center.X + Radius - 1, Center.Y + Radius - 1);
+            Min = new Point2D(Center.X - Radius, Center.Y - Radius);
+            Max = new Point2D(Center.X + Radius, Center.Y + Radius);
             Lines = ComputeLines();
         }
 
-        public Circle(int x, int y, int radius) :
-            this(new Point2D(x, y), radius)
+        public Circle(double x, double y, double radius, int medium) :
+            this(new Point2D(x, y), radius, medium)
         {}
 
-        public Dictionary<int, Line> ComputeLines()
+        public SortedDictionary<int, Line> ComputeLines()
         {
-            var lines = new Dictionary<int, Line>();
+            var lines = new SortedDictionary<int, Line>();
             
-            for (int y = Min.Y; y <= Max.Y; y++)
+            for (int y = Min.iY; y <= Max.Y; y++)
             {
-                double dy = Math.Abs(Center.Y - y);
-                double dx = Math.Sqrt(Radius * Radius - dy * dy);
-                int x1 = (int)Math.Abs(Center.X - dx);
-                int x2 = (int)Math.Abs(Center.X + dx);
-                lines.Add(y,new Line(x1, x2));
+                var dy = Center.Y - y;
+                if (dy <= Radius)
+                {
+                    var dx = Math.Sqrt(Radius*Radius - dy*dy);
+                    var x1 = Center.X - dx;
+                    var x2 = Center.X + dx;
+                    lines.Add(y, new Line(x1.Round(), x2.Round(), Medium));
+                }
             }
 
             return lines;
