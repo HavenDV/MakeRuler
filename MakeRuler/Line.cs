@@ -1,8 +1,4 @@
-﻿using System.CodeDom;
-using System.Collections.Generic;
-using System.ComponentModel;
-
-namespace Example1
+﻿namespace Example1
 {
     public class Line
     {
