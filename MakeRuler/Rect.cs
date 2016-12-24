@@ -1,30 +1,34 @@
 using System.Collections.Generic;
+using System.Data;
 
 namespace Example1
 {
     public class Rect : Object
     {
-        public Point2D Center { get; set; }
+        public Point2D Center
+        {
+            get { return new Point2D((Min.X + Max.X)/2, (Min.Y + Max.Y)/2); }
+        }
 
-        public Rect(Point2D min, Point2D max)
+        public Rect(Point2D min, Point2D max, int medium) :
+            base(medium)
         {
             Min = min;
             Max = max;
-            Center = new Point2D((Min.X + Max.X)/2, (Min.Y + Max.Y)/2);
             Lines = ComputeLines();
         }
 
-        public Rect(int x1, int y1, int x2, int y2) :
-            this(new Point2D(x1, y1), new Point2D(x2, y2))
+        public Rect(double x1, double y1, double x2, double y2, int medium) :
+            this(new Point2D(x1, y1), new Point2D(x2, y2), medium)
         { }
 
-        public Dictionary<int, Line> ComputeLines()
+        public SortedDictionary<int, Line> ComputeLines()
         {
-            var lines = new Dictionary<int, Line>();
+            var lines = new SortedDictionary<int, Line>();
 
-            for (int y = Min.Y; y <= Max.Y; y++)
+            for (int y = Min.iY; y <= Max.iY; y++)
             {
-                lines.Add(y, new Line(Min.X, Max.X));
+                lines.Add(y, new Line(Min.iX, Max.iX, Medium));
             }
 
             return lines;
