@@ -18,10 +18,10 @@ namespace MakeRuler
             InitializeComponent();
         }
 
-        private Scene CreateLayer(int height, int step)
+        private Scene CreateLayer(int slice, double step, double height)
         {
             var scene = new Scene();
-            var h = height / 300.0;
+            var h = (slice-1) * step / height;
             var scale = 1 / 0.5;
             //CORG(1) = 'phantom';
             //CORG(2) = 'center';
@@ -38,38 +38,39 @@ namespace MakeRuler
             scene.Add(new Circle(scale * (330 - 120 * h), scale * 80, scale * 5.5, 5));
             scene.Add(new Circle(scale * 180, scale * (20 + 40 * h), scale * 5.5, 6));
             scene.ToBitmap();
-            scene.m_text = scene.ToText(1 + height / step, false);
+            scene.m_text = scene.ToText(slice, false);
             return scene;
         }
 
-        private async Task<Scene[]> CreateLayers(int step)
+        private async Task<Scene[]> CreateLayers(int num, double step, double height)
         {
-            var ints = new List<int>();
-            for (var i = 0; i < 300; i += step)
-            {
-                ints.Add(i);
-            }
-
-            return await Task.WhenAll(ints.Select(i => Task.Run(() => CreateLayer(i, step))));
+            return await Task.WhenAll(
+                Enumerable.Range(1, num).Select(
+                    i => Task.Run(
+                            () => CreateLayer(i, step, height)
+                        )
+                    )
+                );
         }
 
         private Scene[] layers = null;
         private async void CreateButton_Click(object sender, EventArgs e)
         {
-            var step = 1;
+            var step = 150.0;
+            var height = 300.0;
+            var num = height / step;
 
-            layers = layers ?? await CreateLayers(step);
+            layers = layers ?? await CreateLayers((int)num, step, height);
             var lines = new List<string>();
-            for (var i = 0; i < 300; i += step)
+            for (var slice = 1; slice <= num; ++slice)
             {
-                var slice = 1 + i / step;
                 var layer = layers[slice-1];
                 var bitmap = layer.ToBitmap();
                 Directory.CreateDirectory("slices");
                 bitmap.Save($"slices/slice{slice}.png");
                 DrawBitmap(bitmap);
                 lines.Add(layer.m_text);
-                progressBar1.Value = (int)(100.0 * slice / (300.0 / step));
+                progressBar1.Value = (int)(100.0 * slice / num);
                 Refresh();
             }
 
