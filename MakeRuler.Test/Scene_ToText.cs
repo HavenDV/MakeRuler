@@ -9,156 +9,129 @@ namespace MakeRuler.Test
     public class Scene_ToText
     {
         [TestMethod]
-        public void SimpleRect()
+        public void SimpleIntegerRect()
         {
             #region TestData
             var scene = new Scene();
-            scene.Add(new Rect(1, 1, 2, 2, 1));
+            scene.Add(new Rect(0, 0, 2, 2, 2));
             #endregion
 
             var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  2
 ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
-    2   1
+    2   2
 ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
-    2   1";
+    2   2";
             var actual = scene.ToText(1, false);
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void SimpleCircle()
+        public void SimpleDecimalRect()
         {
             #region TestData
             var scene = new Scene();
-            scene.Add(new Circle(2, 2, 1, 1));
+            scene.Add(new Rect(0.5, 0.5, 1.5, 1.5, 2));
             #endregion
 
             var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  2
 ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
-    2   1
+    2   2
 ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
-    2   1";
+    2   2";
             var actual = scene.ToText(1, false);
 
             Assert.AreEqual(expected, actual);
         }
 
-        /*
         [TestMethod]
-        public void NullArgument()
+        public void SimpleDecimalRect2()
         {
-            try
-            {
-                var i = Functions.highestProductOf3(null);
-                Assert.Fail("Exception expected");
-            }
-            catch (Exception e)
-            {
-                StringAssert.Contains(e.Message, "arrayOfInts");
-            }
-        }
+            #region TestData
+            var scene = new Scene();
+            scene.Add(new Rect(0.8, 0.8, 1.8, 1.8, 3));
+            #endregion
 
-        [TestMethod]
-        public void EmptyList()
-        {
-            try
-            {
-                var i = Functions.highestProductOf3(new List<int>());
-                Assert.Fail("Exception expected");
-            }
-            catch (Exception e)
-            {
-                StringAssert.Contains(e.Message, "Less than 3 items!");
-            }
-        }
-
-        [TestMethod]
-        public void EmptyArray()
-        {
-            try
-            {
-                var i = Functions.highestProductOf3(new int[] { });
-                Assert.Fail("Exception expected");
-            }
-            catch (Exception e)
-            {
-                StringAssert.Contains(e.Message, "Less than 3 items!");
-            }
-        }
-
-        [TestMethod]
-        public void ListWithTwoArguments()
-        {
-            try
-            {
-                var i = Functions.highestProductOf3(new List<int> { 1, 2 });
-                Assert.Fail("Exception expected");
-            }
-            catch (Exception e)
-            {
-                StringAssert.Contains(e.Message, "Less than 3 items!");
-            }
-        }
-
-        [TestMethod]
-        public void ArrayWithTwoArguments()
-        {
-            try
-            {
-                var i = Functions.highestProductOf3(new int[] { 1, 2 });
-                Assert.Fail("Exception expected");
-            }
-            catch (Exception e)
-            {
-                StringAssert.Contains(e.Message, "Less than 3 items!");
-            }
-        }
-
-        [TestMethod]
-        public void ListWithThreeArguments()
-        {
-            var actual = Functions.highestProductOf3(new List<int> { 1, 2, 3 });
-            var expected = 6;
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  2  LAST ROW:  2
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    2   3";
+            var actual = scene.ToText(1, false);
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void ArrayWithThreeArguments()
+        public void SimpleIntegerCircle()
         {
-            var actual = Functions.highestProductOf3(new int[] { 3, 2, 1 });
-            var expected = 6;
+            #region TestData
+            var scene = new Scene();
+            scene.Add(new Circle(1, 1, 1, 4));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  2
+ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    2   4
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    2   4";
+            var actual = scene.ToText(1, false);
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void ListWithManyArguments()
+        public void SimpleDecimalCircle()
         {
-            var actual = Functions.highestProductOf3(new List<int> { 1, 2, 3, 7, 6, 4 });
-            var expected = 168;
+            #region TestData
+            var scene = new Scene();
+            scene.Add(new Circle(1.5, 1.5, 1, 5));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  3
+ROW NR.   1  FIRST PIXEL:   2  NUMBER OF AREAS:  1
+    2   5
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    3   5
+ROW NR.   3  FIRST PIXEL:   2  NUMBER OF AREAS:  1
+    2   5";
+            var actual = scene.ToText(1, false);
 
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void ArrayWithManyArguments()
+        public void SimpleDecimalCircle2()
         {
-            var actual = Functions.highestProductOf3(new int[] { 7, 6, 4, 1, 2, 3 });
-            var expected = 168;
+            #region TestData
+            var scene = new Scene();
+            scene.Add(new Circle(1.5, 1.5, 1.5, 6));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  3
+ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    3   6
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    3   6
+ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    3   6";
+            var actual = scene.ToText(1, false);
 
             Assert.AreEqual(expected, actual);
         }
-
+        
         [TestMethod]
-        public void ListWithVeryManyArguments()
+        public void SimpleDecimalCircle3()
         {
-            var actual = Functions.highestProductOf3(Enumerable.Range(2, 1000000).ToList());
-            var expected = 999999999999000000;
+            #region TestData
+            var scene = new Scene();
+            scene.Add(new Circle(1.5, 1.5, 0.5, 8));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  2  LAST ROW:  2
+ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
+    2   8";
+            var actual = scene.ToText(1, false);
 
             Assert.AreEqual(expected, actual);
         }
-        */
     }
 }
