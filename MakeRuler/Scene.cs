@@ -4,9 +4,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 
-namespace Example1
+namespace MakeRuler
 {
-    class Scene
+    public class Scene
     {
         public Dictionary<int, Row> Rows { get; set; }
         private Bitmap m_bitmap = null;
@@ -16,17 +16,12 @@ namespace Example1
             Rows = new Dictionary<int, Row>();
         }
 
-        private bool RowExists(int rowId)
-        {
-            return Rows.ContainsKey(rowId);
-        }
-
         public void Add(Object obj)
         {
             foreach (var line in obj.Lines)
             {
                 var rowId = line.Key;
-                if (!RowExists(rowId))
+                if (!Rows.ContainsKey(rowId))
                 {
                     Rows.Add(rowId, new Row());
                 }
@@ -70,19 +65,19 @@ namespace Example1
         {
             var lines = new List<string>();
             //  152   1  168   6  247   1
-            lines.Add($"SLICE NUMBER:{ToString(slice, 3)}  FIRST ROW:{ToString(Rows.First().Key + 1, 3)}  LAST ROW:{ToString(Rows.Last().Key + 1, 3)}");
+            lines.Add($"SLICE NUMBER:{ToString(slice, 3)}  FIRST ROW:{ToString(Rows.First().Key, 3)}  LAST ROW:{ToString(Rows.Last().Key, 3)}");
             foreach (var row in Rows)
             {
                 var rowLines = row.Value.ToLines();
-                lines.Add("ROW NR." + ToString(row.Key + 1, 4) + "  FIRST PIXEL:" + ToString(rowLines.First().Start + 1, 4) + "  NUMBER OF AREAS:" + ToString(isSimple ? 1 : rowLines.Count, 3));
+                lines.Add("ROW NR." + ToString(row.Key, 4) + "  FIRST PIXEL:" + ToString(rowLines.First().Start, 4) + "  NUMBER OF AREAS:" + ToString(isSimple ? 1 : rowLines.Count, 3));
 
                 if (isSimple)
-                    lines.Add(ToString(rowLines.Last().End + 1, 5) + ToString(1, 4));
+                    lines.Add(ToString(rowLines.Last().End, 5) + ToString(1, 4));
                 else
                     lines.Add(string.Concat(
                             rowLines.Select(rowLine =>
                             {
-                                return ToString(rowLine.End + 1, 5) + ToString(rowLine.Medium, 4);
+                                return ToString(rowLine.End, 5) + ToString(rowLine.Medium, 4);
                             })
                         )
                     );
