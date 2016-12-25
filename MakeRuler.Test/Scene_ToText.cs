@@ -53,7 +53,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             #endregion
 
             var expected = @"SLICE NUMBER:  1  FIRST ROW:  2  LAST ROW:  2
-ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
     2   3";
             var actual = scene.ToText(1, false);
 

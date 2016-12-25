@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Example1
+namespace MakeRuler
 {
     public class Row
     {
@@ -26,8 +27,8 @@ namespace Example1
             var lines = new List<Line>();
 
             var currentMedium = Data.First().Value;
-            var start = Data.First().Key;
-            for (var i = start;i <= Data.Last().Key; ++i)
+            var start = Data.First().Key + 1;
+            for (var i = start; i <= Data.Last().Key; ++i)
             {
                 if (Data[i] != currentMedium)
                 {

@@ -27,15 +27,15 @@ namespace MakeRuler
         {
             var lines = new SortedDictionary<int, Line>();
             
-            for (int y = Min.iY; y <= Max.Y; y++)
+            for (int y = Min.minY + 1; y <= Max.maxY; ++y)
             {
-                var dy = Center.Y - y;
+                var dy = Center.Y + 0.5 - y;
                 if (dy <= Radius)
                 {
                     var dx = Math.Sqrt(Radius*Radius - dy*dy);
                     var x1 = Center.X - dx;
                     var x2 = Center.X + dx;
-                    lines.Add(y, new Line(x1.Round(), x2.Round(), Medium));
+                    lines.Add(y, new Line(x1.RoundMin(), x2.RoundMax(), Medium));
                 }
             }
 

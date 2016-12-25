@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using MakeRuler.Extensions;
 
 namespace MakeRuler
 {
@@ -26,9 +27,9 @@ namespace MakeRuler
         {
             var lines = new SortedDictionary<int, Line>();
 
-            for (int y = Min.iY; y <= Max.iY; y++)
+            for (int y = Min.minY + 1; y <= Max.maxY; ++y)
             {
-                lines.Add(y, new Line(Min.iX, Max.iX, Medium));
+                lines.Add(y, new Line(Min.minX, Max.maxX, Medium));
             }
 
             return lines;
