@@ -17,6 +17,12 @@ namespace MakeRuler
             Rows = new Dictionary<int, Row>();
         }
 
+        public void ClearCache()
+        {
+            m_bitmap = null;
+            m_text = null;
+        }
+
         public void Add(Object obj)
         {
             foreach (var line in obj.Lines)
@@ -135,19 +141,15 @@ namespace MakeRuler
                 return m_bitmap;
             }
 
-            var yOffset = Rows.First().Key;
             var bitmap = new Bitmap(800, 400);
             var g = Graphics.FromImage(bitmap);
-            var i = 0;
             foreach (var row in Rows)
             {
-                var rowLines = row.Value.ToLines();
-                foreach (var line in rowLines)
+                foreach (var line in row.Value.ToLines())
                 {
                     var pen = new Pen(GetColor(line.Medium), 1);
-                    g.DrawLine(pen, line.Start, i + yOffset, line.End, i + yOffset);
+                    g.DrawLine(pen, line.Start, row.Key, line.End, row.Key);
                 }
-                ++i;
             }
 
             m_bitmap = bitmap;
