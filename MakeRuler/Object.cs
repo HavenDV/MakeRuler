@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Example1
+namespace MakeRuler
 {
     public class Object
     {

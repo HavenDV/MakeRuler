@@ -1,4 +1,4 @@
-﻿namespace Example1
+﻿namespace MakeRuler
 {
     public class Line
     {

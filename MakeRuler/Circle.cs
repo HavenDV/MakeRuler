@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using MakeRuler.Extensions;
 
-namespace Example1
+namespace MakeRuler
 {
     public class Circle : Object
     {

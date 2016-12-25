@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace Example1
+namespace MakeRuler
 {
     public class Rect : Object
     {

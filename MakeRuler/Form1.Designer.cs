@@ -1,4 +1,4 @@
-﻿namespace Example1
+﻿namespace MakeRuler
 {
     partial class Form1
     {
