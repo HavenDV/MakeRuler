@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Reflection;
 using System.Threading;
+using MakeRuler.Extensions;
 
 namespace MakeRuler
 {
@@ -41,7 +38,7 @@ namespace MakeRuler
             scene.Add(new Circle(scale * (330 - 120 * h), scale * 80, scale * 5.5, 5));
             scene.Add(new Circle(scale * 180, scale * (20 + 40 * h), scale * 5.5, 6));
             scene.ToBitmap();
-            scene.m_text = Conventer.ToText(new KeyValuePair<int, Scene>(1 + height / step, scene), false);
+            scene.m_text = scene.ToText(1 + height / step, false);
             return scene;
         }
 

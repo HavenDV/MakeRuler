@@ -3,13 +3,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MakeRuler.Test
+namespace MakeRuler.Extensions.Test
 {
     [TestClass]
-    public class Scene_ToText
+    public class Converter
     {
         [TestMethod]
-        public void SimpleIntegerRect()
+        public void Converter_ToText_SimpleRow()
+        {
+            var row = new Row();
+            row.AddLine(new Line(1, 3, 3));
+
+            var expected = @"ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
+    3   3";
+            var actual = row.ToText(2, false);
+            
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Converter_ToText_EmptyRow()
+        {
+            var row = new Row();
+
+            var expected = @"ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  0
+";
+            var actual = row.ToText(3, false);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Converter_ToText_SimpleIntegerRect()
         {
             #region TestData
             var scene = new Scene();
@@ -27,7 +52,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
         }
 
         [TestMethod]
-        public void SimpleDecimalRect()
+        public void Converter_ToText_SimpleDecimalRect()
         {
             #region TestData
             var scene = new Scene();
@@ -45,7 +70,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
         }
 
         [TestMethod]
-        public void SimpleDecimalRect2()
+        public void Converter_ToText_SimpleDecimalRect2()
         {
             #region TestData
             var scene = new Scene();
@@ -61,7 +86,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
         }
 
         [TestMethod]
-        public void SimpleIntegerCircle()
+        public void Converter_ToText_SimpleIntegerCircle()
         {
             #region TestData
             var scene = new Scene();
@@ -79,7 +104,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
         }
 
         [TestMethod]
-        public void SimpleDecimalCircle()
+        public void Converter_ToText_SimpleDecimalCircle()
         {
             #region TestData
             var scene = new Scene();
@@ -99,7 +124,8 @@ ROW NR.   3  FIRST PIXEL:   2  NUMBER OF AREAS:  1
         }
 
         [TestMethod]
-        public void SimpleDecimalCircle2()
+
+        public void Converter_ToText_SimpleDecimalCircle2()
         {
             #region TestData
             var scene = new Scene();
@@ -117,9 +143,9 @@ ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
 
             Assert.AreEqual(expected, actual);
         }
-        
+
         [TestMethod]
-        public void SimpleDecimalCircle3()
+        public void Converter_ToText_SimpleDecimalCircle3()
         {
             #region TestData
             var scene = new Scene();

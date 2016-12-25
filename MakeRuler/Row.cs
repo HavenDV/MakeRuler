@@ -26,6 +26,11 @@ namespace MakeRuler
         {
             var lines = new List<Line>();
 
+            if (Data.Count == 0)
+            {
+                return lines;
+            }
+
             var currentMedium = Data.First().Value;
             var start = Data.First().Key + 1;
             for (var i = start; i <= Data.Last().Key; ++i)

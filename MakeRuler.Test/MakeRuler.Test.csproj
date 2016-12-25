@@ -50,8 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Converter.Test.cs" />
     <Compile Include="Extensions_Round.cs" />
-    <Compile Include="Scene_ToText.cs" />
+    <Compile Include="Scene.Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
