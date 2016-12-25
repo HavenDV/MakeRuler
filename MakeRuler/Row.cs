@@ -18,7 +18,7 @@ namespace MakeRuler
         {
             for (var i = line.Start; i <= line.End; ++i)
             {
-                Data[i] = line.Medium;
+                Data[i] = line.Material;
             }
         }
 
@@ -31,18 +31,18 @@ namespace MakeRuler
                 return lines;
             }
 
-            var currentMedium = Data.First().Value;
+            var material = Data.First().Value;
             var start = Data.First().Key + 1;
             for (var i = start; i <= Data.Last().Key; ++i)
             {
-                if (Data[i] != currentMedium)
+                if (Data[i] != material)
                 {
-                    lines.Add(new Line(start, i, currentMedium));
-                    currentMedium = Data[i];
+                    lines.Add(new Line(start, i, material));
+                    material = Data[i];
                     start = i;
                 }
             }
-            lines.Add(new Line(start, Data.Last().Key, currentMedium));
+            lines.Add(new Line(start, Data.Last().Key, material));
 
             return lines;
         }

@@ -3,21 +3,21 @@
     public class Area
     {
         public int EndPixel { get; set; }
-        public int Medium { get; set; }
+        public int Material { get; set; }
 
         public Area()
         {}
 
-        public Area(int endPixel, int medium)
+        public Area(int endPixel, int material)
         {
             EndPixel = endPixel;
-            Medium = medium;
+            Material = material;
         }
 
-        public Area(string endPixel, string medium) :
+        public Area(string endPixel, string material) :
             this(
                 int.Parse(endPixel),
-                int.Parse(medium)
+                int.Parse(material)
             )
         {}
 

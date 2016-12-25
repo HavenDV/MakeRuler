@@ -4,13 +4,13 @@
     {
         public int Start { get; set; }
         public int End { get; set; }
-        public int Medium { get; set; }
+        public int Material { get; set; }
 
-        public Line(int start, int end, int medium)
+        public Line(int start, int end, int material)
         {
             Start = start;
             End = end;
-            Medium = medium;
+            Material = material;
         }
     }
 }

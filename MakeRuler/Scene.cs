@@ -36,30 +36,9 @@ namespace MakeRuler
             }
         }
 
-        public static Scene FromFile(string path)
+        private Color GetColor(int material)
         {
-            var scene = new Scene();
-            var lines = File.ReadAllLines(path);
-
-            // Display the file contents by using a foreach loop.
-            for (int i = 0; i < lines.Length; i += 2)
-            {
-                // Use a tab to indent each line of the file.
-                string[] args = lines[i].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                //scene.Rows.Add(new Row(args[0], args[1]));
-                string[] args1 = lines[i + 1].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int j = 0; j < int.Parse(args[2]); j++)
-                {
-                    //rows[rows.Count - 1].Areas.Add(new Area(args1[2 * j], args1[2 * j + 1]));
-                }
-            }
-
-            return scene;
-        }
-
-        private Color GetColor(int mediumID)
-        {
-            switch (mediumID)
+            switch (material)
             {
                 case 1:
                     return Color.DarkGray;
@@ -92,7 +71,7 @@ namespace MakeRuler
             {
                 foreach (var line in row.Value.ToLines())
                 {
-                    var pen = new Pen(GetColor(line.Medium), 1);
+                    var pen = new Pen(GetColor(line.Material), 1);
                     g.DrawLine(pen, line.Start, row.Key, line.End, row.Key);
                 }
             }

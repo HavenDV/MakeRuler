@@ -9,8 +9,8 @@ namespace MakeRuler
         public Point2D Center { get; set; }
         public double Radius { get; set; }
         
-        public Circle(Point2D center, double radius, int medium) :
-            base(medium)
+        public Circle(Point2D center, double radius, int material) :
+            base(material)
         {
             Center = center;
             Radius = radius;
@@ -19,8 +19,8 @@ namespace MakeRuler
             Lines = ComputeLines();
         }
 
-        public Circle(double x, double y, double radius, int medium) :
-            this(new Point2D(x, y), radius, medium)
+        public Circle(double x, double y, double radius, int material) :
+            this(new Point2D(x, y), radius, material)
         {}
 
         public SortedDictionary<int, Line> ComputeLines()
@@ -35,7 +35,7 @@ namespace MakeRuler
                     var dx = Math.Sqrt(Radius*Radius - dy*dy);
                     var x1 = Center.X - dx;
                     var x2 = Center.X + dx;
-                    lines.Add(y, new Line(x1.RoundMin(), x2.RoundMax(), Medium));
+                    lines.Add(y, new Line(x1.RoundMin(), x2.RoundMax(), Material));
                 }
             }
 
