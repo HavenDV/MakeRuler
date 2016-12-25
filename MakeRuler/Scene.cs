@@ -10,6 +10,7 @@ namespace MakeRuler
     {
         public Dictionary<int, Row> Rows { get; set; }
         private Bitmap m_bitmap = null;
+        private string m_text = null;
 
         public Scene()
         {
@@ -63,6 +64,11 @@ namespace MakeRuler
         //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  3
         public string ToText(int slice, bool isSimple)
         {
+            if (m_text != null)
+            {
+                return m_text;
+            }
+
             var lines = new List<string>();
             //  152   1  168   6  247   1
             lines.Add($"SLICE NUMBER:{ToString(slice, 3)}  FIRST ROW:{ToString(Rows.First().Key, 3)}  LAST ROW:{ToString(Rows.Last().Key, 3)}");
@@ -83,7 +89,11 @@ namespace MakeRuler
                     );
             }
 
-            return string.Join(Environment.NewLine, lines);
+            var text = string.Join(Environment.NewLine, lines);
+
+            m_text = text;
+
+            return text;
         }
 
         public void ToFile(string path)

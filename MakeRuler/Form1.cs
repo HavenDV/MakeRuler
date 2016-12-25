@@ -21,7 +21,7 @@ namespace MakeRuler
             InitializeComponent();
         }
 
-        private Scene CreateLayer(int height)
+        private Scene CreateLayer(int height, int step)
         {
             var scene = new Scene();
             var h = height / 300.0;
@@ -40,19 +40,34 @@ namespace MakeRuler
             scene.Add(new Circle(scale * 180, scale * (140 - 40 * h), scale * 5.5, 4));
             scene.Add(new Circle(scale * (330 - 120 * h), scale * 80, scale * 5.5, 5));
             scene.Add(new Circle(scale * 180, scale * (20 + 40 * h), scale * 5.5, 6));
+            scene.ToBitmap();
+            scene.ToText(1 + height / step, false);
             return scene;
         }
 
-        private void CreateButton_Click(object sender, EventArgs e)
+        private async Task<Scene[]> CreateLayers(int step)
         {
-            var step = 50;
+            var ints = new List<int>();
+            for (var i = 0; i < 300; i += step)
+            {
+                ints.Add(i);
+            }
 
+            return await Task.WhenAll(ints.Select(i => Task.Run(() => CreateLayer(i, step))));
+        }
+
+        private Scene[] layers = null;
+        private async void CreateButton_Click(object sender, EventArgs e)
+        {
+            var step = 2;
+
+            layers = layers ?? await CreateLayers(step);
             var lines = new List<string>();
             for (var i = 0; i < 300; i += step)
             {
-                var layer = CreateLayer(i);
-                var bitmap = layer.ToBitmap();
                 var slice = 1 + i / step;
+                var layer = layers[slice-1];
+                var bitmap = layer.ToBitmap();
                 Directory.CreateDirectory("slices");
                 bitmap.Save($"slices/slice{slice}.png");
                 DrawBitmap(bitmap);
