@@ -37,17 +37,20 @@
             // pictureBox2
             // 
             this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox2.Location = new System.Drawing.Point(12, 57);
+            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox2.Location = new System.Drawing.Point(0, 39);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(887, 371);
+            this.pictureBox2.Size = new System.Drawing.Size(809, 362);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox2.TabIndex = 3;
             this.pictureBox2.TabStop = false;
             // 
             // createButton
             // 
-            this.createButton.Location = new System.Drawing.Point(12, 12);
+            this.createButton.Dock = System.Windows.Forms.DockStyle.Top;
+            this.createButton.Location = new System.Drawing.Point(0, 0);
             this.createButton.Name = "createButton";
-            this.createButton.Size = new System.Drawing.Size(887, 39);
+            this.createButton.Size = new System.Drawing.Size(809, 39);
             this.createButton.TabIndex = 2;
             this.createButton.Text = "Create";
             this.createButton.UseVisualStyleBackColor = true;
@@ -55,16 +58,17 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 434);
+            this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progressBar1.Location = new System.Drawing.Point(0, 378);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(887, 23);
+            this.progressBar1.Size = new System.Drawing.Size(809, 23);
             this.progressBar1.TabIndex = 4;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(912, 466);
+            this.ClientSize = new System.Drawing.Size(809, 401);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.createButton);
