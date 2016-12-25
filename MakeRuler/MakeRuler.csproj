@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Area.cs" />
+    <Compile Include="Conventer.cs" />
     <Compile Include="Cylinder.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

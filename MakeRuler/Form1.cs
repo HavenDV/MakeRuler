@@ -41,7 +41,7 @@ namespace MakeRuler
             scene.Add(new Circle(scale * (330 - 120 * h), scale * 80, scale * 5.5, 5));
             scene.Add(new Circle(scale * 180, scale * (20 + 40 * h), scale * 5.5, 6));
             scene.ToBitmap();
-            scene.ToText(1 + height / step, false);
+            scene.m_text = Conventer.ToText(new KeyValuePair<int, Scene>(1 + height / step, scene), false);
             return scene;
         }
 
@@ -59,7 +59,7 @@ namespace MakeRuler
         private Scene[] layers = null;
         private async void CreateButton_Click(object sender, EventArgs e)
         {
-            var step = 2;
+            var step = 1;
 
             layers = layers ?? await CreateLayers(step);
             var lines = new List<string>();
@@ -71,7 +71,7 @@ namespace MakeRuler
                 Directory.CreateDirectory("slices");
                 bitmap.Save($"slices/slice{slice}.png");
                 DrawBitmap(bitmap);
-                lines.Add(layer.ToText(slice, false));
+                lines.Add(layer.m_text);
                 progressBar1.Value = (int)(100.0 * slice / (300.0 / step));
                 Refresh();
             }

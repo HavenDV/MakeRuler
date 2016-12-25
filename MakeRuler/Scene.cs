@@ -10,7 +10,7 @@ namespace MakeRuler
     {
         public Dictionary<int, Row> Rows { get; set; }
         private Bitmap m_bitmap = null;
-        private string m_text = null;
+        public string m_text = null;
 
         public Scene()
         {
@@ -55,61 +55,6 @@ namespace MakeRuler
             }
 
             return scene;
-        }
-
-        public static string ToString(int value, int lenght)
-        {
-            return value.ToString().PadLeft(lenght);
-        }
-
-        //SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:320
-        //Simple row
-        //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  1
-        //  173   1
-        //No simple row
-        //ROW NR.  1  FIRST PIXEL:148  NUMBER OF AREAS:  3
-        public string ToText(int slice, bool isSimple)
-        {
-            if (m_text != null)
-            {
-                return m_text;
-            }
-
-            var lines = new List<string>();
-            //  152   1  168   6  247   1
-            lines.Add($"SLICE NUMBER:{ToString(slice, 3)}  FIRST ROW:{ToString(Rows.First().Key, 3)}  LAST ROW:{ToString(Rows.Last().Key, 3)}");
-            foreach (var row in Rows)
-            {
-                var rowLines = row.Value.ToLines();
-                lines.Add("ROW NR." + ToString(row.Key, 4) + "  FIRST PIXEL:" + ToString(rowLines.First().Start, 4) + "  NUMBER OF AREAS:" + ToString(isSimple ? 1 : rowLines.Count, 3));
-
-                if (isSimple)
-                    lines.Add(ToString(rowLines.Last().End, 5) + ToString(1, 4));
-                else
-                    lines.Add(string.Concat(
-                            rowLines.Select(rowLine =>
-                            {
-                                return ToString(rowLine.End, 5) + ToString(rowLine.Medium, 4);
-                            })
-                        )
-                    );
-            }
-
-            var text = string.Join(Environment.NewLine, lines);
-
-            m_text = text;
-
-            return text;
-        }
-
-        public void ToFile(string path)
-        {
-            var lines = new List<string>();
-            for (int i = 1; i <= 6; ++i)
-            {
-                lines.Add(ToText(i, i == 1 || i == 6));
-            }
-            File.WriteAllLines(path, lines);
         }
 
         private Color GetColor(int mediumID)
