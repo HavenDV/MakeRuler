@@ -11,7 +11,7 @@ namespace MakeRuler.Extensions
         public static int Round(this double value)
         {
             //return Convert.ToInt32(value);
-            return (int)Math.Round(value, MidpointRounding.AwayFromZero);
+            return (int)Math.Round(value, MidpointRounding.ToEven);
         }
     }
 }
