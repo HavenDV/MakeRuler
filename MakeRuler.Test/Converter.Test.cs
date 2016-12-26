@@ -24,7 +24,7 @@ namespace MakeRuler.Extensions.Test
             }
         }
 
-        public void AreEqualLayers(KeyValuePair<int, Slice> expected, KeyValuePair<int, Slice> actual)
+        public void AreEqualSlices(KeyValuePair<int, Slice> expected, KeyValuePair<int, Slice> actual)
         {
             Assert.AreEqual(expected.Key, actual.Key);
 
@@ -38,15 +38,15 @@ namespace MakeRuler.Extensions.Test
             }
         }
 
-        public void AreEqualScene(SortedDictionary<int, Slice> expected, SortedDictionary<int, Slice> actual)
+        public void AreEqualScene(Scene expected, Scene actual)
         {
-            var expectedLayers = expected.ToList();
-            var actualLayers = actual.ToList();
-            Assert.AreEqual(expectedLayers.Count, actualLayers.Count);
+            var expectedSlices = expected.Slices.ToList();
+            var actualSlices = actual.Slices.ToList();
+            Assert.AreEqual(expectedSlices.Count, actualSlices.Count);
 
-            for (var i = 0; i < actualLayers.Count; ++i)
+            for (var i = 0; i < actualSlices.Count; ++i)
             {
-                AreEqualLayers(expectedLayers[i], actualLayers[i]);
+                AreEqualSlices(expectedSlices[i], actualSlices[i]);
             }
         }
 
@@ -243,10 +243,10 @@ ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
 ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     2   2";
 
-            var expected = new SortedDictionary<int, Slice>();
-            var layer = new Slice();
-            layer.Add(new Rect(0, 0, 2, 2, 2));
-            expected.Add(1, layer);
+            var expected = new Scene();
+            var slice = new Slice();
+            slice.Add(new Rect(0, 0, 2, 2, 2));
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -263,10 +263,10 @@ ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     2   2
 ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     2   2";
-            var expected = new SortedDictionary<int, Slice>();
-            var layer = new Slice();
-            layer.Add(new Rect(0.5, 0.5, 1.5, 1.5, 2));
-            expected.Add(1, layer);
+            var expected = new Scene();
+            var slice = new Slice();
+            slice.Add(new Rect(0.5, 0.5, 1.5, 1.5, 2));
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -281,10 +281,10 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             var text = @"SLICE NUMBER:  1  FIRST ROW:  2  LAST ROW:  2
 ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
     2   3";
-            var expected = new SortedDictionary<int, Slice>();
-            var layer = new Slice();
-            layer.Add(new Rect(0.8, 0.8, 1.8, 1.8, 3));
-            expected.Add(1, layer);
+            var expected = new Scene();
+            var slice = new Slice();
+            slice.Add(new Rect(0.8, 0.8, 1.8, 1.8, 3));
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -301,10 +301,10 @@ ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     2   4
 ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     2   4";
-            var expected = new SortedDictionary<int, Slice>();
-            var layer = new Slice();
-            layer.Add(new Circle(1, 1, 1, 4));
-            expected.Add(1, layer);
+            var expected = new Scene();
+            var slice = new Slice();
+            slice.Add(new Circle(1, 1, 1, 4));
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -323,10 +323,10 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     3   5
 ROW NR.   3  FIRST PIXEL:   2  NUMBER OF AREAS:  1
     2   5";
-            var expected = new SortedDictionary<int, Slice>();
-            var layer = new Slice();
-            layer.Add(new Circle(1.5, 1.5, 1, 5));
-            expected.Add(1, layer);
+            var expected = new Scene();
+            var slice = new Slice();
+            slice.Add(new Circle(1.5, 1.5, 1, 5));
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -346,10 +346,10 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     3   6
 ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     3   6";
-            var expected = new SortedDictionary<int, Slice>();
-            var layer = new Slice();
-            layer.Add(new Circle(1.5, 1.5, 1.5, 6));
-            expected.Add(1, layer);
+            var expected = new Scene();
+            var slice = new Slice();
+            slice.Add(new Circle(1.5, 1.5, 1.5, 6));
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -364,10 +364,10 @@ ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             var text = @"SLICE NUMBER:  1  FIRST ROW:  2  LAST ROW:  2
 ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
     2   8";
-            var expected = new SortedDictionary<int, Slice>();
-            var layer = new Slice();
-            layer.Add(new Circle(1.5, 1.5, 0.5, 8));
-            expected.Add(1, layer);
+            var expected = new Scene();
+            var slice = new Slice();
+            slice.Add(new Circle(1.5, 1.5, 0.5, 8));
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);

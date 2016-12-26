@@ -13,14 +13,14 @@ namespace MakeRuler
 {
     public partial class Form1 : Form
     {
-        private SortedDictionary<int, Slice> Cache { get; set; }
+        private Scene CachedScene { get; set; }
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private Slice CreateLayer(int slice, double step, double height)
+        private Slice CreateSlice(int slice, double step, double height)
         {
             var scene = new Slice();
             var h = (slice-1) * step / height;
@@ -50,28 +50,28 @@ namespace MakeRuler
             return scene;
         }
 
-        private async Task<SortedDictionary<int, Slice>> CreateLayers(double step, double height)
+        private async Task<SortedDictionary<int, Slice>> CreateSlices(double step, double height)
         {
-            var layers = await Task.WhenAll(
+            var slices = await Task.WhenAll(
                 Enumerable.Range(1, (int)(height / step)).Select(
                     i => Task.Run(
-                        () => new KeyValuePair<int, Slice>(i, CreateLayer(i, step, height))
+                        () => new KeyValuePair<int, Slice>(i, CreateSlice(i, step, height))
                     )
                 )
             );
-            return new SortedDictionary<int, Slice>(layers.ToDictionary(i => i.Key, i => i.Value));
+            return new SortedDictionary<int, Slice>(slices.ToDictionary(i => i.Key, i => i.Value));
         }
 
-        private async Task<int[]> ComputeData(SortedDictionary<int, Slice> layers)
+        private async Task<int[]> ComputeData(Scene scene)
         {
             return await Task.WhenAll(
-                layers.Select(
-                    layer => Task.Run(
+                scene.Slices.Select(
+                    slice => Task.Run(
                         () =>
                         {
-                            layer.Value.Bitmap = layer.Value.Bitmap ?? layer.Value.ToBitmap(1600, 800);
-                            layer.Value.Text = layer.Value.Text ?? layer.Value.ToText(layer.Key, false);
-                            return layer.Key;
+                            slice.Value.Bitmap = slice.Value.Bitmap ?? slice.Value.ToBitmap(1600, 800);
+                            slice.Value.Text = slice.Value.Text ?? slice.Value.ToText(slice.Key, false);
+                            return slice.Key;
                         }
                     )
                 )
@@ -83,12 +83,12 @@ namespace MakeRuler
             var step = 50.0;
             var height = 300.0;
 
-            Cache = Cache ?? Conventer.FromFile("CTDIcone(1).data");//await CreateLayers(step, height);
-            await ComputeData(Cache);
-            foreach (var layer in Cache)
+            CachedScene = CachedScene ?? Conventer.FromFile("CTDIcone(1).data");//await CreateSlices(step, height);
+            await ComputeData(CachedScene);
+            foreach (var slice in CachedScene.Slices)
             {
-                SaveBitmap(layer.Value.Bitmap, $"slices/slice{layer.Key}.png");
-                DrawBitmap(layer.Value.Bitmap);
+                SaveBitmap(slice.Value.Bitmap, $"slices/slice{slice.Key}.png");
+                DrawBitmap(slice.Value.Bitmap);
             }
 
             //SaveData(Cache, "output.txt");
@@ -109,9 +109,9 @@ namespace MakeRuler
             bitmap.Save(path);
         }
 
-        private void SaveData(SortedDictionary<int, Slice> layers, string path)
+        private void SaveData(Scene scene, string path)
         {
-            File.WriteAllLines(path, layers.Select(i=>i.Value.Text));
+            File.WriteAllLines(path, scene.Slices.Select(i=>i.Value.Text));
         }
 
     }
