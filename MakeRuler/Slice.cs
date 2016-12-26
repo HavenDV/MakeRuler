@@ -6,13 +6,13 @@ using System.Linq;
 
 namespace MakeRuler
 {
-    public class Scene
+    public class Slice
     {
         public Dictionary<int, Row> Rows { get; set; }
         public Bitmap Bitmap { get; set; }
         public string Text { get; set; }
 
-        public Scene()
+        public Slice()
         {
             Rows = new Dictionary<int, Row>();
         }

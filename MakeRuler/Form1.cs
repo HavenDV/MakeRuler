@@ -13,16 +13,16 @@ namespace MakeRuler
 {
     public partial class Form1 : Form
     {
-        private SortedDictionary<int, Scene> Cache { get; set; }
+        private SortedDictionary<int, Slice> Cache { get; set; }
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private Scene CreateLayer(int slice, double step, double height)
+        private Slice CreateLayer(int slice, double step, double height)
         {
-            var scene = new Scene();
+            var scene = new Slice();
             var h = (slice-1) * step / height;
             var scale = 1 / 0.5;
             //CORG(1) = 'phantom';
@@ -50,19 +50,19 @@ namespace MakeRuler
             return scene;
         }
 
-        private async Task<SortedDictionary<int, Scene>> CreateLayers(double step, double height)
+        private async Task<SortedDictionary<int, Slice>> CreateLayers(double step, double height)
         {
             var layers = await Task.WhenAll(
                 Enumerable.Range(1, (int)(height / step)).Select(
                     i => Task.Run(
-                        () => new KeyValuePair<int, Scene>(i, CreateLayer(i, step, height))
+                        () => new KeyValuePair<int, Slice>(i, CreateLayer(i, step, height))
                     )
                 )
             );
-            return new SortedDictionary<int, Scene>(layers.ToDictionary(i => i.Key, i => i.Value));
+            return new SortedDictionary<int, Slice>(layers.ToDictionary(i => i.Key, i => i.Value));
         }
 
-        private async Task<int[]> ComputeData(SortedDictionary<int, Scene> layers)
+        private async Task<int[]> ComputeData(SortedDictionary<int, Slice> layers)
         {
             return await Task.WhenAll(
                 layers.Select(
@@ -109,7 +109,7 @@ namespace MakeRuler
             bitmap.Save(path);
         }
 
-        private void SaveData(SortedDictionary<int, Scene> layers, string path)
+        private void SaveData(SortedDictionary<int, Slice> layers, string path)
         {
             File.WriteAllLines(path, layers.Select(i=>i.Value.Text));
         }

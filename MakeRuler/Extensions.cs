@@ -32,9 +32,9 @@ namespace MakeRuler.Extensions
             return (int)(smallest + 1.0);
         }
 
-        public static string ToText(this Scene scene, int slice, bool isSimple = false)
+        public static string ToText(this Slice slice, int sliceId, bool isSimple = false)
         {
-            return Conventer.ToText(new KeyValuePair<int, Scene>(slice, scene), isSimple);
+            return Conventer.ToText(new KeyValuePair<int, Slice>(sliceId, slice), isSimple);
         }
 
         public static string ToText(this Row row, int rowId, bool isSimple = false)

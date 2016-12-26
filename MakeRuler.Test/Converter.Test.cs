@@ -24,7 +24,7 @@ namespace MakeRuler.Extensions.Test
             }
         }
 
-        public void AreEqualLayers(KeyValuePair<int, Scene> expected, KeyValuePair<int, Scene> actual)
+        public void AreEqualLayers(KeyValuePair<int, Slice> expected, KeyValuePair<int, Slice> actual)
         {
             Assert.AreEqual(expected.Key, actual.Key);
 
@@ -38,7 +38,7 @@ namespace MakeRuler.Extensions.Test
             }
         }
 
-        public void AreEqualScene(SortedDictionary<int, Scene> expected, SortedDictionary<int, Scene> actual)
+        public void AreEqualScene(SortedDictionary<int, Slice> expected, SortedDictionary<int, Slice> actual)
         {
             var expectedLayers = expected.ToList();
             var actualLayers = actual.ToList();
@@ -83,7 +83,7 @@ namespace MakeRuler.Extensions.Test
         public void Converter_ToText_SimpleIntegerRect()
         {
             #region TestData
-            var scene = new Scene();
+            var scene = new Slice();
             scene.Add(new Rect(0, 0, 2, 2, 2));
             #endregion
 
@@ -101,7 +101,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
         public void Converter_ToText_SimpleDecimalRect()
         {
             #region TestData
-            var scene = new Scene();
+            var scene = new Slice();
             scene.Add(new Rect(0.5, 0.5, 1.5, 1.5, 2));
             #endregion
 
@@ -119,7 +119,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
         public void Converter_ToText_SimpleDecimalRect2()
         {
             #region TestData
-            var scene = new Scene();
+            var scene = new Slice();
             scene.Add(new Rect(0.8, 0.8, 1.8, 1.8, 3));
             #endregion
 
@@ -135,7 +135,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
         public void Converter_ToText_SimpleIntegerCircle()
         {
             #region TestData
-            var scene = new Scene();
+            var scene = new Slice();
             scene.Add(new Circle(1, 1, 1, 4));
             #endregion
 
@@ -153,7 +153,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
         public void Converter_ToText_SimpleDecimalCircle()
         {
             #region TestData
-            var scene = new Scene();
+            var scene = new Slice();
             scene.Add(new Circle(1.5, 1.5, 1, 5));
             #endregion
 
@@ -174,7 +174,7 @@ ROW NR.   3  FIRST PIXEL:   2  NUMBER OF AREAS:  1
         public void Converter_ToText_SimpleDecimalCircle2()
         {
             #region TestData
-            var scene = new Scene();
+            var scene = new Slice();
             scene.Add(new Circle(1.5, 1.5, 1.5, 6));
             #endregion
 
@@ -194,7 +194,7 @@ ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
         public void Converter_ToText_SimpleDecimalCircle3()
         {
             #region TestData
-            var scene = new Scene();
+            var scene = new Slice();
             scene.Add(new Circle(1.5, 1.5, 0.5, 8));
             #endregion
 
@@ -243,8 +243,8 @@ ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
 ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     2   2";
 
-            var expected = new SortedDictionary<int, Scene>();
-            var layer = new Scene();
+            var expected = new SortedDictionary<int, Slice>();
+            var layer = new Slice();
             layer.Add(new Rect(0, 0, 2, 2, 2));
             expected.Add(1, layer);
             #endregion
@@ -263,8 +263,8 @@ ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     2   2
 ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     2   2";
-            var expected = new SortedDictionary<int, Scene>();
-            var layer = new Scene();
+            var expected = new SortedDictionary<int, Slice>();
+            var layer = new Slice();
             layer.Add(new Rect(0.5, 0.5, 1.5, 1.5, 2));
             expected.Add(1, layer);
             #endregion
@@ -281,8 +281,8 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             var text = @"SLICE NUMBER:  1  FIRST ROW:  2  LAST ROW:  2
 ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
     2   3";
-            var expected = new SortedDictionary<int, Scene>();
-            var layer = new Scene();
+            var expected = new SortedDictionary<int, Slice>();
+            var layer = new Slice();
             layer.Add(new Rect(0.8, 0.8, 1.8, 1.8, 3));
             expected.Add(1, layer);
             #endregion
@@ -301,8 +301,8 @@ ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     2   4
 ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     2   4";
-            var expected = new SortedDictionary<int, Scene>();
-            var layer = new Scene();
+            var expected = new SortedDictionary<int, Slice>();
+            var layer = new Slice();
             layer.Add(new Circle(1, 1, 1, 4));
             expected.Add(1, layer);
             #endregion
@@ -323,8 +323,8 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     3   5
 ROW NR.   3  FIRST PIXEL:   2  NUMBER OF AREAS:  1
     2   5";
-            var expected = new SortedDictionary<int, Scene>();
-            var layer = new Scene();
+            var expected = new SortedDictionary<int, Slice>();
+            var layer = new Slice();
             layer.Add(new Circle(1.5, 1.5, 1, 5));
             expected.Add(1, layer);
             #endregion
@@ -346,8 +346,8 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     3   6
 ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
     3   6";
-            var expected = new SortedDictionary<int, Scene>();
-            var layer = new Scene();
+            var expected = new SortedDictionary<int, Slice>();
+            var layer = new Slice();
             layer.Add(new Circle(1.5, 1.5, 1.5, 6));
             expected.Add(1, layer);
             #endregion
@@ -364,8 +364,8 @@ ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             var text = @"SLICE NUMBER:  1  FIRST ROW:  2  LAST ROW:  2
 ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
     2   8";
-            var expected = new SortedDictionary<int, Scene>();
-            var layer = new Scene();
+            var expected = new SortedDictionary<int, Slice>();
+            var layer = new Slice();
             layer.Add(new Circle(1.5, 1.5, 0.5, 8));
             expected.Add(1, layer);
             #endregion

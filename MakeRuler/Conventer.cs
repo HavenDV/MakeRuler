@@ -48,7 +48,7 @@ namespace MakeRuler
             return string.Join(Environment.NewLine, lines);
         }
 
-        public static string ToText(KeyValuePair<int, Scene> layer, bool isSimple)
+        public static string ToText(KeyValuePair<int, Slice> layer, bool isSimple)
         {
             var lines = new List<string>();
             var rows = layer.Value.Rows;
@@ -62,7 +62,7 @@ namespace MakeRuler
             return string.Join(Environment.NewLine, lines);
         }
 
-        public static void ToFile(KeyValuePair<int, Scene> layer, string path)
+        public static void ToFile(KeyValuePair<int, Slice> layer, string path)
         {
             File.WriteAllText(path, ToText(layer, false));
         }
@@ -102,9 +102,9 @@ namespace MakeRuler
             return new KeyValuePair<int, Row>(rowId, row);
         }
 
-        public static SortedDictionary<int, Scene> SceneFromText(string text)
+        public static SortedDictionary<int, Slice> SceneFromText(string text)
         {
-            var scene = new SortedDictionary<int, Scene>();
+            var scene = new SortedDictionary<int, Slice>();
             var lines = text.ToLines();
             for (var i = 0; i < lines.Count; ++i)
             {
@@ -122,7 +122,7 @@ namespace MakeRuler
                     Replace("FIRST ROW:", "").
                     Replace("LAST ROW:", "").ToWords();
 
-                var layer = new Scene();
+                var layer = new Slice();
                 var sliceNumber = int.Parse(sliceData[0].Trim(' '));
                 var firstRow = int.Parse(sliceData[1].Trim(' '));
                 var lastRow = int.Parse(sliceData[2].Trim(' '));
@@ -144,7 +144,7 @@ namespace MakeRuler
             return scene;
         }
 
-        public static SortedDictionary<int, Scene> FromFile(string path)
+        public static SortedDictionary<int, Slice> FromFile(string path)
         {
             if (!File.Exists(path))
             {
