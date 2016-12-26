@@ -13,6 +13,8 @@ namespace MakeRuler
 {
     public partial class Form1 : Form
     {
+        private SortedDictionary<int, Scene> Cache { get; set; }
+
         public Form1()
         {
             InitializeComponent();
@@ -24,64 +26,78 @@ namespace MakeRuler
             var h = (slice-1) * step / height;
             var scale = 1 / 0.5;
             //CORG(1) = 'phantom';
-            //CORG(2) = 'center';
-            //CORG(3) = 'left';
-            //CORG(4) = 'bottom';
-            //CORG(5) = 'right';
-            //CORG(6) = 'top';
             scene.Add(new Rect(scale * (80 + 80 * h), scale * 40 * h, scale * (280 - 80 * h), scale * (160 - 40 * h), 1));
             scene.Add(new Circle(scale * (80 + 80 * h), scale * 80, scale * (80 - 40 * h), 1));
             scene.Add(new Circle(scale * (280 - 80 * h), scale * 80, scale * (80 - 40 * h), 1));
+
+            //CORG(2) = 'center';
             scene.Add(new Circle(scale * 180, scale * 80, scale * 5.5, 2));
-            scene.Add(new Circle(scale * (30 + 120 * h), scale * 80, scale * 5.5, 3));
+
+            //CORG(3) = 'left';
+            scene.Add(new Circle(scale * (110 + 40 * h), scale * 80, scale * 5.5, 3));
+
+            //CORG(4) = 'bottom';
             scene.Add(new Circle(scale * 180, scale * (140 - 40 * h), scale * 5.5, 4));
-            scene.Add(new Circle(scale * (330 - 120 * h), scale * 80, scale * 5.5, 5));
+
+            //CORG(5) = 'right';
+            scene.Add(new Circle(scale * (250 - 40 * h), scale * 80, scale * 5.5, 5));
+
+            //CORG(6) = 'top';
             scene.Add(new Circle(scale * 180, scale * (20 + 40 * h), scale * 5.5, 6));
-            scene.ToBitmap();
-            scene.m_text = scene.ToText(slice, false);
+
+            scene.Bitmap = scene.ToBitmap();
+            scene.Text = scene.ToText(slice, false);
             return scene;
         }
 
-        private async Task<Scene[]> CreateLayers(int num, double step, double height)
+        private async Task<SortedDictionary<int, Scene>> CreateLayers(double step, double height)
         {
-            return await Task.WhenAll(
-                Enumerable.Range(1, num).Select(
+            var layers = await Task.WhenAll(
+                Enumerable.Range(1, (int)(height / step)).Select(
                     i => Task.Run(
-                            () => CreateLayer(i, step, height)
-                        )
+                        () => new KeyValuePair<int, Scene>(i, CreateLayer(i, step, height))
                     )
-                );
+                )
+            );
+            return new SortedDictionary<int, Scene>(layers.ToDictionary(i => i.Key, i => i.Value));
         }
 
-        private Scene[] layers = null;
         private async void CreateButton_Click(object sender, EventArgs e)
         {
-            var step = 150.0;
+            var step = 50.0;
             var height = 300.0;
-            var num = height / step;
 
-            layers = layers ?? await CreateLayers((int)num, step, height);
+            Cache = Cache ?? await CreateLayers(step, height);
             var lines = new List<string>();
-            for (var slice = 1; slice <= num; ++slice)
+            foreach (var layer in Cache)
             {
-                var layer = layers[slice-1];
-                var bitmap = layer.ToBitmap();
-                Directory.CreateDirectory("slices");
-                bitmap.Save($"slices/slice{slice}.png");
+                var bitmap = layer.Value.Bitmap;
+                SaveBitmap(bitmap, $"slices/slice{layer.Key}.png");
                 DrawBitmap(bitmap);
-                lines.Add(layer.m_text);
-                progressBar1.Value = (int)(100.0 * slice / num);
-                Refresh();
+                lines.Add(layer.Value.Text);
             }
 
-            File.WriteAllLines("output.txt", lines);
+            SaveData(Cache, "output.txt");
         }
 
 
-        private void DrawBitmap(Bitmap bitmap)
+        private void DrawBitmap(Bitmap bitmap, int sleep = 30)
         {
             pictureBox2.Image = bitmap;
-            Thread.Sleep(30);
+            Refresh();
+            Thread.Sleep(sleep);
+        }
+
+
+        private void SaveBitmap(Bitmap bitmap, string path)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            bitmap.Save(path);
+        }
+
+        private void SaveData(SortedDictionary<int, Scene> layers, string path)
+        {
+            File.WriteAllLines(path, layers.Select(i=>i.Value.Text));
         }
 
     }

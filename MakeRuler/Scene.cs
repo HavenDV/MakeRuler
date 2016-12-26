@@ -9,18 +9,12 @@ namespace MakeRuler
     public class Scene
     {
         public Dictionary<int, Row> Rows { get; set; }
-        private Bitmap m_bitmap = null;
-        public string m_text = null;
+        public Bitmap Bitmap { get; set; }
+        public string Text { get; set; }
 
         public Scene()
         {
             Rows = new Dictionary<int, Row>();
-        }
-
-        public void ClearCache()
-        {
-            m_bitmap = null;
-            m_text = null;
         }
 
         public void Add(Object obj)
@@ -60,11 +54,6 @@ namespace MakeRuler
 
         public Bitmap ToBitmap()
         {
-            if (m_bitmap != null)
-            {
-                return m_bitmap;
-            }
-
             var bitmap = new Bitmap(800, 400);
             var g = Graphics.FromImage(bitmap);
             foreach (var row in Rows)
@@ -75,8 +64,6 @@ namespace MakeRuler
                     g.DrawLine(pen, line.Start, row.Key, line.End, row.Key);
                 }
             }
-
-            m_bitmap = bitmap;
 
             return bitmap;
         }
