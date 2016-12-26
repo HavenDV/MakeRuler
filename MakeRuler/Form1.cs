@@ -45,7 +45,7 @@ namespace MakeRuler
             //CORG(6) = 'top';
             scene.Add(new Circle(scale * 180, scale * (20 + 40 * h), scale * 5.5, 6));
 
-            scene.Bitmap = scene.ToBitmap();
+            scene.Bitmap = scene.ToBitmap(800, 400);
             scene.Text = scene.ToText(slice, false);
             return scene;
         }
@@ -62,22 +62,36 @@ namespace MakeRuler
             return new SortedDictionary<int, Scene>(layers.ToDictionary(i => i.Key, i => i.Value));
         }
 
+        private async Task<int[]> ComputeData(SortedDictionary<int, Scene> layers)
+        {
+            return await Task.WhenAll(
+                layers.Select(
+                    layer => Task.Run(
+                        () =>
+                        {
+                            layer.Value.Bitmap = layer.Value.Bitmap ?? layer.Value.ToBitmap(1600, 800);
+                            layer.Value.Text = layer.Value.Text ?? layer.Value.ToText(layer.Key, false);
+                            return layer.Key;
+                        }
+                    )
+                )
+            );
+        }
+
         private async void CreateButton_Click(object sender, EventArgs e)
         {
             var step = 50.0;
             var height = 300.0;
 
-            Cache = Cache ?? await CreateLayers(step, height);
-            var lines = new List<string>();
+            Cache = Cache ?? Conventer.FromFile("CTDIcone(1).data");//await CreateLayers(step, height);
+            await ComputeData(Cache);
             foreach (var layer in Cache)
             {
-                var bitmap = layer.Value.Bitmap;
-                SaveBitmap(bitmap, $"slices/slice{layer.Key}.png");
-                DrawBitmap(bitmap);
-                lines.Add(layer.Value.Text);
+                SaveBitmap(layer.Value.Bitmap, $"slices/slice{layer.Key}.png");
+                DrawBitmap(layer.Value.Bitmap);
             }
 
-            SaveData(Cache, "output.txt");
+            //SaveData(Cache, "output.txt");
         }
 
 

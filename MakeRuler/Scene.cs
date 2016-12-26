@@ -57,9 +57,9 @@ namespace MakeRuler
             return Color.White;
         }
 
-        public Bitmap ToBitmap()
+        public Bitmap ToBitmap(int width, int height)
         {
-            var bitmap = new Bitmap(800, 400);
+            var bitmap = new Bitmap(width, height);
             var g = Graphics.FromImage(bitmap);
             foreach (var row in Rows)
             {
