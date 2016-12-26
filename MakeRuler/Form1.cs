@@ -45,7 +45,7 @@ namespace MakeRuler
             //CORG(6) = 'top';
             scene.Add(new Circle(scale * 180, scale * (20 + 40 * h), scale * 5.5, 6));
 
-            scene.Bitmap = scene.ToBitmap(800, 400);
+            scene.Bitmap = scene.ToBitmap();
             scene.Text = scene.ToText(slice, false);
             return scene;
         }
@@ -69,7 +69,7 @@ namespace MakeRuler
                     slice => Task.Run(
                         () =>
                         {
-                            slice.Value.Bitmap = slice.Value.Bitmap ?? slice.Value.ToBitmap(1600, 800);
+                            slice.Value.Bitmap = slice.Value.Bitmap ?? slice.Value.ToBitmap();
                             slice.Value.Text = slice.Value.Text ?? slice.Value.ToText(slice.Key, false);
                             return slice.Key;
                         }
