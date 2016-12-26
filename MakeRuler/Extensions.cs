@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MakeRuler.Extensions
@@ -43,17 +44,7 @@ namespace MakeRuler.Extensions
 
         public static List<string> ToLines(this string text)
         {
-            var lines = new List<string>();
-            using (StringReader sr = new StringReader(text))
-            {
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    lines.Add(line);
-                }
-            }
-
-            return lines;
+            return Regex.Split(text, "\r\n|\r|\n").ToList();
         }
 
         public static List<string> ToWords(this string text)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MakeRuler.Extensions;
 
 namespace MakeRuler
 {
@@ -45,6 +46,17 @@ namespace MakeRuler
             lines.Add(new Line(start, Data.Last().Key, material));
 
             return lines;
+        }
+
+        public static KeyValuePair<int, Row> FromText(string text)
+        {
+            var lines = text.ToLines();
+            if (lines.Count < 2)
+            {
+                throw new ArgumentException("Text contains less 2 lines");
+            }
+            
+            return Conventer.RowFromText(lines[0], lines[1]);
         }
     }
 }

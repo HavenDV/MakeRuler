@@ -80,14 +80,14 @@ namespace MakeRuler
             // or
             //
             var lines = new List<Line>();
-            var start = startPixel;
+            var start = startPixel - 1;
             var offset = 0;
             for (var i = 0; i < numberOfAreas; ++i)
             {
                 var endPixel = int.Parse(areasData.Substring(offset, 5).Trim(' '));
                 var material = int.Parse(areasData.Substring(offset + 5, 4).Trim(' '));
                 lines.Add(new Line(start, endPixel, material));
-                start = endPixel;
+                start = endPixel - 1;
                 offset += 9;
             }
 
