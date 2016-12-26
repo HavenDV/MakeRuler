@@ -71,9 +71,13 @@ namespace MakeRuler
         {
             //Expected : 
             //ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  0
-            var rowId = int.Parse(rowData.Substring(7, 4).Trim(' '));
-            var startPixel = int.Parse(rowData.Substring(25, 4).Trim(' '));
-            var numberOfAreas = int.Parse(rowData.Substring(47, 3).Trim(' '));
+            var rowDatas = rowData.
+                Replace("ROW NR.", "").
+                Replace("FIRST PIXEL:", "").
+                Replace("NUMBER OF AREAS:", "").ToWords();
+            var rowId = int.Parse(rowDatas[0].Trim(' '));
+            var startPixel = int.Parse(rowDatas[1].Trim(' '));
+            var numberOfAreas = int.Parse(rowDatas[2].Trim(' '));
 
             //Expected : 
             //  357   1  364   6  653   1
@@ -81,14 +85,13 @@ namespace MakeRuler
             //
             var lines = new List<Line>();
             var start = startPixel - 1;
-            var offset = 0;
+            var areasDatas = areasData.ToWords();
             for (var i = 0; i < numberOfAreas; ++i)
             {
-                var endPixel = int.Parse(areasData.Substring(offset, 5).Trim(' '));
-                var material = int.Parse(areasData.Substring(offset + 5, 4).Trim(' '));
+                var endPixel = int.Parse(areasDatas[2 * i].Trim(' '));
+                var material = int.Parse(areasDatas[2 * i + 1].Trim(' '));
                 lines.Add(new Line(start, endPixel, material));
                 start = endPixel - 1;
-                offset += 9;
             }
 
             var row = new Row();
@@ -109,16 +112,20 @@ namespace MakeRuler
                 //SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:320
                 // or
                 //
-                var sliceData = lines[i];
-                if (string.IsNullOrWhiteSpace(sliceData))
+                if (string.IsNullOrWhiteSpace(lines[i]))
                 {
                     break;
                 }
 
+                var sliceData = lines[i].
+                    Replace("SLICE NUMBER:", "").
+                    Replace("FIRST ROW:", "").
+                    Replace("LAST ROW:", "").ToWords();
+
                 var layer = new Scene();
-                var sliceNumber = int.Parse(sliceData.Substring(13, 3).Trim(' '));
-                var firstRow = int.Parse(sliceData.Substring(28, 3).Trim(' '));
-                var lastRow = int.Parse(sliceData.Substring(42, 3).Trim(' '));
+                var sliceNumber = int.Parse(sliceData[0].Trim(' '));
+                var firstRow = int.Parse(sliceData[1].Trim(' '));
+                var lastRow = int.Parse(sliceData[2].Trim(' '));
 
                 //Expected: 2 * rowCount Rows
                 ++i;
@@ -129,6 +136,7 @@ namespace MakeRuler
                     layer.AddRow(row.Key, row.Value);
                     i += 2;
                 }
+                --i;
 
                 scene.Add(sliceNumber, layer);
             }
