@@ -30,6 +30,11 @@ namespace MakeRuler
             }
         }
 
+        public void AddRow(int rowId, Row row)
+        {
+            Rows[rowId] = row;
+        }
+
         private Color GetColor(int material)
         {
             switch (material)

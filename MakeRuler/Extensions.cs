@@ -55,5 +55,10 @@ namespace MakeRuler.Extensions
 
             return lines;
         }
+
+        public static List<string> ToWords(this string text)
+        {
+            return text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        }
     }
 }

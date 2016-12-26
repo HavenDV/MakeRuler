@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MakeRuler.Extensions;
 
 namespace MakeRuler
 {
@@ -32,7 +31,7 @@ namespace MakeRuler
                 lines.Add(string.Concat(
                         rowLines.Select(rowLine =>
                         {
-                            return ToString(rowLine.End, 5) + ToString(rowLine.Medium, 4);
+                            return ToString(rowLine.End, 5) + ToString(rowLine.Material, 4);
                         })
                     )
                 );
@@ -66,6 +65,85 @@ namespace MakeRuler
         public static void ToFile(KeyValuePair<int, Scene> layer, string path)
         {
             File.WriteAllText(path, ToText(layer, false));
+        }
+
+        public static KeyValuePair<int, Row> RowFromText(string rowData, string areasData)
+        {
+            //Expected : 
+            //ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  0
+            var rowId = int.Parse(rowData.Substring(7, 4).Trim(' '));
+            var startPixel = int.Parse(rowData.Substring(25, 4).Trim(' '));
+            var numberOfAreas = int.Parse(rowData.Substring(47, 3).Trim(' '));
+
+            //Expected : 
+            //  357   1  364   6  653   1
+            // or
+            //
+            var lines = new List<Line>();
+            var start = startPixel;
+            var offset = 0;
+            for (var i = 0; i < numberOfAreas; ++i)
+            {
+                var endPixel = int.Parse(areasData.Substring(offset, 5).Trim(' '));
+                var material = int.Parse(areasData.Substring(offset + 5, 4).Trim(' '));
+                lines.Add(new Line(start, endPixel, material));
+                start = endPixel;
+                offset += 9;
+            }
+
+            var row = new Row();
+            foreach (var line in lines)
+            {
+                row.AddLine(line);
+            }
+            return new KeyValuePair<int, Row>(rowId, row);
+        }
+
+        public static SortedDictionary<int, Scene> SceneFromText(string text)
+        {
+            var scene = new SortedDictionary<int, Scene>();
+            var lines = text.ToLines();
+            for (var i = 0; i < lines.Count; ++i)
+            {
+                //Expected: 
+                //SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:320
+                // or
+                //
+                var sliceData = lines[i];
+                if (string.IsNullOrWhiteSpace(sliceData))
+                {
+                    break;
+                }
+
+                var layer = new Scene();
+                var sliceNumber = int.Parse(sliceData.Substring(13, 3).Trim(' '));
+                var firstRow = int.Parse(sliceData.Substring(28, 3).Trim(' '));
+                var lastRow = int.Parse(sliceData.Substring(42, 3).Trim(' '));
+
+                //Expected: 2 * rowCount Rows
+                ++i;
+                var rowCount = lastRow - firstRow + 1;
+                for (var j = 0; j < rowCount; ++j)
+                {
+                    var row = RowFromText(lines[i], lines[i + 1]);
+                    layer.AddRow(row.Key, row.Value);
+                    i += 2;
+                }
+
+                scene.Add(sliceNumber, layer);
+            }
+
+            return scene;
+        }
+
+        public static SortedDictionary<int, Scene> FromFile(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new ArgumentException("File is not exists");
+            }
+
+            return SceneFromText(File.ReadAllText(path));
         }
     }
 }
