@@ -64,7 +64,6 @@
     <Compile Include="Line.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="Slice.cs" />
-    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
