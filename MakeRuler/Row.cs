@@ -40,9 +40,14 @@ namespace MakeRuler
             var start = Data.First().Key + 1;
             for (var i = start; i <= Data.Last().Key; ++i)
             {
+                if (!Data.ContainsKey(i))
+                {
+                    Data[i] = 0;
+                }
+
                 if (Data[i] != material)
                 {
-                    lines.Add(new Line(start, i, material));
+                    lines.Add(new Line(start, i - 1, material));
                     material = Data[i];
                     start = i;
                 }
@@ -50,6 +55,11 @@ namespace MakeRuler
             lines.Add(new Line(start, Data.Last().Key, material));
 
             return lines;
+        }
+
+        public string ToText(int rowId, bool isSimple = false)
+        {
+            return Conventer.ToText(new KeyValuePair<int, Row>(rowId, this), isSimple);
         }
 
         public static KeyValuePair<int, Row> FromText(string text)
