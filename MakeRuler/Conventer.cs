@@ -9,7 +9,7 @@ namespace MakeRuler
     public static class Conventer
     {
 
-        public static string ToString(int value, int lenght)
+        private static string ToString(int value, int lenght)
         {
             return value.ToString().PadLeft(lenght);
         }
@@ -62,9 +62,20 @@ namespace MakeRuler
             return string.Join(Environment.NewLine, lines);
         }
 
+        public static string ToText(Scene scene)
+        {
+            return string.Join(Environment.NewLine, 
+                scene.Slices.Select(i => i.Value.Text));
+        }
+
         public static void ToFile(KeyValuePair<int, Slice> slice, string path)
         {
             File.WriteAllText(path, ToText(slice, false));
+        }
+
+        public static void ToFile(Scene scene, string path)
+        {
+            File.WriteAllText(path, ToText(scene));
         }
 
         public static KeyValuePair<int, Row> RowFromText(string rowData, string areasData)
@@ -102,10 +113,11 @@ namespace MakeRuler
             return new KeyValuePair<int, Row>(rowId, row);
         }
 
-        public static Scene SceneFromText(string text)
+        public static KeyValuePair<int, Slice> SliceFromText(string text)
         {
-            var scene = new Scene();
+            var slice = new Slice();
             var lines = text.ToLines();
+            var sliceNumber = 1;
             for (var i = 0; i < lines.Count; ++i)
             {
                 //Expected: 
@@ -122,8 +134,7 @@ namespace MakeRuler
                     Replace("FIRST ROW:", "").
                     Replace("LAST ROW:", "").ToWords();
 
-                var slice = new Slice();
-                var sliceNumber = int.Parse(sliceData[0].Trim(' '));
+                sliceNumber = int.Parse(sliceData[0].Trim(' '));
                 var firstRow = int.Parse(sliceData[1].Trim(' '));
                 var lastRow = int.Parse(sliceData[2].Trim(' '));
 
@@ -137,14 +148,29 @@ namespace MakeRuler
                     i += 2;
                 }
                 --i;
+            }
 
-                scene.AddSlice(sliceNumber, slice);
+            return new KeyValuePair<int, Slice>(sliceNumber, slice);
+        }
+
+        public static Scene SceneFromText(string text)
+        {
+            var scene = new Scene();
+            var lines = text.ToLines();
+            var sliceTexts = text.
+                Split("SLICE NUMBER:", StringSplitOptions.RemoveEmptyEntries).
+                Select(i=>i="SLICE NUMBER:"+i);
+
+            foreach (var sliceText in sliceTexts)
+            {
+                var slice = SliceFromText(sliceText);
+                scene.AddSlice(slice.Key, slice.Value);
             }
 
             return scene;
         }
 
-        public static Scene FromFile(string path)
+        public static Scene SceneFromFile(string path)
         {
             if (!File.Exists(path))
             {
