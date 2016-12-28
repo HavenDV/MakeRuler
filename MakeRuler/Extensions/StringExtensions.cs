@@ -16,5 +16,10 @@ namespace MakeRuler.Extensions
         {
             return text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
+
+        public static string[] Split(this string str, string splitter, StringSplitOptions options = StringSplitOptions.None)
+        {
+            return str.Split(new[] { splitter }, options);
+        }
     }
 }
