@@ -104,20 +104,24 @@ namespace MakeRuler
 
         private void DrawBitmap(Bitmap bitmap, int sleep = 30, double h = 0.0)
         {
-            TopPictureBox.Image = bitmap;
             PointF[] destinationPoints = {
                 new PointF(0.0F, 0.0F),
                 new PointF(bitmap.Width, 0.0F),
                 new PointF(0.5F * bitmap.Height, 0.5F * bitmap.Height)
             };
 
-            var perspectiveBitmap = PerspectivePictureBox.Image ?? new Bitmap(800 + bitmap.Height/2, 400);
+            var perspectiveBitmap = PerspectivePictureBox.Image ?? new Bitmap(800 + bitmap.Height/2, 400 + (int)(h * 300));
             var newBitmap = new Bitmap(bitmap.Width + bitmap.Height / 2, bitmap.Height);
             var graphics = Graphics.FromImage(newBitmap);
             graphics.DrawImage(bitmap, destinationPoints);
             graphics = Graphics.FromImage(perspectiveBitmap);
-            graphics.DrawImage(newBitmap.CreateBorder(Color.Black), new Point((int)(0), (int)(h * 300)));
+            graphics.DrawImage(newBitmap.CreateBorder(Color.Black), new Point((int)(0), (int)(50 + h * 300)));
             PerspectivePictureBox.Image = perspectiveBitmap;
+
+            TopPictureBox.Image = TopPictureBox.Image ?? bitmap;
+            graphics = Graphics.FromImage(TopPictureBox.Image);
+            graphics.DrawImage(bitmap.CreateBorder(Color.Black), new Point(0, 0));
+            //TopPictureBox.Image = bitmap;
 
             Refresh();
             Thread.Sleep(sleep);

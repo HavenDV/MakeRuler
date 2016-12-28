@@ -107,7 +107,8 @@ namespace MakeRuler
 
         public Bitmap ToBitmap()
         {
-            var bitmap = new Bitmap(Width, Height);
+            // + 3 For edges on bottom and right
+            var bitmap = new Bitmap(Width + 3, Height + 3);
             var g = Graphics.FromImage(bitmap);
             foreach (var row in Rows)
             {
