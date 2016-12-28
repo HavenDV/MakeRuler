@@ -246,7 +246,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             var expected = new Scene();
             var slice = new Slice();
             slice.Add(new Rect(0, 0, 2, 2, 2));
-            expected.AddSlice(1, slice);
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -266,7 +266,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             var expected = new Scene();
             var slice = new Slice();
             slice.Add(new Rect(0.5, 0.5, 1.5, 1.5, 2));
-            expected.AddSlice(1, slice);
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -284,7 +284,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             var expected = new Scene();
             var slice = new Slice();
             slice.Add(new Rect(0.8, 0.8, 1.8, 1.8, 3));
-            expected.AddSlice(1, slice);
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -304,7 +304,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             var expected = new Scene();
             var slice = new Slice();
             slice.Add(new Circle(1, 1, 1, 4));
-            expected.AddSlice(1, slice);
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -326,7 +326,7 @@ ROW NR.   3  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             var expected = new Scene();
             var slice = new Slice();
             slice.Add(new Circle(1.5, 1.5, 1, 5));
-            expected.AddSlice(1, slice);
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -349,7 +349,7 @@ ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             var expected = new Scene();
             var slice = new Slice();
             slice.Add(new Circle(1.5, 1.5, 1.5, 6));
-            expected.AddSlice(1, slice);
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
@@ -367,7 +367,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             var expected = new Scene();
             var slice = new Slice();
             slice.Add(new Circle(1.5, 1.5, 0.5, 8));
-            expected.AddSlice(1, slice);
+            expected.Slices.Add(1, slice);
             #endregion
 
             var actual = Conventer.SceneFromText(text);
