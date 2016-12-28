@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Conventer.cs" />
     <Compile Include="Cylinder.cs" />
+    <Compile Include="Extensions\BitmapExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
