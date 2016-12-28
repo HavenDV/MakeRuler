@@ -54,7 +54,7 @@ namespace MakeRuler
         public void AddRow(int rowId, Row row)
         {
             Rows[rowId] = row;
-            Width = Math.Max(Width, Rows[rowId].Data.Count > 0 ? Rows[rowId].Data.Last().Key + Rows[rowId].Data.First().Key : Width);
+            Width = Math.Max(Width, row.Width);
             Height = Math.Max(Height, rowId);
         }
 

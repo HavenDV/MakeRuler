@@ -7,8 +7,12 @@ namespace MakeRuler
 {
     public class Row
     {
-
         public SortedDictionary<int, int> Data { get; set; }
+
+        public int Width
+        {
+            get { return Data.Count > 0 ? Data.Last().Key : 0; }
+        }
 
         public Row()
         {

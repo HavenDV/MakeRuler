@@ -60,7 +60,6 @@
             this.TopPictureBox.Location = new System.Drawing.Point(0, 0);
             this.TopPictureBox.Name = "TopPictureBox";
             this.TopPictureBox.Size = new System.Drawing.Size(800, 422);
-            this.TopPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.TopPictureBox.TabIndex = 3;
             this.TopPictureBox.TabStop = false;
             // 
@@ -82,7 +81,6 @@
             this.PerspectivePictureBox.Location = new System.Drawing.Point(0, 0);
             this.PerspectivePictureBox.Name = "PerspectivePictureBox";
             this.PerspectivePictureBox.Size = new System.Drawing.Size(784, 422);
-            this.PerspectivePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.PerspectivePictureBox.TabIndex = 6;
             this.PerspectivePictureBox.TabStop = false;
             // 
@@ -93,7 +91,6 @@
             this.FrontPictureBox.Location = new System.Drawing.Point(0, 0);
             this.FrontPictureBox.Name = "FrontPictureBox";
             this.FrontPictureBox.Size = new System.Drawing.Size(800, 400);
-            this.FrontPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.FrontPictureBox.TabIndex = 7;
             this.FrontPictureBox.TabStop = false;
             // 
@@ -104,7 +101,6 @@
             this.SidePictureBox.Location = new System.Drawing.Point(0, 0);
             this.SidePictureBox.Name = "SidePictureBox";
             this.SidePictureBox.Size = new System.Drawing.Size(784, 400);
-            this.SidePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.SidePictureBox.TabIndex = 8;
             this.SidePictureBox.TabStop = false;
             // 
