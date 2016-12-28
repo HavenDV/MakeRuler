@@ -13,6 +13,10 @@ namespace MakeRuler
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int Depth { get; set; }
+        public double Step { get; set; }
+        public double XYScale { get; set; }
+        public List<IObject3D> Objects { get; set; }
+
 
         public Scene()
         {
@@ -20,6 +24,9 @@ namespace MakeRuler
             Width = 1;
             Height = 1;
             Depth = 300;
+            Step = Depth;
+            XYScale = 1.0;
+            Objects = new List<IObject3D>();
         }
 
         public void AddSlice(int sliceId, Slice slice)
@@ -27,6 +34,34 @@ namespace MakeRuler
             Slices.Add(sliceId, slice);
             Width = Math.Max(Width, slice.Width);
             Height = Math.Max(Height, slice.Height);
+        }
+
+        public void AddObject(IObject3D obj)
+        {
+            Objects.Add(obj);
+        }
+
+        public async Task<Scene> WithComputedSlices()
+        {
+            await Task.WhenAll(
+                Enumerable.Range(1, (int)(Depth / Step)).Select(
+                    sliceId => Task.Run(() =>
+                        {
+                            var h = (sliceId - 1) * Step / Depth;
+                            var slice = new Slice();
+                            foreach (var obj in Objects)
+                            {
+                                slice.Add(obj.GetObject(h, XYScale));
+                            }
+                            slice.Bitmap = slice.ToBitmap();
+                            slice.Text = slice.ToText(sliceId, false);
+                            AddSlice(sliceId, slice);
+                        }
+                    )
+                )
+            );
+
+            return this;
         }
 
         public Bitmap ToFrontBitmap()
