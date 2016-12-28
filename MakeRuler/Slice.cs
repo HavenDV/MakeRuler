@@ -93,7 +93,7 @@ namespace MakeRuler
                 case 7:
                     return Color.MediumSeaGreen;
             }
-            return Color.White;
+            return Color.Transparent;
         }
 
         public static Bitmap RowToBitmap(Row row)
