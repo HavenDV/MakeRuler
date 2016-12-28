@@ -25,7 +25,23 @@ namespace MakeRuler
                     return row;
                 }
 
-                return Rows[((Rows.First().Key + Rows.Last().Key)/2.0).Round()];
+                return Rows[((Rows.First().Key + Rows.Last().Key) / 2.0).Round()];
+            }
+        }
+
+        public Row CenterColumn 
+        {
+            get 
+            {
+                var center = (CenterRow.Width / 2.0).Round();
+                var newRow = new Row();
+                foreach (var row in Rows)
+                {
+                    newRow.Data[row.Key] = row.Value.Data.ContainsKey(center) ?
+                        row.Value.Data[center] : 0;
+                }
+                
+                return newRow;
             }
         }
 
@@ -90,7 +106,7 @@ namespace MakeRuler
             var lines = row.ToLines();
             if (lines.Count == 0)
             {
-                return new Bitmap(1,1);
+                return new Bitmap(1, 1);
             }
 
             var firstPixel = lines.First().Start;
@@ -116,6 +132,16 @@ namespace MakeRuler
             }
 
             return bitmap;
+        }
+
+        public string ToText(int sliceId, bool isSimple = false)
+        {
+            return Conventer.ToText(new KeyValuePair<int, Slice>(sliceId, this), isSimple);
+        }
+
+        static public KeyValuePair<int, Slice> FromText(string text)
+        {
+            return Conventer.SliceFromText(text);
         }
     }
 }

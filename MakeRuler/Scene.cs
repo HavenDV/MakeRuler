@@ -32,14 +32,47 @@ namespace MakeRuler
         public Bitmap ToFrontBitmap()
         {
             var bitmap = new Bitmap(Width, Depth);
-            var g = Graphics.FromImage(bitmap);
+            var graphics = Graphics.FromImage(bitmap);
             foreach (var slice in Slices)
             {
                 var centerRow = slice.Value.CenterRow;
-                g.DrawImage(Slice.RowToBitmap(centerRow), new Point(0, (int)(Depth - Depth * (slice.Key-0.5) / Slices.Count)));
+                graphics.DrawImage(Slice.RowToBitmap(centerRow), new Point(0, (int)(Depth - Depth * (slice.Key-0.5) / Slices.Count)));
             }
 
             return bitmap;
+        }
+
+        public Bitmap ToSideBitmap()
+        {
+            var bitmap = new Bitmap(Height, Depth);
+            var graphics = Graphics.FromImage(bitmap);
+            foreach (var slice in Slices)
+            {
+                var centerColumn = slice.Value.CenterColumn;
+                graphics.DrawImage(Slice.RowToBitmap(centerColumn), new Point(0, (int)(Depth - Depth * (slice.Key - 0.5) / Slices.Count)));
+            }
+
+            return bitmap;
+        }
+
+        public string ToText()
+        {
+            return Conventer.ToText(this);
+        }
+
+        static public Scene FromText(string text)
+        {
+            return Conventer.SceneFromText(text);
+        }
+
+        public void ToFile(string path)
+        {
+            Conventer.ToFile(this, path);
+        }
+
+        static public Scene FromFile(string path)
+        {
+            return Conventer.SceneFromFile(path);
         }
     }
 }
