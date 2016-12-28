@@ -33,8 +33,13 @@ namespace MakeRuler
         {
             get 
             {
-                var center = (CenterRow.Data.First().Key + (CenterRow.Data.Last().Key - CenterRow.Data.First().Key) / 2.0).Round();
                 var newRow = new Row();
+                if (CenterRow.Data.Count == 0)
+                {
+                    return newRow;
+                }
+
+                var center = (CenterRow.Data.First().Key + (CenterRow.Data.Last().Key - CenterRow.Data.First().Key) / 2.0).Round();
                 foreach (var row in Rows)
                 {
                     newRow.Data[row.Key] = row.Value.Data.ContainsKey(center) ?

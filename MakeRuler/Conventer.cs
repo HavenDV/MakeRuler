@@ -50,6 +50,11 @@ namespace MakeRuler
 
         public static string ToText(KeyValuePair<int, Slice> slice, bool isSimple)
         {
+            if (slice.Value.Rows.Count == 0)
+            {
+                return string.Empty;
+            }
+
             var lines = new List<string>();
             var rows = slice.Value.Rows;
             //SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:320
@@ -64,7 +69,7 @@ namespace MakeRuler
 
         public static string ToText(Scene scene)
         {
-            return string.Join(Environment.NewLine, 
+            return string.Join(Environment.NewLine,
                 scene.Slices.Select(i => i.Value.Text));
         }
 
@@ -159,7 +164,7 @@ namespace MakeRuler
             var lines = text.ToLines();
             var sliceTexts = text.
                 Split("SLICE NUMBER:", StringSplitOptions.RemoveEmptyEntries).
-                Select(i=>i="SLICE NUMBER:"+i);
+                Select(i => i = "SLICE NUMBER:" + i);
 
             foreach (var sliceText in sliceTexts)
             {
