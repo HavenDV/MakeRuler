@@ -20,52 +20,73 @@ namespace MakeRuler
             InitializeComponent();
         }
 
-        private Slice CreateSlice(int slice, double step, double height)
+        private async Task<Scene> CreateScene(double step, double height)
         {
-            var scene = new Slice();
-            var h = (slice-1) * step / height;
-            var scale = 1 / 0.5;
+            var scene = new Scene();
+            scene.Depth = (int)height;
+            scene.Step = step;
+            scene.XYScale = 1 / 0.5;
+            
             //CORG(1) = 'phantom';
-            scene.Add(new Rect(scale * (80 + 80 * h), scale * 40 * h, scale * (280 - 80 * h), scale * (160 - 40 * h), 1));
-            scene.Add(new Circle(scale * (80 + 80 * h), scale * 80, scale * (80 - 40 * h), 1));
-            scene.Add(new Circle(scale * (280 - 80 * h), scale * 80, scale * (80 - 40 * h), 1));
+            scene.AddObject(new Cylinder(
+                new Circle(80, 80, 80, 1),
+                new Circle(160, 80, 40, 1)
+            ));
+            scene.AddObject(new Cylinder(
+                new Circle(280, 80, 80, 1),
+                new Circle(200, 80, 40, 1)
+            ));
+            scene.AddObject(new Parallelepiped(
+                new Rect(80, 0, 280, 160, 1),
+                new Rect(160, 40, 200, 120, 1)
+            ));
 
             //CORG(2) = 'center';
-            scene.Add(new Circle(scale * 180, scale * 80, scale * 5.5, 2));
-
+            scene.AddObject(new Cylinder(
+                new Circle(180, 80, 5.5, 2),
+                new Circle(180, 80, 5.5, 2)
+            ));
+            
             //CORG(3) = 'left';
-            scene.Add(new Circle(scale * (30 + 120 * h), scale * 80, scale * 5.5, 3));
-
+            scene.AddObject(new Cylinder(
+                new Circle(30, 80, 5.5, 3),
+                new Circle(150, 80, 5.5, 3)
+            ));
+            
             //CORG(4) = 'bottom';
-            scene.Add(new Circle(scale * 180, scale * (140 - 40 * h), scale * 5.5, 4));
+            scene.AddObject(new Cylinder(
+                new Circle(180, 140, 5.5, 4),
+                new Circle(180, 100, 5.5, 4)
+            ));
 
             //CORG(5) = 'right';
-            scene.Add(new Circle(scale * (330 - 120 * h), scale * 80, scale * 5.5, 5));
+            scene.AddObject(new Cylinder(
+                new Circle(330, 80, 5.5, 5),
+                new Circle(210, 80, 5.5, 5)
+            ));
 
             //CORG(6) = 'top';
-            scene.Add(new Circle(scale * 180, scale * (20 + 40 * h), scale * 5.5, 6));
+            scene.AddObject(new Cylinder(
+                new Circle(180, 20, 5.5, 6),
+                new Circle(180, 60, 5.5, 6)
+            ));
 
-            scene.Bitmap = scene.ToBitmap();
-            scene.Text = scene.ToText(slice, false);
-            return scene;
-        }
+            //center = 180 х 80
+            //180 х 160
+            //CORG(7) = 'table'; ??
+            var table = new Circle(180, 160 - 800, 800, 7);
+            table.Min = new Point2D(0, 140);
+            table.Max = new Point2D(360, 160);
+            table.Lines = table.ComputeLines();
+            //slice.Add(table);
 
-        private async Task<Scene> CreateSlices(double step, double height)
-        {
-            var slices = await Task.WhenAll(
-                Enumerable.Range(1, (int)(1 + height / step)).Select(
-                    i => Task.Run(
-                        () => new KeyValuePair<int, Slice>(i, CreateSlice(i, step, height))
-                    )
-                )
-            );
-            var scene = new Scene();
-            foreach (var slice in slices)
-            {
-                scene.AddSlice(slice.Key, slice.Value);
-            }
+            var table2 = new Circle(180, 160 - 800, 790, 1);
+            table2.Min = new Point2D(0, 140);
+            table2.Max = new Point2D(360, 160);
+            //table2.Lines = table2.ComputeLines();
+            //slice.Add(table2);
 
-            return scene;
+            return await scene.WithComputedSlices();
         }
 
         private async Task<int[]> ComputeData(Scene scene)
@@ -86,23 +107,26 @@ namespace MakeRuler
 
         private async void CreateButton_Click(object sender, EventArgs e)
         {
-            var step = 50.0;
+            var step = 150.0;
             var height = 300.0;
 
             //Fix step for reduce slices as -1
             step = height / (-1 + height / step);
 
-            //Conventer.FromFile("CTDIcone(1).data");//
-            CachedScene = CachedScene ?? await CreateSlices(step, height);
+            //Scene.FromFile("CTDIcone(1).data");//
+            CachedScene = CachedScene ?? await CreateScene(step, height);
             await ComputeData(CachedScene);
             foreach (var slice in CachedScene.Slices)
             {
                 SaveBitmap(slice.Value.Bitmap, $"slices/slice{slice.Key}.png");
-                FrontPictureBox.Image = CachedScene.ToFrontBitmap();
                 DrawBitmap(slice.Value.Bitmap, 30, (CachedScene.Slices.Count - slice.Key - 1.0) / CachedScene.Slices.Count);
             }
 
-            SaveData(CachedScene, "output.txt");
+            FrontPictureBox.Image = CachedScene.ToFrontBitmap();
+            SidePictureBox.Image = CachedScene.ToSideBitmap();
+            Refresh();
+
+            CachedScene.ToFile("output.txt");
         }
 
 
@@ -126,8 +150,8 @@ namespace MakeRuler
             graphics = Graphics.FromImage(TopPictureBox.Image);
             graphics.DrawImage(bitmap.CreateBorder(Color.Black), new Point(0, 0));
             //TopPictureBox.Image = bitmap;
-
             Refresh();
+
             Thread.Sleep(sleep);
         }
 
@@ -136,11 +160,6 @@ namespace MakeRuler
         {
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             bitmap.Save(path);
-        }
-
-        private void SaveData(Scene scene, string path)
-        {
-            File.WriteAllLines(path, scene.Slices.Select(i=>i.Value.Text));
         }
     }
 }
