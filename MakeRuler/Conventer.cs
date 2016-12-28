@@ -138,7 +138,7 @@ namespace MakeRuler
                 }
                 --i;
 
-                scene.Slices.Add(sliceNumber, slice);
+                scene.AddSlice(sliceNumber, slice);
             }
 
             return scene;
