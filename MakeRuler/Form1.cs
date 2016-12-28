@@ -34,13 +34,13 @@ namespace MakeRuler
             scene.Add(new Circle(scale * 180, scale * 80, scale * 5.5, 2));
 
             //CORG(3) = 'left';
-            scene.Add(new Circle(scale * (110 + 40 * h), scale * 80, scale * 5.5, 3));
+            scene.Add(new Circle(scale * (30 + 120 * h), scale * 80, scale * 5.5, 3));
 
             //CORG(4) = 'bottom';
             scene.Add(new Circle(scale * 180, scale * (140 - 40 * h), scale * 5.5, 4));
 
             //CORG(5) = 'right';
-            scene.Add(new Circle(scale * (250 - 40 * h), scale * 80, scale * 5.5, 5));
+            scene.Add(new Circle(scale * (330 - 120 * h), scale * 80, scale * 5.5, 5));
 
             //CORG(6) = 'top';
             scene.Add(new Circle(scale * 180, scale * (20 + 40 * h), scale * 5.5, 6));
@@ -88,6 +88,10 @@ namespace MakeRuler
         {
             var step = 50.0;
             var height = 300.0;
+
+            //Fix step for reduce slices as -1
+            step = height / (-1 + height / step);
+
             //Conventer.FromFile("CTDIcone(1).data");//
             CachedScene = CachedScene ?? await CreateSlices(step, height);
             await ComputeData(CachedScene);
@@ -98,7 +102,7 @@ namespace MakeRuler
                 DrawBitmap(slice.Value.Bitmap, 30, (CachedScene.Slices.Count - slice.Key - 1.0) / CachedScene.Slices.Count);
             }
 
-            //SaveData(Cache, "output.txt");
+            SaveData(CachedScene, "output.txt");
         }
 
 
