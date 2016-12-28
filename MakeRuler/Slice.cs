@@ -54,7 +54,7 @@ namespace MakeRuler
 
         public void Add(Object obj)
         {
-            foreach (var line in obj.Lines)
+            foreach (var line in obj.ToLines())
             {
                 var rowId = line.Key;
                 if (!Rows.ContainsKey(rowId))

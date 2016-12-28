@@ -16,14 +16,13 @@ namespace MakeRuler
         {
             Min = min;
             Max = max;
-            Lines = ComputeLines();
         }
 
         public Rect(double x1, double y1, double x2, double y2, int material) :
             this(new Point2D(x1, y1), new Point2D(x2, y2), material)
         { }
 
-        public SortedDictionary<int, Line> ComputeLines()
+        public override SortedDictionary<int, Line> ToLines()
         {
             var lines = new SortedDictionary<int, Line>();
 

@@ -2,10 +2,9 @@ using System.Collections.Generic;
 
 namespace MakeRuler
 {
-    public class Object
+    abstract public class Object
     {
         public int SliceId { get; set; }
-        public SortedDictionary<int, Line> Lines { get; set; }
         public Point2D Min { get; set; }
         public Point2D Max { get; set; }
         public int Material { get; set; }
@@ -14,5 +13,7 @@ namespace MakeRuler
         {
             Material = material;
         }
+
+        abstract public SortedDictionary<int, Line> ToLines();
     }
 }

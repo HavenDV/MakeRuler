@@ -16,14 +16,13 @@ namespace MakeRuler
             Radius = radius;
             Min = new Point2D(Center.X - Radius, Center.Y - Radius);
             Max = new Point2D(Center.X + Radius, Center.Y + Radius);
-            Lines = ComputeLines();
         }
 
         public Circle(double x, double y, double radius, int material) :
             this(new Point2D(x, y), radius, material)
         {}
 
-        public SortedDictionary<int, Line> ComputeLines()
+        public override SortedDictionary<int, Line> ToLines()
         {
             var lines = new SortedDictionary<int, Line>();
             
