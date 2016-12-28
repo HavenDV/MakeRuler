@@ -33,7 +33,7 @@ namespace MakeRuler
         {
             get 
             {
-                var center = (CenterRow.Width / 2.0).Round();
+                var center = (CenterRow.Data.First().Key + (CenterRow.Data.Last().Key - CenterRow.Data.First().Key) / 2.0).Round();
                 var newRow = new Row();
                 foreach (var row in Rows)
                 {
