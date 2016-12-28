@@ -9,7 +9,7 @@ namespace MakeRuler
 {
     public class Slice
     {
-        public Dictionary<int, Row> Rows { get; set; }
+        public SortedDictionary<int, Row> Rows { get; set; }
         public Bitmap Bitmap { get; set; }
         public string Text { get; set; }
         public int Width { get; set; }
@@ -19,13 +19,13 @@ namespace MakeRuler
         {
             get
             {
-                var row = new Row();
-                if (Rows.Count == 0)
+                var center = ((Rows.First().Key + Rows.Last().Key)/2.0).Round();
+                if (Rows.ContainsKey(center))
                 {
-                    return row;
+                    return Rows[center];
                 }
 
-                return Rows[((Rows.First().Key + Rows.Last().Key) / 2.0).Round()];
+                return new Row();
             }
         }
 
@@ -52,7 +52,7 @@ namespace MakeRuler
 
         public Slice()
         {
-            Rows = new Dictionary<int, Row>();
+            Rows = new SortedDictionary<int, Row>();
             Width = 1;
             Height = 1;
         }
@@ -97,6 +97,8 @@ namespace MakeRuler
                     return Color.Pink;
                 case 7:
                     return Color.MediumSeaGreen;
+                case 8:
+                    return Color.Aqua;
             }
             return Color.Transparent;
         }

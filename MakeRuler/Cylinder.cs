@@ -15,7 +15,9 @@ namespace MakeRuler
         {
             return new Circle(
                 xyScale * (Bottom.Center + h * (Top.Center - Bottom.Center)),
-                xyScale * (Bottom.Radius + h * (Top.Radius - Bottom.Radius)), 
+                xyScale * (Bottom.Radius + h * (Top.Radius - Bottom.Radius)),
+                xyScale * (Bottom.Min + h * (Top.Min - Bottom.Min)),
+                xyScale * (Bottom.Max + h * (Top.Max - Bottom.Max)),
                 Bottom.Material
             );
         }
