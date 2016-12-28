@@ -28,5 +28,35 @@ namespace MakeRuler
             X = x;
             Y = y;
         }
+
+        public static Point2D operator -(Point2D point)
+        {
+            return new Point2D(-point.X , -point.Y);
+        }
+
+        public static Point2D operator +(Point2D first, Point2D second)
+        {
+            return new Point2D(first.X + second.X, first.Y + second.Y);
+        }
+
+        public static Point2D operator -(Point2D first, Point2D second)
+        {
+            return first + (-second);
+        }
+
+        public static Point2D operator *(Point2D point, double scale)
+        {
+            return new Point2D(scale * point.X, scale * point.Y);
+        }
+
+        public static Point2D operator *(double scale, Point2D point)
+        {
+            return point * scale;
+        }
+
+        public static Point2D operator /(Point2D point, double reduce)
+        {
+            return (1.0 / reduce) * point;
+        }
     }
 }
