@@ -50,16 +50,22 @@ namespace MakeRuler
             return scene;
         }
 
-        private async Task<SortedDictionary<int, Slice>> CreateSlices(double step, double height)
+        private async Task<Scene> CreateSlices(double step, double height)
         {
             var slices = await Task.WhenAll(
-                Enumerable.Range(1, (int)(height / step)).Select(
+                Enumerable.Range(1, (int)(1 + height / step)).Select(
                     i => Task.Run(
                         () => new KeyValuePair<int, Slice>(i, CreateSlice(i, step, height))
                     )
                 )
             );
-            return new SortedDictionary<int, Slice>(slices.ToDictionary(i => i.Key, i => i.Value));
+            var scene = new Scene();
+            foreach (var slice in slices)
+            {
+                scene.AddSlice(slice.Key, slice.Value);
+            }
+
+            return scene;
         }
 
         private async Task<int[]> ComputeData(Scene scene)
@@ -82,22 +88,37 @@ namespace MakeRuler
         {
             var step = 50.0;
             var height = 300.0;
-
-            CachedScene = CachedScene ?? Conventer.FromFile("CTDIcone(1).data");//await CreateSlices(step, height);
+            //Conventer.FromFile("CTDIcone(1).data");//
+            CachedScene = CachedScene ?? await CreateSlices(step, height);
             await ComputeData(CachedScene);
             foreach (var slice in CachedScene.Slices)
             {
                 SaveBitmap(slice.Value.Bitmap, $"slices/slice{slice.Key}.png");
-                DrawBitmap(slice.Value.Bitmap);
+                FrontPictureBox.Image = CachedScene.ToFrontBitmap();
+                DrawBitmap(slice.Value.Bitmap, 30, (CachedScene.Slices.Count - slice.Key - 1.0) / CachedScene.Slices.Count);
             }
 
             //SaveData(Cache, "output.txt");
         }
 
 
-        private void DrawBitmap(Bitmap bitmap, int sleep = 30)
+        private void DrawBitmap(Bitmap bitmap, int sleep = 30, double h = 0.0)
         {
-            pictureBox2.Image = bitmap;
+            TopPictureBox.Image = bitmap;
+            PointF[] destinationPoints = {
+                new PointF(0.0F, 0.0F),
+                new PointF(bitmap.Width, 0.0F),
+                new PointF(0.5F * bitmap.Height, 0.5F * bitmap.Height)
+            };
+
+            var perspectiveBitmap = PerspectivePictureBox.Image ?? new Bitmap(800 + bitmap.Height/2, 400);
+            var newBitmap = new Bitmap(bitmap.Width + bitmap.Height / 2, bitmap.Height);
+            var graphics = Graphics.FromImage(newBitmap);
+            graphics.DrawImage(bitmap, destinationPoints);
+            graphics = Graphics.FromImage(perspectiveBitmap);
+            graphics.DrawImage(newBitmap.CreateBorder(Color.Black), new Point((int)(0), (int)(h * 300)));
+            PerspectivePictureBox.Image = perspectiveBitmap;
+
             Refresh();
             Thread.Sleep(sleep);
         }
@@ -113,6 +134,5 @@ namespace MakeRuler
         {
             File.WriteAllLines(path, scene.Slices.Select(i=>i.Value.Text));
         }
-
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using MakeRuler.Extensions;
 
 namespace MakeRuler
 {
@@ -13,6 +14,20 @@ namespace MakeRuler
         public string Text { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+
+        public Row CenterRow
+        {
+            get
+            {
+                var row = new Row();
+                if (Rows.Count == 0)
+                {
+                    return row;
+                }
+
+                return Rows[((Rows.First().Key + Rows.Last().Key)/2.0).Round()];
+            }
+        }
 
         public Slice()
         {
@@ -39,11 +54,11 @@ namespace MakeRuler
         public void AddRow(int rowId, Row row)
         {
             Rows[rowId] = row;
-            Width = Math.Max(Width, Rows[rowId].Data.Count > 0 ? Rows[rowId].Data.Last().Key : Width);
+            Width = Math.Max(Width, Rows[rowId].Data.Count > 0 ? Rows[rowId].Data.Last().Key + Rows[rowId].Data.First().Key : Width);
             Height = Math.Max(Height, rowId);
         }
 
-        private Color GetColor(int material)
+        public static Color GetColor(int material)
         {
             switch (material)
             {
@@ -65,7 +80,7 @@ namespace MakeRuler
             return Color.White;
         }
 
-        public Bitmap RowToBitmap(Row row)
+        public static Bitmap RowToBitmap(Row row)
         {
             if (row == null)
             {
@@ -78,7 +93,8 @@ namespace MakeRuler
                 return new Bitmap(1,1);
             }
 
-            var bitmap = new Bitmap(lines.Last().End, 1);
+            var firstPixel = lines.First().Start;
+            var bitmap = new Bitmap(lines.Last().End + firstPixel, 1);
             var g = Graphics.FromImage(bitmap);
             foreach (var line in lines)
             {
