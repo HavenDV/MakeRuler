@@ -26,17 +26,17 @@ namespace MakeRuler
             scene.Depth = (int)height;
             scene.Step = step;
             scene.XYScale = 1 / 0.5;
+
             ///*
-            //center = 180 х 80
-            //180 х 160
-            //CORG(7) = 'table'; ??
+            //CORG(2) = 'table';
+            var radius = 3;
             scene.AddObject(new Cylinder(
-                new Circle(180, 166 - 800, 800, 0, 136, 360, 166, 2),
-                new Circle(180, 126 - 760, 760, 0, 96, 360, 126, 2)
+                new Circle(180, 160 + radius - 800, 800, 0, 130 + radius, 360, 160 + radius, 2),
+                new Circle(180, 120 + radius - 760, 760, 0, 90 + radius, 360, 120 + radius, 2)
             ));
             scene.AddObject(new Cylinder(
-                new Circle(180, 166 - 800, 794, 0, 136, 360, 166, 0),
-                new Circle(180, 126 - 760, 754, 0, 96, 360, 126, 0)
+                new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, 0),
+                new Circle(180, 120 + radius - 760, 760 - radius, 0, 90 + radius, 360, 120 + radius, 0)
             ));
             var inclinionFix = 0;
             var inclinionFix2 = 0;
@@ -69,36 +69,84 @@ namespace MakeRuler
                 new Rect(160, inclinionFix + 40, 200, inclinionFix + 120, 1)
             ));
 
-            //CORG(2) = 'center';
+            //CORG(3) = 'center';
             scene.AddObject(new Cylinder(
-                new Circle(180, 80, 5.5, 3),
+                new Circle(180, 80 - inclinionFix2, 5.5, 3),
                 new Circle(180, inclinionFix + 80, 5.5, 3)
             ));
             
-            //CORG(3) = 'left';
+            //CORG(4) = 'left';
             scene.AddObject(new Cylinder(
-                new Circle(30, 80, 5.5, 4),
+                new Circle(30, 80 - inclinionFix2, 5.5, 4),
                 new Circle(150, inclinionFix + 80, 5.5, 4)
             ));
             
+            //CORG(5) = 'bottom';
+            scene.AddObject(new Cylinder(
+                new Circle(180, 140 - inclinionFix2, 5.5, 5),
+                new Circle(180, inclinionFix + 100, 5.5, 5)
+            ));
+
+            //CORG(6) = 'right';
+            scene.AddObject(new Cylinder(
+                new Circle(330, 80 - inclinionFix2, 5.5, 6),
+                new Circle(210, inclinionFix + 80, 5.5, 6)
+            ));
+
+            //CORG(7) = 'top';
+            scene.AddObject(new Cylinder(
+                new Circle(180, 20 - inclinionFix2, 5.5, 7),
+                new Circle(180, inclinionFix + 60, 5.5, 7)
+            ));
+            
+
+            return await scene.WithComputedSlices();
+        }
+
+
+        private async Task<Scene> CreateScene2(double step, double height)
+        {
+            var scene = new Scene();
+            scene.Depth = (int)height;
+            scene.Step = step;
+            scene.XYScale = 1 / 1.0;
+
+            //CORG(1) = 'phantom';
+            scene.AddObject(new Cylinder(
+                new Circle(160, 160, 160, 1),
+                new Circle(160, 160, 160, 1)
+            ));
+
+            //CORG(2) = 'center';
+            scene.AddObject(new Cylinder(
+                new Circle(160, 160, 5, 2),
+                new Circle(160, 160, 5, 2)
+            ));
+
+            //CORG(3) = 'left';
+            scene.AddObject(new Cylinder(
+                new Circle(10, 160, 5, 3),
+                new Circle(10, 160, 5, 3)
+            ));
+
             //CORG(4) = 'bottom';
             scene.AddObject(new Cylinder(
-                new Circle(180, 140, 5.5, 5),
-                new Circle(180, inclinionFix + 100, 5.5, 5)
+                new Circle(160, 310, 5, 4),
+                new Circle(160, 310, 5, 4)
             ));
 
             //CORG(5) = 'right';
             scene.AddObject(new Cylinder(
-                new Circle(330, 80, 5.5, 6),
-                new Circle(210, inclinionFix + 80, 5.5, 6)
+                new Circle(310, 160, 5, 5),
+                new Circle(310, 160, 5, 5)
             ));
 
             //CORG(6) = 'top';
             scene.AddObject(new Cylinder(
-                new Circle(180, 20, 5.5, 7),
-                new Circle(180, inclinionFix + 60, 5.5, 7)
+                new Circle(160, 10, 5, 6),
+                new Circle(160, 10, 5, 6)
             ));
-            
+
 
             return await scene.WithComputedSlices();
         }
@@ -121,11 +169,11 @@ namespace MakeRuler
 
         private async void CreateButton_Click(object sender, EventArgs e)
         {
-            var step = 150.0;
+            var step = 5.0;
             var height = 300.0;
 
             //Fix step for reduce slices as -1
-            step = height / (-1 + height / step);
+            //step = height / (-1 + height / step);
 
             //Scene.FromFile("CTDIcone1.data");//
             CachedScene = CachedScene ?? await CreateScene(step, height);
