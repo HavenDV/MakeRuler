@@ -1,4 +1,6 @@
-﻿namespace MakeRuler
+﻿using System;
+
+namespace MakeRuler
 {
     public class Line
     {
@@ -8,6 +10,16 @@
 
         public Line(int start, int end, int material)
         {
+            if (end < start)
+            {
+                throw new ArgumentException("End < start");
+            }
+
+            if (material <= 0)
+            {
+                throw new ArgumentException("Invalid material");
+            }
+
             Start = start;
             End = end;
             Material = material;
