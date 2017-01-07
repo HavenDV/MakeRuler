@@ -11,6 +11,12 @@ namespace MakeRuler
             Top = top;
         }
 
+        public Parallelepiped(Rect rect)
+        {
+            Bottom = rect;
+            Top = rect;
+        }
+
         public Object GetObject(double h, double xyScale = 1.0)
         {
             return new Rect(

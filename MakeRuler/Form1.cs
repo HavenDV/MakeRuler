@@ -29,6 +29,10 @@ namespace MakeRuler
 
             //CORG(2) = 'table';
             var radius = 10;
+            scene.AddObject(new Parallelepiped(
+                new Rect(0, 0, 360, 160 + radius, 8),
+                new Rect(0, 0, 360, 120 + radius, 8)
+            ));
             /*
             scene.AddObject(new Cylinder(
                 new Circle(180, 160 + radius - 800, 800, 0, 130 + radius, 360, 160 + radius, 2),
@@ -40,22 +44,20 @@ namespace MakeRuler
             ));
             var inclinionFix = 0;
             //*/
-            ///*
-            scene.AddObject(new Parallelepiped(
-                new Rect(0, 0, 360, 160 + radius, 8),
-                new Rect(0, 0, 360, 160 + radius, 8)
-            ));
+            /*
             scene.AddObject(new Cylinder(
-                new Circle(180, 160 + radius - 800, 800, 0, 130 + radius, 360, 160 + radius, 2),
                 new Circle(180, 160 + radius - 800, 800, 0, 130 + radius, 360, 160 + radius, 2)
             ));
             scene.AddObject(new Cylinder(
-                new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, 8),
                 new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, 8)
             ));
-            
             var inclinionFix = 40;
             //*/
+
+            var inclinionFix = 0;
+            scene.AddObject(new Parallelepiped(
+                new Rect(0, 160, 360, 160 + radius, 2)
+            ));
 
             //CORG(1) = 'phantom';
             scene.AddObject(new Cylinder(
@@ -111,42 +113,48 @@ namespace MakeRuler
             var scene = new Scene();
             scene.Depth = (int)height;
             scene.Step = step;
-            scene.XYScale = 1 / 1.0;
+            scene.XYScale = 1 / 0.5;
+
+            var radius = 50.0;
+
+            //CORG(8) = 'air';
+            scene.AddObject(new Parallelepiped(
+                new Rect(0, 0, radius * 2, radius * 2, 8)
+            ));
 
             //CORG(1) = 'phantom';
             scene.AddObject(new Cylinder(
-                new Circle(160, 160, 160, 1),
-                new Circle(160, 160, 160, 1)
+                new Circle(radius, radius, radius, 1)
             ));
 
-            //CORG(2) = 'center';
-            scene.AddObject(new Cylinder(
-                new Circle(160, 160, 5, 2),
-                new Circle(160, 160, 5, 2)
+            //CORG(2) = 'table';
+            scene.AddObject(new Parallelepiped(
+                new Rect(0, radius * 2, radius * 2, radius * 2 + 10, 2)
             ));
 
-            //CORG(3) = 'left';
+            //CORG(3) = 'center';
             scene.AddObject(new Cylinder(
-                new Circle(10, 160, 5, 3),
-                new Circle(10, 160, 5, 3)
+                new Circle(radius, radius, 6, 3)
             ));
 
-            //CORG(4) = 'bottom';
+            //CORG(4) = 'left';
             scene.AddObject(new Cylinder(
-                new Circle(160, 310, 5, 4),
-                new Circle(160, 310, 5, 4)
+                new Circle(10, radius, 6, 4)
             ));
 
-            //CORG(5) = 'right';
+            //CORG(5) = 'bottom';
             scene.AddObject(new Cylinder(
-                new Circle(310, 160, 5, 5),
-                new Circle(310, 160, 5, 5)
+                new Circle(radius, 2 * radius - 10, 6, 5)
             ));
 
-            //CORG(6) = 'top';
+            //CORG(6) = 'right';
             scene.AddObject(new Cylinder(
-                new Circle(160, 10, 5, 6),
-                new Circle(160, 10, 5, 6)
+                new Circle(2 * radius - 10, radius, 6, 6)
+            ));
+
+            //CORG(7) = 'top';
+            scene.AddObject(new Cylinder(
+                new Circle(radius, 10, 6, 7)
             ));
 
 
@@ -171,14 +179,9 @@ namespace MakeRuler
 
         private async void CreateButton_Click(object sender, EventArgs e)
         {
-            var step = 5.0;
-            var height = 300.0;
-
-            //Fix step for reduce slices as -1
-            //step = height / (-1 + height / step);
-
-            //Scene.FromFile("CTDIcone1.data");//
-            CachedScene = CachedScene ?? await CreateScene(step, height);
+            CachedScene = CachedScene ??
+                //Scene.FromFile("CTDIcone(4).data");
+                await CreateScene2(5.0, 150.0);
             await ComputeData(CachedScene);
             foreach (var slice in CachedScene.Slices)
             {

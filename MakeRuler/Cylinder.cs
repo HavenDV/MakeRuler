@@ -11,6 +11,12 @@ namespace MakeRuler
             Top = top;
         }
 
+        public Cylinder(Circle circle)
+        {
+            Bottom = circle;
+            Top = circle;
+        }
+
         public Object GetObject(double h, double xyScale = 1.0)
         {
             return new Circle(
