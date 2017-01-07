@@ -116,6 +116,9 @@ namespace MakeRuler
             scene.XYScale = 1 / 0.5;
 
             var radius = 50.0;
+            var holeRadius = 6.0;
+            var dist = 10.0 + holeRadius;
+            var think = 10.0;
 
             //CORG(8) = 'air';
             scene.AddObject(new Parallelepiped(
@@ -128,33 +131,33 @@ namespace MakeRuler
             ));
 
             //CORG(2) = 'table';
-            scene.AddObject(new Parallelepiped(
-                new Rect(0, radius * 2, radius * 2, radius * 2 + 10, 2)
-            ));
+            //scene.AddObject(new Parallelepiped(
+            //    new Rect(0, radius * 2, radius * 2, radius * 2 + think, 2)
+            //));
 
             //CORG(3) = 'center';
             scene.AddObject(new Cylinder(
-                new Circle(radius, radius, 6, 3)
+                new Circle(radius, radius, holeRadius, 3)
             ));
 
             //CORG(4) = 'left';
             scene.AddObject(new Cylinder(
-                new Circle(10, radius, 6, 4)
+                new Circle(dist, radius, holeRadius, 4)
             ));
 
             //CORG(5) = 'bottom';
             scene.AddObject(new Cylinder(
-                new Circle(radius, 2 * radius - 10, 6, 5)
+                new Circle(radius, 2 * radius - dist, holeRadius, 5)
             ));
 
             //CORG(6) = 'right';
             scene.AddObject(new Cylinder(
-                new Circle(2 * radius - 10, radius, 6, 6)
+                new Circle(2 * radius - dist, radius, holeRadius, 6)
             ));
 
             //CORG(7) = 'top';
             scene.AddObject(new Cylinder(
-                new Circle(radius, 10, 6, 7)
+                new Circle(radius, dist, holeRadius, 7)
             ));
 
 
