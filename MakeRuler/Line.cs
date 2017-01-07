@@ -10,6 +10,11 @@ namespace MakeRuler
 
         public Line(int start, int end, int material)
         {
+            if (start < 0)
+            {
+                throw new ArgumentException("Start < 0");
+            }
+
             if (end < start)
             {
                 throw new ArgumentException("End < Start");

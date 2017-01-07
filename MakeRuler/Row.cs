@@ -36,8 +36,8 @@ namespace MakeRuler
                 return lines;
             }
 
+            var start = Data.First().Key;
             var material = Data.First().Value;
-            var start = Data.First().Key + 1;
             for (var i = start; i <= Data.Last().Key; ++i)
             {
                 if (!Data.ContainsKey(i))
@@ -45,7 +45,7 @@ namespace MakeRuler
                     Data[i] = 0;
                 }
 
-                if (Data[i] != material)
+                if (Data[i] != material && start < i - 1)
                 {
                     lines.Add(new Line(start, i - 1, material));
                     material = Data[i];

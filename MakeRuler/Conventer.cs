@@ -24,7 +24,7 @@ namespace MakeRuler
         {
             var lines = new List<string>();
             var rowLines = row.Value.ToLines();
-            lines.Add($"ROW NR.{ToString(row.Key, 4)}  FIRST PIXEL:{ToString(rowLines.Count > 0 ? rowLines[0].Start : 1, 4)}  NUMBER OF AREAS:{ToString(isSimple ? 1 : rowLines.Count, 3)}");
+            lines.Add($"ROW NR.{ToString(row.Key, 4)}  FIRST PIXEL:{ToString(rowLines.Count > 0 ? rowLines[0].Start + 1 : 1, 4)}  NUMBER OF AREAS:{ToString(isSimple ? 1 : rowLines.Count, 3)}");
 
             if (!isSimple)
             {

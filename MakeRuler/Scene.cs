@@ -23,7 +23,7 @@ namespace MakeRuler
             Slices = new SortedDictionary<int, Slice>();
             Width = 1;
             Height = 1;
-            Depth = 300;
+            Depth = 1;
             Step = Depth;
             XYScale = 1.0;
             Objects = new List<IObject3D>();
