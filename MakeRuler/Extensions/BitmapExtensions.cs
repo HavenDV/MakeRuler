@@ -5,7 +5,7 @@ namespace MakeRuler.Extensions
 {
     public static class BitmapExtensions
     {
-        public static Bitmap CreateBorder(this Bitmap bitmap, Color color)
+        public static Bitmap WithBorder(this Bitmap bitmap, Color color)
         {
             int w = bitmap.Width;
             int h = bitmap.Height;

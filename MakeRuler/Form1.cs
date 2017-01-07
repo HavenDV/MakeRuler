@@ -27,75 +27,77 @@ namespace MakeRuler
             scene.Step = step;
             scene.XYScale = 1 / 0.5;
 
-            ///*
             //CORG(2) = 'table';
-            var radius = 3;
+            var radius = 10;
+            /*
             scene.AddObject(new Cylinder(
                 new Circle(180, 160 + radius - 800, 800, 0, 130 + radius, 360, 160 + radius, 2),
                 new Circle(180, 120 + radius - 760, 760, 0, 90 + radius, 360, 120 + radius, 2)
             ));
             scene.AddObject(new Cylinder(
-                new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, 0),
-                new Circle(180, 120 + radius - 760, 760 - radius, 0, 90 + radius, 360, 120 + radius, 0)
+                new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, 8),
+                new Circle(180, 120 + radius - 760, 760 - radius, 0, 90 + radius, 360, 120 + radius, 8)
             ));
             var inclinionFix = 0;
-            var inclinionFix2 = 0;
             //*/
-            /*
-            scene.AddObject(new Cylinder(
-                new Circle(180, 172 - 800, 794, 0, 145, 360, 172, 2),
-                new Circle(180, 172 - 800, 794, 0, 145, 360, 172, 2)
+            ///*
+            scene.AddObject(new Parallelepiped(
+                new Rect(0, 0, 360, 160 + radius, 8),
+                new Rect(0, 0, 360, 160 + radius, 8)
             ));
             scene.AddObject(new Cylinder(
-                new Circle(180, 172 - 800, 794, 0, 145, 360, 172, 0),
-                new Circle(180, 172 - 800, 794, 0, 145, 360, 172, 0)
+                new Circle(180, 160 + radius - 800, 800, 0, 130 + radius, 360, 160 + radius, 2),
+                new Circle(180, 160 + radius - 800, 800, 0, 130 + radius, 360, 160 + radius, 2)
+            ));
+            scene.AddObject(new Cylinder(
+                new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, 8),
+                new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, 8)
             ));
             
             var inclinionFix = 40;
-            var inclinionFix2 = 6;
             //*/
 
             //CORG(1) = 'phantom';
             scene.AddObject(new Cylinder(
-                new Circle(80, 80 - inclinionFix2, 80, 1),
+                new Circle(80, 80, 80, 1),
                 new Circle(160, inclinionFix + 80, 40, 1)
             ));
             scene.AddObject(new Cylinder(
-                new Circle(280, 80 - inclinionFix2, 80, 1),
+                new Circle(280, 80, 80, 1),
                 new Circle(200, inclinionFix + 80, 40, 1)
             ));
             scene.AddObject(new Parallelepiped(
-                new Rect(80, 0 - inclinionFix2, 280, 160 - inclinionFix2, 1),
+                new Rect(80, 0, 280, 160, 1),
                 new Rect(160, inclinionFix + 40, 200, inclinionFix + 120, 1)
             ));
 
             //CORG(3) = 'center';
             scene.AddObject(new Cylinder(
-                new Circle(180, 80 - inclinionFix2, 5.5, 3),
+                new Circle(180, 80, 5.5, 3),
                 new Circle(180, inclinionFix + 80, 5.5, 3)
             ));
             
             //CORG(4) = 'left';
             scene.AddObject(new Cylinder(
-                new Circle(30, 80 - inclinionFix2, 5.5, 4),
+                new Circle(30, 80, 5.5, 4),
                 new Circle(150, inclinionFix + 80, 5.5, 4)
             ));
             
             //CORG(5) = 'bottom';
             scene.AddObject(new Cylinder(
-                new Circle(180, 140 - inclinionFix2, 5.5, 5),
+                new Circle(180, 140, 5.5, 5),
                 new Circle(180, inclinionFix + 100, 5.5, 5)
             ));
 
             //CORG(6) = 'right';
             scene.AddObject(new Cylinder(
-                new Circle(330, 80 - inclinionFix2, 5.5, 6),
+                new Circle(330, 80, 5.5, 6),
                 new Circle(210, inclinionFix + 80, 5.5, 6)
             ));
 
             //CORG(7) = 'top';
             scene.AddObject(new Cylinder(
-                new Circle(180, 20 - inclinionFix2, 5.5, 7),
+                new Circle(180, 20, 5.5, 7),
                 new Circle(180, inclinionFix + 60, 5.5, 7)
             ));
             
@@ -199,20 +201,20 @@ namespace MakeRuler
                 new PointF(bitmap.Width, 0.0F),
                 new PointF(0.5F * bitmap.Height, 0.5F * bitmap.Height)
             };
-            var center = new Point(200, 150  + (int)(h * 300));
+            var center = new Point(0, 50  + (int)(h * 300));
 
-            var perspectiveBitmap = PerspectivePictureBox.Image ?? new Bitmap(800 + bitmap.Height/2, 400 + (int)(h * 300));
+            var perspectiveBitmap = PerspectivePictureBox.Image ?? new Bitmap(800 + bitmap.Height, 400 + (int)(h * 300));
             var newBitmap = new Bitmap(bitmap.Width + bitmap.Height / 2, bitmap.Height);
             var graphics = Graphics.FromImage(newBitmap);
             graphics.DrawImage(bitmap, destinationPoints);
 
             graphics = Graphics.FromImage(perspectiveBitmap);
-            graphics.DrawImage(newBitmap.CreateBorder(Color.Black), new Point(center.X, center.Y));
+            graphics.DrawImage(newBitmap.WithBorder(Color.Black), new Point(center.X, center.Y));
             PerspectivePictureBox.Image = perspectiveBitmap;
 
             TopPictureBox.Image = TopPictureBox.Image ?? bitmap;
             graphics = Graphics.FromImage(TopPictureBox.Image);
-            graphics.DrawImage(bitmap.CreateBorder(Color.Black), new Point(0, 0));
+            graphics.DrawImage(bitmap.WithBorder(Color.Black), new Point(0, 0));
             //TopPictureBox.Image = bitmap;
             Refresh();
 
