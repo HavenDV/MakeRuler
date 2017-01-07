@@ -43,7 +43,7 @@ namespace MakeRuler
                 foreach (var row in Rows)
                 {
                     newRow.Data[row.Key] = row.Value.Data.ContainsKey(center) ?
-                        row.Value.Data[center] : 0;
+                        row.Value.Data[center] : 8; // 8 is air material. FIX IT
                 }
                 
                 return newRow;
