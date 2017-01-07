@@ -44,7 +44,7 @@ namespace MakeRuler
         public async Task<Scene> WithComputedSlices()
         {
             await Task.WhenAll(
-                Enumerable.Range(1, (int)(1 + Depth / Step)).Select(
+                Enumerable.Range(1, (int)(Depth / Step)).Select(
                     sliceId => Task.Run(() =>
                         {
                             var h = (sliceId - 1) * Step / Depth;
