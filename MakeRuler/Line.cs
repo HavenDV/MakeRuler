@@ -15,9 +15,9 @@ namespace MakeRuler
                 throw new ArgumentException("Start < 0");
             }
 
-            if (end < start)
+            if (end <= start)
             {
-                throw new ArgumentException("End < Start");
+                throw new ArgumentException("End <= Start");
             }
 
             if (material <= 0)
