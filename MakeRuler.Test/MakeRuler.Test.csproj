@@ -51,6 +51,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Converter.Test.cs" />
+    <Compile Include="Row.Test.cs" />
     <Compile Include="Line.Test.cs" />
     <Compile Include="Extensions_Round.cs" />
     <Compile Include="Scene.Test.cs" />

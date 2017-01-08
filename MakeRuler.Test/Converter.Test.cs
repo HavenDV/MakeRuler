@@ -155,6 +155,151 @@ ROW NR.   4  FIRST PIXEL:   1  NUMBER OF AREAS:  1
         }
 
         [TestMethod]
+        public void Converter_ToText_SimpleIntegerRectsSmalledFirst()
+        {
+            #region TestData
+            var scene = new Slice();
+            scene.Add(new Rect(1, 1, 3, 3, 2));
+            scene.Add(new Rect(0, 0, 4, 4, 1));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  4
+ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1
+ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1
+ROW NR.   4  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1";
+            var actual = scene.ToText(1, false);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Converter_ToText_SimpleIntegerRectsIntersection()
+        {
+            #region TestData
+            var scene = new Slice();
+            scene.Add(new Rect(0, 0, 3, 2, 1));
+            scene.Add(new Rect(2, 0, 4, 2, 2));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  2
+ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  2
+    2   1    4   2
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  2
+    2   1    4   2";
+            var actual = scene.ToText(1, false);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Converter_ToText_SimpleIntegerRectsIntersectionInvert()
+        {
+            #region TestData
+            var scene = new Slice();
+            scene.Add(new Rect(2, 0, 4, 2, 2));
+            scene.Add(new Rect(0, 0, 3, 2, 1));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  2
+ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  2
+    3   1    4   2
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  2
+    3   1    4   2";
+            var actual = scene.ToText(1, false);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Converter_ToText_SimpleIntegerOneMaterialRects()
+        {
+            #region TestData
+            var scene = new Slice();
+            scene.Add(new Rect(0, 0, 4, 4, 1));
+            scene.Add(new Rect(1, 1, 3, 3, 1));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  4
+ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1
+ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1
+ROW NR.   4  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1";
+            var actual = scene.ToText(1, false);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Converter_ToText_SimpleIntegerOneMaterialRectsSmalledFirst()
+        {
+            #region TestData
+            var scene = new Slice();
+            scene.Add(new Rect(1, 1, 3, 3, 1));
+            scene.Add(new Rect(0, 0, 4, 4, 1));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  4
+ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1
+ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1
+ROW NR.   4  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   1";
+            var actual = scene.ToText(1, false);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Converter_ToText_SimpleIntegerOneMaterialRectsIntersection()
+        {
+            #region TestData
+            var scene = new Slice();
+            scene.Add(new Rect(0, 0, 3, 2, 2));
+            scene.Add(new Rect(2, 0, 4, 2, 2));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  2
+ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   2
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   2";
+            var actual = scene.ToText(1, false);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Converter_ToText_SimpleIntegerOneMaterialRectsIntersectionInvert()
+        {
+            #region TestData
+            var scene = new Slice();
+            scene.Add(new Rect(2, 0, 4, 2, 2));
+            scene.Add(new Rect(0, 0, 3, 2, 2));
+            #endregion
+
+            var expected = @"SLICE NUMBER:  1  FIRST ROW:  1  LAST ROW:  2
+ROW NR.   1  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   2
+ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
+    4   2";
+            var actual = scene.ToText(1, false);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void Converter_ToText_SimpleIntegerCircle()
         {
             #region TestData

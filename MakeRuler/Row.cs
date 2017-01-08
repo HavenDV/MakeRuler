@@ -22,9 +22,9 @@ namespace MakeRuler
 
         public void AddLine(Line line)
         {
-            for (var i = line.Start; i <= line.End; ++i)
+            for (var i = line.Start; i < line.End; ++i)
             {
-                Data[i] = line.Material;
+                Data[i + 1] = line.Material;
             }
         }
 
@@ -37,23 +37,26 @@ namespace MakeRuler
                 return lines;
             }
 
-            var start = Data.First().Key;
+            var start = Data.First().Key - 1;
             var material = Data.First().Value;
-            for (var i = start; i <= Data.Last().Key; ++i)
+            for (var i = Data.First().Key; i <= Data.Last().Key; ++i)
             {
                 if (!Data.ContainsKey(i))
                 {
                     Data[i] = 0;
                 }
 
-                if (Data[i] != material && start < i - 1)
+                if (Data[i] != material)
                 {
                     lines.Add(new Line(start, i - 1, material));
                     material = Data[i];
-                    start = i;
+                    start = i - 1;
                 }
             }
-            lines.Add(new Line(start, Data.Last().Key, material));
+            if (start < Data.Last().Key)
+            {
+                lines.Add(new Line(start, Data.Last().Key, material));
+            }
 
             return lines;
         }

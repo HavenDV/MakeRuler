@@ -41,7 +41,7 @@ namespace MakeRuler.Extensions.Test
             }
             catch (Exception e)
             {
-                StringAssert.Contains(e.Message, "End < Start");
+                StringAssert.Contains(e.Message, "End <= Start");
             }
         }
     }
