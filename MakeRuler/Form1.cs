@@ -18,8 +18,6 @@ namespace MakeRuler
 
     public partial class Form1 : Form
     {
-        private Scene CachedScene { get; set; }
-
         public Form1()
         {
             InitializeComponent();
@@ -125,11 +123,10 @@ namespace MakeRuler
             return await scene.WithComputedSlices();
         }
 
-        private Scene AddObjects(Scene scene, double z1, double z2, double radius)
+        private Scene AddObjects(Scene scene, double z1, double z2, double radius, double thickness = 10.0)
         {
             var holeRadius = 6.0;
             var dist = 10.0 + holeRadius;
-            var thickness = 10.0;
 
             //CORG(8) = 'air';
             scene.AddObject(new Parallelepiped(
@@ -187,7 +184,7 @@ namespace MakeRuler
             //Create scene with dimensions 0.5 * 0.5 * 5.0
             var scene = new Scene(0.5, 0.5, 5.0);
 
-            scene = AddObjects(scene, 0, 150, 160);
+            scene = AddObjects(scene, 0, 150, 160, 10.0);
 
             return await scene.WithComputedSlices();
         }
@@ -211,21 +208,21 @@ namespace MakeRuler
 
         private async void CreateButton_Click(object sender, EventArgs e)
         {
-            CachedScene = CachedScene ??
+            var scene = 
                 //Scene.FromFile("CTDIcone(4).data");
                 await CreateScene2();
-            await ComputeData(CachedScene);
-            foreach (var slice in CachedScene.Slices)
+            await ComputeData(scene);
+            scene.ToFile("output.txt");
+
+            foreach (var slice in scene.Slices)
             {
                 SaveBitmap(slice.Value.Bitmap, $"slices/slice{slice.Key}.png");
-                DrawBitmap(slice.Value.Bitmap, slice.Value.PerspectiveBitmap, 30, (CachedScene.Slices.Count - slice.Key - 1.0) / CachedScene.Slices.Count);
+                DrawBitmap(slice.Value.Bitmap, slice.Value.PerspectiveBitmap, 30, (scene.Slices.Count - slice.Key - 1.0) / scene.Slices.Count);
             }
 
-            FrontPictureBox.Image = CachedScene.ToFrontBitmap();
-            SidePictureBox.Image = CachedScene.ToSideBitmap();
+            FrontPictureBox.Image = scene.ToFrontBitmap();
+            SidePictureBox.Image = scene.ToSideBitmap();
             Refresh();
-
-            CachedScene.ToFile("output.txt");
         }
 
         private void DrawBitmap(Bitmap bitmap, Bitmap perspective, int sleep = 30, double h = 0.0)
@@ -240,7 +237,6 @@ namespace MakeRuler
             TopPictureBox.Image = TopPictureBox.Image ?? bitmap;
             graphics = Graphics.FromImage(TopPictureBox.Image);
             graphics.DrawImage(bitmap.WithBorder(Color.Black), new Point(0, 0));
-            //TopPictureBox.Image = bitmap;
             Refresh();
 
             Thread.Sleep(sleep);
