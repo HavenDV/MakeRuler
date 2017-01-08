@@ -14,7 +14,8 @@ namespace MakeRuler
         public int Height { get; private set; }
         public int Depth { get; set; }
         public double Step { get; set; }
-        public double XYScale { get; set; }
+        public double XScale { get; set; }
+        public double YScale { get; set; }
         public List<IObject3D> Objects { get; set; }
 
 
@@ -25,8 +26,16 @@ namespace MakeRuler
             Height = 1;
             Depth = 1;
             Step = Depth;
-            XYScale = 1.0;
+            XScale = 1.0;
+            YScale = 1.0;
             Objects = new List<IObject3D>();
+        }
+
+        public void SetDimensions(double xStep, double yStep, double zStep)
+        {
+            XScale = 1.0 / xStep;
+            YScale = 1.0 / yStep;
+            Step = zStep;
         }
 
         public void AddSlice(int sliceId, Slice slice)
@@ -51,7 +60,7 @@ namespace MakeRuler
                             var slice = new Slice();
                             foreach (var obj in Objects)
                             {
-                                slice.Add(obj.GetObject(h, XYScale));
+                                slice.Add(obj.GetObject(h, XScale));
                             }
                             slice.Bitmap = slice.ToBitmap();
                             slice.Text = slice.ToText(sliceId, false);

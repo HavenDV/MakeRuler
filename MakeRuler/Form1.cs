@@ -24,8 +24,7 @@ namespace MakeRuler
         {
             var scene = new Scene();
             scene.Depth = (int)height;
-            scene.Step = step;
-            scene.XYScale = 1 / 0.5;
+            scene.SetDimensions(0.5, 0.5, step);
 
             //CORG(2) = 'table';
             var radius = 10;
@@ -112,10 +111,9 @@ namespace MakeRuler
         {
             var scene = new Scene();
             scene.Depth = (int)height;
-            scene.Step = step;
-            scene.XYScale = 1 / 0.5;
+            scene.SetDimensions(0.5, 0.5, step);
 
-            var radius = 50.0;
+            var radius = 80.0;
             var holeRadius = 6.0;
             var dist = 10.0 + holeRadius;
             var thickness = 10.0;
@@ -184,7 +182,7 @@ namespace MakeRuler
         {
             CachedScene = CachedScene ??
                 //Scene.FromFile("CTDIcone(4).data");
-                await CreateScene2(5.0, 150.0);
+                await CreateScene2(50.0, 150.0);
             await ComputeData(CachedScene);
             foreach (var slice in CachedScene.Slices)
             {
