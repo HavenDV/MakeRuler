@@ -16,20 +16,7 @@ namespace MakeRuler
         public double Step { get; set; }
         public double XScale { get; set; }
         public double YScale { get; set; }
-        public List<IObject3D> Objects { get; set; }
-
-
-        public Scene()
-        {
-            Slices = new SortedDictionary<int, Slice>();
-            Width = 1;
-            Height = 1;
-            Depth = 1;
-            Step = Depth;
-            XScale = 1.0;
-            YScale = 1.0;
-            Objects = new List<IObject3D>();
-        }
+        public List<Object3D> Objects { get; set; }
 
         public void SetDimensions(double xStep, double yStep, double zStep)
         {
@@ -38,6 +25,20 @@ namespace MakeRuler
             Step = zStep;
         }
 
+        public Scene(double xStep, double yStep, double zStep)
+        {
+            Slices = new SortedDictionary<int, Slice>();
+            SetDimensions(xStep, yStep, zStep);
+            Width = 1;
+            Height = 1;
+            Depth = 1;
+            Objects = new List<Object3D>();
+        }
+
+        public Scene() :
+            this(1.0, 1.0, 1.0)
+        {}
+
         public void AddSlice(int sliceId, Slice slice)
         {
             Slices.Add(sliceId, slice);
@@ -45,9 +46,10 @@ namespace MakeRuler
             Height = Math.Max(Height, slice.Height);
         }
 
-        public void AddObject(IObject3D obj)
+        public void AddObject(Object3D obj)
         {
             Objects.Add(obj);
+            Depth = Math.Max(Depth, obj.maxZ2);
         }
 
         public async Task<Scene> WithComputedSlices()
@@ -56,11 +58,10 @@ namespace MakeRuler
                 Enumerable.Range(1, (int)(Depth / Step)).Select(
                     sliceId => Task.Run(() =>
                         {
-                            var h = (sliceId - 1) * Step / Depth;
                             var slice = new Slice();
                             foreach (var obj in Objects)
                             {
-                                slice.Add(obj.GetObject(h, XScale));
+                                slice.Add(obj.GetObject((sliceId - 1) * Step, XScale));
                             }
                             slice.Bitmap = slice.ToBitmap();
                             slice.Text = slice.ToText(sliceId, false);

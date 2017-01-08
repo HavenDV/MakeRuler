@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace MakeRuler
 {
-    abstract public class Object
+    public class Object
     {
         public Point2D Min { get; set; }
         public Point2D Max { get; set; }
@@ -13,6 +13,9 @@ namespace MakeRuler
             Material = material;
         }
 
-        abstract public SortedDictionary<int, Line> ToLines();
+        public virtual SortedDictionary<int, Line> ToLines()
+        {
+            return new SortedDictionary<int, Line>();
+        }
     }
 }

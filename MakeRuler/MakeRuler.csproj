@@ -52,7 +52,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="3D Objects\IObject3D.cs" />
+    <Compile Include="3D Objects\Object3D.cs" />
     <Compile Include="2D Objects\Object.cs" />
     <Compile Include="3D Objects\Parallelepiped.cs" />
     <Compile Include="2D Objects\Point2D.cs" />

@@ -18,8 +18,12 @@ namespace MakeRuler
 
         public Row CenterRow
         {
-            get
-            {
+            get {
+                if (Rows.Count == 0)
+                {
+                    return new Row();
+                }
+
                 var center = ((Rows.First().Key + Rows.Last().Key)/2.0).Round();
                 if (Rows.ContainsKey(center))
                 {
