@@ -14,6 +14,32 @@ namespace MakeRuler
         public int Width
         {
             get { return Data.Count > 0 ? Data.Last().Key : 0; }
+            //get { return Lines.Count > 0 ? Lines.Last().End : 0; }
+        }
+
+        public bool IsEmpty 
+        {
+            get { return Data.Count == 0; }
+            //get { return Lines.Count == 0; }
+        }
+
+        public int Center {
+            get { return (Data.First().Key - 1 + (Data.Last().Key - Data.First().Key) / 2.0).Round(); }
+            //get { return (Lines.First().Start + (Lines.Last().End - Lines.First().Start) / 2.0).Round(); }
+        }
+
+        public int GetValue(int key)
+        {
+            return Data.ContainsKey(key + 1) ? Data[key + 1] : 8; // 8 is air material. FIX IT
+            //for (var i = 0; i < Lines.Count; ++i)
+            //{
+            //    if (Lines[i].Contains(key))
+            //    {
+            //        return Lines[i].Material;
+            //    }
+            //}
+
+            //return 8;// 8 is air material. FIX IT
         }
 
         public Row()
@@ -28,6 +54,29 @@ namespace MakeRuler
             {
                 Data[i + 1] = line.Material;
             }
+            /*
+            for (var i = 0; i < Lines.Count; ++i)
+            {
+                if (Lines[i].Contains(line.Start))
+                {
+                    if (Lines[i].End > line.End)
+                    {
+                        Lines.Add(new Line(line.End, Lines[i].End, Lines[i].Material));
+                    }
+                    Lines[i].End = line.Start;
+                }
+                if (Lines[i].Contains(line.End))
+                {
+                    if (Lines[i].Start < line.Start)
+                    {
+                        Lines.Add(new Line(Lines[i].Start, line.Start, Lines[i].Material));
+                    }
+                    //Lines[i].Start = line.End;
+                }
+            }
+            Lines.Add(line);
+            Lines.Sort(new Comparison<Line>((line1, line2) => line1.Start));
+            */
         }
 
         public List<Line> ToLines()

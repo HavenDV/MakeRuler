@@ -29,5 +29,10 @@ namespace MakeRuler
             End = end;
             Material = material;
         }
+
+        public bool Contains(int value)
+        {
+            return value >= Start && value < End;
+        }
     }
 }

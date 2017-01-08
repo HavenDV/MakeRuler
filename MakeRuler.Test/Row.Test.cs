@@ -49,6 +49,12 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             Assert.AreEqual(1, lines.Count, "Lines count not equal");
             AreEqualLines(new Line(0, 3, 1), lines[0]);
             Assert.AreEqual(3, row.Width, "Row width not equal");
+            Assert.AreEqual(1, row.Center, "Row center not equal");
+            Assert.IsFalse(row.IsEmpty, "Row is empty");
+            Assert.AreEqual(1, row.GetValue(0), "Row(0) not equal");
+            Assert.AreEqual(1, row.GetValue(1), "Row(1) not equal");
+            Assert.AreEqual(1, row.GetValue(2), "Row(2) not equal");
+            Assert.AreEqual(8, row.GetValue(3), "Row(3) not equal");
         }
 
         [TestMethod]
@@ -64,6 +70,13 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             AreEqualLines(new Line(0, 2, 1), lines[0]);
             AreEqualLines(new Line(2, 4, 2), lines[1]);
             Assert.AreEqual(4, row.Width, "Row width not equal");
+            Assert.AreEqual(2, row.Center, "Row center not equal");
+            Assert.IsFalse(row.IsEmpty, "Row is empty");
+            Assert.AreEqual(1, row.GetValue(0), "Row(0) not equal");
+            Assert.AreEqual(1, row.GetValue(1), "Row(1) not equal");
+            Assert.AreEqual(2, row.GetValue(2), "Row(2) not equal");
+            Assert.AreEqual(2, row.GetValue(3), "Row(3) not equal");
+            Assert.AreEqual(8, row.GetValue(4), "Row(4) not equal");
         }
 
         [TestMethod]
@@ -79,6 +92,13 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             AreEqualLines(new Line(0, 3, 1), lines[0]);
             AreEqualLines(new Line(3, 4, 2), lines[1]);
             Assert.AreEqual(4, row.Width, "Row width not equal");
+            Assert.AreEqual(2, row.Center, "Row center not equal");
+            Assert.IsFalse(row.IsEmpty, "Row is empty");
+            Assert.AreEqual(1, row.GetValue(0), "Row(0) not equal");
+            Assert.AreEqual(1, row.GetValue(1), "Row(1) not equal");
+            Assert.AreEqual(1, row.GetValue(2), "Row(2) not equal");
+            Assert.AreEqual(2, row.GetValue(3), "Row(3) not equal");
+            Assert.AreEqual(8, row.GetValue(4), "Row(4) not equal");
         }
 
     }

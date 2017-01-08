@@ -35,16 +35,15 @@ namespace MakeRuler
             get 
             {
                 var newRow = new Row();
-                if (CenterRow.Data.Count == 0)
+                if (CenterRow.IsEmpty)
                 {
                     return newRow;
                 }
 
-                var center = (CenterRow.Data.First().Key + (CenterRow.Data.Last().Key - CenterRow.Data.First().Key) / 2.0).Round();
+                var center = CenterRow.Center;
                 foreach (var row in Rows)
                 {
-                    newRow.Data[row.Key] = row.Value.Data.ContainsKey(center) ?
-                        row.Value.Data[center] : 8; // 8 is air material. FIX IT
+                    newRow.Data[row.Key] = row.Value.GetValue(center);
                 }
                 
                 return newRow;

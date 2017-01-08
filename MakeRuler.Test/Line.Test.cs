@@ -44,5 +44,16 @@ namespace MakeRuler.Extensions.Test
                 StringAssert.Contains(e.Message, "End <= Start");
             }
         }
+
+        [TestMethod]
+        public void Line_Contains()
+        {
+            var line = new Line(1, 3, 1);
+            Assert.IsFalse(line.Contains(0), "line.Contains(0)");
+            Assert.IsTrue(line.Contains(1), "line.Contains(1)");
+            Assert.IsTrue(line.Contains(2), "line.Contains(2)");
+            Assert.IsFalse(line.Contains(3), "line.Contains(3)");
+            Assert.IsFalse(line.Contains(4), "line.Contains(4)");
+        }
     }
 }
