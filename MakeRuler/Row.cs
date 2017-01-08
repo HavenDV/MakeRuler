@@ -9,6 +9,7 @@ namespace MakeRuler
     public class Row
     {
         public SortedDictionary<int, int> Data { get; private set; }
+        public List<Line> Lines { get; private set; }
 
         public int Width
         {
@@ -18,6 +19,7 @@ namespace MakeRuler
         public Row()
         {
             Data = new SortedDictionary<int, int>();
+            Lines = new List<Line>();
         }
 
         public void AddLine(Line line)

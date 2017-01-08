@@ -46,8 +46,9 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             row.AddLine(new Line(0, 3, 1));
 
             var lines = row.ToLines();
-            Assert.AreEqual(1, lines.Count);
+            Assert.AreEqual(1, lines.Count, "Lines count not equal");
             AreEqualLines(new Line(0, 3, 1), lines[0]);
+            Assert.AreEqual(3, row.Width, "Row width not equal");
         }
 
         [TestMethod]
@@ -59,9 +60,10 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             PrintRowData(row);
 
             var lines = row.ToLines();
-            Assert.AreEqual(2, lines.Count);
+            Assert.AreEqual(2, lines.Count, "Lines count not equal");
             AreEqualLines(new Line(0, 2, 1), lines[0]);
             AreEqualLines(new Line(2, 4, 2), lines[1]);
+            Assert.AreEqual(4, row.Width, "Row width not equal");
         }
 
         [TestMethod]
@@ -76,6 +78,7 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             Assert.AreEqual(2, lines.Count);
             AreEqualLines(new Line(0, 3, 1), lines[0]);
             AreEqualLines(new Line(3, 4, 2), lines[1]);
+            Assert.AreEqual(4, row.Width, "Row width not equal");
         }
 
     }
