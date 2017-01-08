@@ -12,7 +12,7 @@ namespace MakeRuler
         public SortedDictionary<int, Slice> Slices { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
-        public int Depth { get; set; }
+        public int Depth { get; private set; }
         public double Step { get; set; }
         public double XScale { get; set; }
         public double YScale { get; set; }
@@ -76,48 +76,32 @@ namespace MakeRuler
 
         public Bitmap ToFrontBitmap()
         {
-            var bitmap = new Bitmap(Width, Depth);
-            var graphics = Graphics.FromImage(bitmap);
-            foreach (var slice in Slices)
-            {
-                var centerRow = slice.Value.CenterRow;
-                graphics.DrawImage(Slice.RowToBitmap(centerRow), new Point(0, (int)(Depth - Depth * (slice.Key-0.5) / Slices.Count)));
-            }
-
-            return bitmap;
+            return BitmapConventer.ToFrontBitmap(this);
         }
 
         public Bitmap ToSideBitmap()
         {
-            var bitmap = new Bitmap(Height, Depth);
-            var graphics = Graphics.FromImage(bitmap);
-            foreach (var slice in Slices)
-            {
-                var centerColumn = slice.Value.CenterColumn;
-                graphics.DrawImage(Slice.RowToBitmap(centerColumn), new Point(0, (int)(Depth - Depth * (slice.Key - 0.5) / Slices.Count)));
-            }
-
-            return bitmap;
+            return BitmapConventer.ToSideBitmap(this);
         }
 
         public string ToText()
         {
-            return Conventer.ToText(this);
+            return TextConventer.ToText(this);
         }
 
         static public Scene FromText(string text)
         {
-            return Conventer.SceneFromText(text);
+            return TextConventer.SceneFromText(text);
         }
 
         public void ToFile(string path)
         {
-            Conventer.ToFile(this, path);
+            TextConventer.ToFile(this, path);
         }
 
         static public Scene FromFile(string path)
         {
-            return Conventer.SceneFromFile(path);
+            return TextConventer.SceneFromFile(path);
         }
     }
 }

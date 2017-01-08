@@ -44,7 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Conventers\Conventer.cs" />
+    <Compile Include="Conventers\BitmapConventer.cs" />
+    <Compile Include="Conventers\TextConventer.cs" />
     <Compile Include="3D Objects\Cylinder.cs" />
     <Compile Include="Extensions\BitmapExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />

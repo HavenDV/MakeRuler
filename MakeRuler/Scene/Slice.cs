@@ -83,76 +83,19 @@ namespace MakeRuler
             Height = Math.Max(Height, rowId);
         }
 
-        public static Color GetColor(int material)
-        {
-            switch (material)
-            {
-                case 1:
-                    return Color.DarkGray;
-                case 2:
-                    return Color.Blue;
-                case 3:
-                    return Color.Red;
-                case 4:
-                    return Color.Green;
-                case 5:
-                    return Color.Yellow;
-                case 6:
-                    return Color.Pink;
-                case 7:
-                    return Color.MediumSeaGreen;
-                case 8:
-                    return Color.Aqua;
-            }
-            return Color.Transparent;
-        }
-
-        public static Bitmap RowToBitmap(Row row)
-        {
-            if (row == null)
-            {
-                throw new ArgumentNullException(nameof(row));
-            }
-
-            var lines = row.ToLines();
-            if (lines.Count == 0)
-            {
-                return new Bitmap(1, 1);
-            }
-
-            var firstPixel = lines.First().Start;
-            var bitmap = new Bitmap(lines.Last().End + firstPixel, 1);
-            var g = Graphics.FromImage(bitmap);
-            foreach (var line in lines)
-            {
-                var pen = new Pen(GetColor(line.Material), 1);
-                g.DrawLine(pen, line.Start, 0, line.End, 0);
-            }
-
-            return bitmap;
-        }
-
         public Bitmap ToBitmap()
         {
-            // + 3 For edges on bottom and right
-            var bitmap = new Bitmap(Width + 3, Height + 3);
-            var g = Graphics.FromImage(bitmap);
-            foreach (var row in Rows)
-            {
-                g.DrawImage(RowToBitmap(row.Value), new Point(0, row.Key));
-            }
-
-            return bitmap;
+            return BitmapConventer.ToBitmap(this);
         }
 
         public string ToText(int sliceId, bool isSimple = false)
         {
-            return Conventer.ToText(new KeyValuePair<int, Slice>(sliceId, this), isSimple);
+            return TextConventer.ToText(new KeyValuePair<int, Slice>(sliceId, this), isSimple);
         }
 
         static public KeyValuePair<int, Slice> FromText(string text)
         {
-            return Conventer.SliceFromText(text);
+            return TextConventer.SliceFromText(text);
         }
     }
 }

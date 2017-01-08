@@ -417,7 +417,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             expected.AddSlice(1, slice);
             #endregion
 
-            var actual = Conventer.SceneFromText(text);
+            var actual = TextConventer.SceneFromText(text);
 
             AreEqualScene(expected, actual);
         }
@@ -437,7 +437,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             expected.AddSlice(1, slice);
             #endregion
 
-            var actual = Conventer.SceneFromText(text);
+            var actual = TextConventer.SceneFromText(text);
 
             AreEqualScene(expected, actual);
         }
@@ -455,7 +455,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             expected.AddSlice(1, slice);
             #endregion
 
-            var actual = Conventer.SceneFromText(text);
+            var actual = TextConventer.SceneFromText(text);
 
             AreEqualScene(expected, actual);
         }
@@ -475,7 +475,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             expected.AddSlice(1, slice);
             #endregion
 
-            var actual = Conventer.SceneFromText(text);
+            var actual = TextConventer.SceneFromText(text);
 
             AreEqualScene(expected, actual);
         }
@@ -497,7 +497,7 @@ ROW NR.   3  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             expected.AddSlice(1, slice);
             #endregion
 
-            var actual = Conventer.SceneFromText(text);
+            var actual = TextConventer.SceneFromText(text);
 
             AreEqualScene(expected, actual);
         }
@@ -520,7 +520,7 @@ ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             expected.AddSlice(1, slice);
             #endregion
 
-            var actual = Conventer.SceneFromText(text);
+            var actual = TextConventer.SceneFromText(text);
 
             AreEqualScene(expected, actual);
         }
@@ -538,7 +538,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             expected.AddSlice(1, slice);
             #endregion
 
-            var actual = Conventer.SceneFromText(text);
+            var actual = TextConventer.SceneFromText(text);
 
             AreEqualScene(expected, actual);
         }

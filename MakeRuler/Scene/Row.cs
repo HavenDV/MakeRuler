@@ -114,7 +114,7 @@ namespace MakeRuler
 
         public string ToText(int rowId, bool isSimple = false)
         {
-            return Conventer.ToText(new KeyValuePair<int, Row>(rowId, this), isSimple);
+            return TextConventer.ToText(new KeyValuePair<int, Row>(rowId, this), isSimple);
         }
 
         public static KeyValuePair<int, Row> FromText(string text)
@@ -129,7 +129,7 @@ namespace MakeRuler
                 Debug.WriteLine($"Text contains more 2 lines: Text: {text}");
             }
 
-            return Conventer.RowFromText(lines[0], lines[1]);
+            return TextConventer.RowFromText(lines[0], lines[1]);
         }
     }
 }

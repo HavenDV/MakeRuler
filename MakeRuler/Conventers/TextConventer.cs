@@ -6,7 +6,7 @@ using MakeRuler.Extensions;
 
 namespace MakeRuler
 {
-    public static class Conventer
+    public static class TextConventer
     {
 
         private static string ToString(int value, int lenght)
