@@ -30,7 +30,7 @@ namespace MakeRuler
 
         public int GetValue(int key)
         {
-            return Data.ContainsKey(key + 1) ? Data[key + 1] : 8; // 8 is air material. FIX IT
+            return Data.ContainsKey(key + 1) ? Data[key + 1] : Constants.AirMaterial;
             //for (var i = 0; i < Lines.Count; ++i)
             //{
             //    if (Lines[i].Contains(key))
@@ -39,7 +39,7 @@ namespace MakeRuler
             //    }
             //}
 
-            //return 8;// 8 is air material. FIX IT
+            //return Constants.AirMaterial;
         }
 
         public Row()
@@ -94,7 +94,7 @@ namespace MakeRuler
             {
                 if (!Data.ContainsKey(i))
                 {
-                    Data[i] = 0;
+                    Data[i] = Constants.AirMaterial;
                 }
 
                 if (Data[i] != material)

@@ -11,6 +11,11 @@ using MakeRuler.Extensions;
 
 namespace MakeRuler
 {
+    public static class Constants
+    {
+        public static readonly int AirMaterial = 8;
+    }
+
     public partial class Form1 : Form
     {
         private Scene CachedScene { get; set; }
@@ -29,8 +34,8 @@ namespace MakeRuler
             //CORG(2) = 'table';
             var radius = 10;
             scene.AddObject(new Parallelepiped(
-                new Rect(0, 0, 360, 160 + radius, 8),
-                new Rect(0, 0, 360, 120 + radius, 8)
+                new Rect(0, 0, 360, 160 + radius, Constants.AirMaterial),
+                new Rect(0, 0, 360, 120 + radius, Constants.AirMaterial)
             ));
             /*
             scene.AddObject(new Cylinder(
@@ -38,8 +43,8 @@ namespace MakeRuler
                 new Circle(180, 120 + radius - 760, 760, 0, 90 + radius, 360, 120 + radius, 2)
             ));
             scene.AddObject(new Cylinder(
-                new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, 8),
-                new Circle(180, 120 + radius - 760, 760 - radius, 0, 90 + radius, 360, 120 + radius, 8)
+                new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, Constants.AirMaterial),
+                new Circle(180, 120 + radius - 760, 760 - radius, 0, 90 + radius, 360, 120 + radius, Constants.AirMaterial)
             ));
             var inclinionFix = 0;
             //*/
@@ -48,7 +53,7 @@ namespace MakeRuler
                 new Circle(180, 160 + radius - 800, 800, 0, 130 + radius, 360, 160 + radius, 2)
             ));
             scene.AddObject(new Cylinder(
-                new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, 8)
+                new Circle(180, 160 + radius - 800, 800 - radius, 0, 130 + radius, 360, 160 + radius, Constants.AirMaterial)
             ));
             var inclinionFix = 40;
             //*/
@@ -120,7 +125,7 @@ namespace MakeRuler
 
             //CORG(8) = 'air';
             scene.AddObject(new Parallelepiped(
-                new Rect(0, 0, radius * 2, radius * 2, 8)
+                new Rect(0, 0, radius * 2, radius * 2, Constants.AirMaterial)
             ));
 
             //CORG(1) = 'phantom';

@@ -54,7 +54,7 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             Assert.AreEqual(1, row.GetValue(0), "Row(0) not equal");
             Assert.AreEqual(1, row.GetValue(1), "Row(1) not equal");
             Assert.AreEqual(1, row.GetValue(2), "Row(2) not equal");
-            Assert.AreEqual(8, row.GetValue(3), "Row(3) not equal");
+            Assert.AreEqual(Constants.AirMaterial, row.GetValue(3), "Row(3) not equal");
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             Assert.AreEqual(1, row.GetValue(1), "Row(1) not equal");
             Assert.AreEqual(2, row.GetValue(2), "Row(2) not equal");
             Assert.AreEqual(2, row.GetValue(3), "Row(3) not equal");
-            Assert.AreEqual(8, row.GetValue(4), "Row(4) not equal");
+            Assert.AreEqual(Constants.AirMaterial, row.GetValue(4), "Row(4) not equal");
         }
 
         [TestMethod]
@@ -98,7 +98,7 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             Assert.AreEqual(1, row.GetValue(1), "Row(1) not equal");
             Assert.AreEqual(1, row.GetValue(2), "Row(2) not equal");
             Assert.AreEqual(2, row.GetValue(3), "Row(3) not equal");
-            Assert.AreEqual(8, row.GetValue(4), "Row(4) not equal");
+            Assert.AreEqual(Constants.AirMaterial, row.GetValue(4), "Row(4) not equal");
         }
 
     }
