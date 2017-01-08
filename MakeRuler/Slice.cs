@@ -11,6 +11,7 @@ namespace MakeRuler
     {
         public SortedDictionary<int, Row> Rows { get; set; }
         public Bitmap Bitmap { get; set; }
+        public Bitmap PerspectiveBitmap { get; set; }
         public string Text { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
@@ -67,7 +68,7 @@ namespace MakeRuler
                     Rows.Add(rowId, new Row());
                 }
                 Rows[rowId].AddLine(line.Value);
-                Width = Math.Max(Width, Rows[rowId].Data.Last().Key);
+                Width = Math.Max(Width, Rows[rowId].Width);
                 Height = Math.Max(Height, rowId);
             }
         }

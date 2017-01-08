@@ -113,7 +113,7 @@ namespace MakeRuler
             scene.Depth = (int)height;
             scene.SetDimensions(0.5, 0.5, step);
 
-            var radius = 80.0;
+            var radius = 50.0;
             var holeRadius = 6.0;
             var dist = 10.0 + holeRadius;
             var thickness = 10.0;
@@ -170,6 +170,7 @@ namespace MakeRuler
                         () =>
                         {
                             slice.Value.Bitmap = slice.Value.Bitmap ?? slice.Value.ToBitmap();
+                            slice.Value.PerspectiveBitmap = slice.Value.Bitmap.ToPerspective().WithBorder(Color.Black);
                             slice.Value.Text = slice.Value.Text ?? slice.Value.ToText(slice.Key, false);
                             return slice.Key;
                         }
@@ -182,12 +183,12 @@ namespace MakeRuler
         {
             CachedScene = CachedScene ??
                 //Scene.FromFile("CTDIcone(4).data");
-                await CreateScene2(50.0, 150.0);
+                await CreateScene2(5.0, 150.0);
             await ComputeData(CachedScene);
             foreach (var slice in CachedScene.Slices)
             {
                 SaveBitmap(slice.Value.Bitmap, $"slices/slice{slice.Key}.png");
-                DrawBitmap(slice.Value.Bitmap, 30, (CachedScene.Slices.Count - slice.Key - 1.0) / CachedScene.Slices.Count);
+                DrawBitmap(slice.Value.Bitmap, slice.Value.PerspectiveBitmap, 30, (CachedScene.Slices.Count - slice.Key - 1.0) / CachedScene.Slices.Count);
             }
 
             FrontPictureBox.Image = CachedScene.ToFrontBitmap();
@@ -197,23 +198,13 @@ namespace MakeRuler
             CachedScene.ToFile("output.txt");
         }
 
-
-        private void DrawBitmap(Bitmap bitmap, int sleep = 30, double h = 0.0)
+        private void DrawBitmap(Bitmap bitmap, Bitmap perspective, int sleep = 30, double h = 0.0)
         {
-            PointF[] destinationPoints = {
-                new PointF(0.0F, 0.0F),
-                new PointF(bitmap.Width, 0.0F),
-                new PointF(0.5F * bitmap.Height, 0.5F * bitmap.Height)
-            };
             var center = new Point(0, 50  + (int)(h * 300));
 
             var perspectiveBitmap = PerspectivePictureBox.Image ?? new Bitmap(800 + bitmap.Height, 400 + (int)(h * 300));
-            var newBitmap = new Bitmap(bitmap.Width + bitmap.Height / 2, bitmap.Height);
-            var graphics = Graphics.FromImage(newBitmap);
-            graphics.DrawImage(bitmap, destinationPoints);
-
-            graphics = Graphics.FromImage(perspectiveBitmap);
-            graphics.DrawImage(newBitmap.WithBorder(Color.Black), new Point(center.X, center.Y));
+            var graphics = Graphics.FromImage(perspectiveBitmap);
+            graphics.DrawImage(perspective, new Point(center.X, center.Y));
             PerspectivePictureBox.Image = perspectiveBitmap;
 
             TopPictureBox.Image = TopPictureBox.Image ?? bitmap;

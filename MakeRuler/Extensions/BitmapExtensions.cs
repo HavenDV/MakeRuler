@@ -5,6 +5,21 @@ namespace MakeRuler.Extensions
 {
     public static class BitmapExtensions
     {
+        public static Bitmap ToPerspective(this Bitmap bitmap)
+        {
+            PointF[] destinationPoints = {
+                new PointF(0.0F, 0.0F),
+                new PointF(bitmap.Width, 0.0F),
+                new PointF(0.5F * bitmap.Height, 0.5F * bitmap.Height)
+            };
+
+            var newBitmap = new Bitmap(bitmap.Width + bitmap.Height / 2, bitmap.Height);
+            var graphics = Graphics.FromImage(newBitmap);
+            graphics.DrawImage(bitmap, destinationPoints);
+
+            return newBitmap;
+        }
+
         public static Bitmap WithBorder(this Bitmap bitmap, Color color)
         {
             int w = bitmap.Width;
