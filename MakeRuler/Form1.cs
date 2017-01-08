@@ -118,7 +118,7 @@ namespace MakeRuler
             var radius = 50.0;
             var holeRadius = 6.0;
             var dist = 10.0 + holeRadius;
-            var think = 10.0;
+            var thickness = 10.0;
 
             //CORG(8) = 'air';
             scene.AddObject(new Parallelepiped(
@@ -132,7 +132,7 @@ namespace MakeRuler
 
             //CORG(2) = 'table';
             //scene.AddObject(new Parallelepiped(
-            //    new Rect(0, radius * 2, radius * 2, radius * 2 + think, 2)
+            //    new Rect(0, radius * 2, radius * 2, radius * 2 + thickness, 2)
             //));
 
             //CORG(3) = 'center';

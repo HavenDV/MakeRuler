@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using MakeRuler.Extensions;
 
@@ -7,7 +8,7 @@ namespace MakeRuler
 {
     public class Row
     {
-        public SortedDictionary<int, int> Data { get; set; }
+        public SortedDictionary<int, int> Data { get; private set; }
 
         public int Width
         {
@@ -69,7 +70,11 @@ namespace MakeRuler
             {
                 throw new ArgumentException("Text contains less 2 lines");
             }
-            
+            if (lines.Count > 2)
+            {
+                Debug.WriteLine($"Text contains more 2 lines: Text: {text}");
+            }
+
             return Conventer.RowFromText(lines[0], lines[1]);
         }
     }
