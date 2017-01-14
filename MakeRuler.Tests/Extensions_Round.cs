@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MakeRuler.Extensions.Test
+namespace MakeRuler.Extensions.Tests
 {
     [TestFixture]
     public class Extensions_Round

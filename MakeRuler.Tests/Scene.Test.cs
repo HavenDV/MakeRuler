@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MakeRuler.Test
+namespace MakeRuler.Tests
 {
     [TestFixture]
     public class Scene
