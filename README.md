@@ -1,4 +1,4 @@
-# MakeRuler [![Language](https://img.shields.io/badge/language-C%23-blue.svg?style=flat-square)](https://github.com/PO-21/QtReports/search?l=cpp) [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/HavenDV/MakeRuler/blob/master/LICENSE.txt)
+# MakeRuler [![Language](https://img.shields.io/badge/language-C%23-blue.svg?style=flat-square)](https://github.com/HavenDV/MakeRuler/search?l=C%23) [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/HavenDV/MakeRuler/blob/master/LICENSE.txt)
 
 Branches
 ========
