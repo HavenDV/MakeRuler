@@ -29,6 +29,8 @@ namespace MakeRuler
                     return Color.MediumSeaGreen;
                 case 8:
                     return Color.Aqua;
+                case 9:
+                    return Color.LightBlue;
             }
             return Color.Transparent;
         }
