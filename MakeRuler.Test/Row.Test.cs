@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MakeRuler.Extensions.Test
 {
-    [TestClass]
+    [TestFixture]
     public class Row_Test
     {
         static public void AreEqualLines(Line expected, Line actual)
@@ -39,7 +39,7 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             Console.WriteLine(row.ToText(1));
         }
 
-        [TestMethod]
+        [Test]
         public void Row_SimpleLine()
         {
             var row = new Row();
@@ -57,7 +57,7 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             Assert.AreEqual(Constants.AirMaterial, row.GetValue(3), "Row(3) not equal");
         }
 
-        [TestMethod]
+        [Test]
         public void Row_TwoLinesIntersect()
         {
             var row = new Row();
@@ -79,7 +79,7 @@ Actual line: Line({actual.Start}, {actual.End}, {actual.Material})
             Assert.AreEqual(Constants.AirMaterial, row.GetValue(4), "Row(4) not equal");
         }
 
-        [TestMethod]
+        [Test]
         public void Row_TwoLinesIntersectInvert()
         {
             var row = new Row();

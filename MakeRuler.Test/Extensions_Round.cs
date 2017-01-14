@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MakeRuler.Extensions.Test
 {
-    [TestClass]
+    [TestFixture]
     public class Extensions_Round
     {
-        [TestMethod]
+        [Test]
         public void PositiveNumbers()
         {
             Assert.AreEqual(1, (0.5).RoundMax(), "(0.5).RoundMax(), 1");

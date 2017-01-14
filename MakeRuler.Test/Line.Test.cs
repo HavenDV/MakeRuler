@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MakeRuler.Extensions.Test
 {
-    [TestClass]
+    [TestFixture]
     public class Line_Test
     {
-        [TestMethod]
+        [Test]
         public void Line_Positive()
         {
             var line = new Line(1, 2, 3);
@@ -17,7 +17,7 @@ namespace MakeRuler.Extensions.Test
             Assert.AreEqual(3, line.Material);
         }
 
-        [TestMethod]
+        [Test]
         public void Line_NegativeMaterial()
         {
             try
@@ -31,7 +31,7 @@ namespace MakeRuler.Extensions.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Line_EndLowerStart()
         {
             try
@@ -45,7 +45,7 @@ namespace MakeRuler.Extensions.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Line_Contains()
         {
             var line = new Line(1, 3, 1);

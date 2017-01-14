@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MakeRuler.Extensions.Test
 {
-    [TestClass]
+    [TestFixture]
     public class Converter_Test
     {
         public void AreEqualRows(KeyValuePair<int, Row> expected, KeyValuePair<int, Row> actual)
@@ -50,7 +50,7 @@ namespace MakeRuler.Extensions.Test
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleRow()
         {
             #region TestData
@@ -65,7 +65,7 @@ namespace MakeRuler.Extensions.Test
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_EmptyRow()
         {
             #region TestData
@@ -79,7 +79,7 @@ namespace MakeRuler.Extensions.Test
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleIntegerRect()
         {
             #region TestData
@@ -97,7 +97,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleDecimalRect()
         {
             #region TestData
@@ -115,7 +115,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleDecimalRect2()
         {
             #region TestData
@@ -131,7 +131,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleIntegerRects()
         {
             #region TestData
@@ -154,7 +154,7 @@ ROW NR.   4  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleIntegerRectsSmalledFirst()
         {
             #region TestData
@@ -177,7 +177,7 @@ ROW NR.   4  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleIntegerRectsIntersection()
         {
             #region TestData
@@ -196,7 +196,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  2
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleIntegerRectsIntersectionInvert()
         {
             #region TestData
@@ -215,7 +215,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  2
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleIntegerOneMaterialRects()
         {
             #region TestData
@@ -238,7 +238,7 @@ ROW NR.   4  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleIntegerOneMaterialRectsSmalledFirst()
         {
             #region TestData
@@ -261,7 +261,7 @@ ROW NR.   4  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleIntegerOneMaterialRectsIntersection()
         {
             #region TestData
@@ -280,7 +280,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleIntegerOneMaterialRectsIntersectionInvert()
         {
             #region TestData
@@ -299,7 +299,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleIntegerCircle()
         {
             #region TestData
@@ -317,7 +317,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleDecimalCircle()
         {
             #region TestData
@@ -337,7 +337,7 @@ ROW NR.   3  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
 
         public void Converter_ToText_SimpleDecimalCircle2()
         {
@@ -358,7 +358,7 @@ ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_ToText_SimpleDecimalCircle3()
         {
             #region TestData
@@ -374,7 +374,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_FromText_SimpleRow()
         {
             #region TestData
@@ -388,7 +388,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             AreEqualRows(expected, actual);
         }
         
-        [TestMethod]
+        [Test]
         public void Converter_FromText_EmptyRow()
         {
             #region TestData
@@ -401,7 +401,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             AreEqualRows(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_FromText_SimpleIntegerRect()
         {
             #region TestData
@@ -422,7 +422,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             AreEqualScene(expected, actual);
         }
         
-        [TestMethod]
+        [Test]
         public void Converter_FromText_SimpleDecimalRect()
         {
             #region TestData
@@ -442,7 +442,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             AreEqualScene(expected, actual);
         }
         
-        [TestMethod]
+        [Test]
         public void Converter_FromText_SimpleDecimalRect2()
         {
             #region TestData
@@ -460,7 +460,7 @@ ROW NR.   2  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             AreEqualScene(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_FromText_SimpleIntegerCircle()
         {
             #region TestData
@@ -480,7 +480,7 @@ ROW NR.   2  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             AreEqualScene(expected, actual);
         }
         
-        [TestMethod]
+        [Test]
         public void Converter_FromText_SimpleDecimalCircle()
         {
             #region TestData
@@ -502,7 +502,7 @@ ROW NR.   3  FIRST PIXEL:   2  NUMBER OF AREAS:  1
             AreEqualScene(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
 
         public void Converter_FromText_SimpleDecimalCircle2()
         {
@@ -525,7 +525,7 @@ ROW NR.   3  FIRST PIXEL:   1  NUMBER OF AREAS:  1
             AreEqualScene(expected, actual);
         }
 
-        [TestMethod]
+        [Test]
         public void Converter_FromText_SimpleDecimalCircle3()
         {
             #region TestData
