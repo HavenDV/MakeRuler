@@ -161,7 +161,6 @@ namespace MakeRuler
         public static Scene SceneFromText(string text)
         {
             var scene = new Scene();
-            var lines = text.ToLines();
             var sliceTexts = text.
                 Split("SLICE NUMBER:", StringSplitOptions.RemoveEmptyEntries).
                 Select(i => i = "SLICE NUMBER:" + i);

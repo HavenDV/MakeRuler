@@ -23,6 +23,7 @@ namespace MakeRuler.Extensions.Tests
             try
             {
                 var line = new Line(1, 2, -1);
+                Assert.IsNotNull(line);
                 Assert.Fail("No exception detected");
             }
             catch (Exception e)
@@ -37,6 +38,7 @@ namespace MakeRuler.Extensions.Tests
             try
             {
                 var line = new Line(2, 1, 1);
+                Assert.IsNotNull(line);
                 Assert.Fail("No exception detected");
             }
             catch (Exception e)
