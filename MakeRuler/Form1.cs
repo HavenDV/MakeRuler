@@ -127,52 +127,72 @@ namespace MakeRuler
         {
             var holeRadius = 6.0;
             var dist = 10.0 + holeRadius;
+            var offset = 230.0;
 
             //CORG(8) = 'air';
-            scene.AddObject(new Parallelepiped(
-                new Rect(0, 0, radius * 2, radius * 2, Constants.AirMaterial),
+            scene.AddObject(new Cylinder(
+                new Circle(radius + offset, radius + offset, 390, Constants.AirMaterial), 
+                z1, z2
+            ));
+
+            //CORG(2) = 'table';
+            var tableRadius = 400;
+            scene.AddObject(new Cylinder(
+                new Circle(radius + offset, radius * 2 + offset - tableRadius, tableRadius + thickness, 0, radius * 2 - 160 + thickness + offset, radius * 2 + 2 * offset, radius * 2 + thickness + offset, 2),
+                z1, z2
+            ));
+            /*
+            scene.AddObject(new Cylinder(
+                new Circle(radius, radius * 2 + thickness / 2 - tableRadius, tableRadius, 0, radius * 2 - 30 + thickness / 2, radius * 2, radius * 2 + thickness / 2, 3),
+                z1, z2
+            ));
+            */
+            scene.AddObject(new Cylinder(
+                new Circle(radius + offset, radius * 2 + offset - tableRadius, tableRadius, 0, radius * 2 - 160 + thickness + offset, radius * 2 + 2 * offset, radius * 2 + thickness + offset, Constants.AirMaterial),
                 z1, z2
             ));
 
             //CORG(1) = 'phantom';
             scene.AddObject(new Cylinder(
-                new Circle(radius, radius, radius, 1),
+                new Circle(radius + offset, radius + offset, radius, 1),
                 z1, z2
             ));
 
             //CORG(2) = 'table';
+            /*
             scene.AddObject(new Parallelepiped(
-                new Rect(0, radius * 2, radius * 2, radius * 2 + thickness, 2),
+                new Rect(0, radius * 2 + offset, radius * 2 + 2 * offset, radius * 2 + thickness + offset, 2),
                 z1, z2
             ));
+            */
 
             //CORG(3) = 'center';
             scene.AddObject(new Cylinder(
-                new Circle(radius, radius, holeRadius, 3),
+                new Circle(radius + offset, radius + offset, holeRadius, 3),
                 z1, z2
             ));
 
             //CORG(4) = 'left';
             scene.AddObject(new Cylinder(
-                new Circle(dist, radius, holeRadius, 4),
+                new Circle(dist + offset, radius + offset, holeRadius, 4),
                 z1, z2
             ));
 
             //CORG(5) = 'bottom';
             scene.AddObject(new Cylinder(
-                new Circle(radius, 2 * radius - dist, holeRadius, 5),
+                new Circle(radius + offset, 2 * radius - dist + offset, holeRadius, 5),
                 z1, z2
             ));
 
             //CORG(6) = 'right';
             scene.AddObject(new Cylinder(
-                new Circle(2 * radius - dist, radius, holeRadius, 6),
+                new Circle(2 * radius - dist + offset, radius + offset, holeRadius, 6),
                 z1, z2
             ));
 
             //CORG(7) = 'top';
             scene.AddObject(new Cylinder(
-                new Circle(radius, dist, holeRadius, 7),
+                new Circle(radius + offset, dist + offset, holeRadius, 7),
                 z1, z2
             ));
 
@@ -182,7 +202,7 @@ namespace MakeRuler
         private async Task<Scene> CreateScene2()
         {
             //Create scene with dimensions 0.5 * 0.5 * 5.0
-            var scene = new Scene(0.5, 0.5, 5.0);
+            var scene = new Scene(1.0, 1.0, 150.0);
 
             scene = AddObjects(scene, 0, 150, 160, 10.0);
 
