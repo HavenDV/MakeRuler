@@ -46,9 +46,11 @@ namespace MakeRuler
                     var dx = Math.Sqrt(Radius*Radius - dy*dy);
                     var x1 = Math.Max(Center.X - dx, Min.minX);
                     var x2 = Math.Min(Center.X + dx, Max.maxX);
-                    if (x2 >= x1)
+                    var roundedX1 = x1.RoundMin();
+                    var roundedX2 = x2.RoundMax();
+                    if (roundedX2 > roundedX1)
                     {
-                        lines.Add(y, new Line(x1.RoundMin(), x2.RoundMax(), Material));
+                        lines.Add(y, new Line(roundedX1, roundedX2, Material));
                     }
                 }
             }
