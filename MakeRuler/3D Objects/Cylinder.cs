@@ -1,3 +1,5 @@
+using System;
+
 namespace MakeRuler
 {
     public class Cylinder : Object3D
@@ -24,12 +26,17 @@ namespace MakeRuler
                 return new Object(Constants.AirMaterial);
             }
 
-            var h = (height - Z1) * (Z2 - Z1);
+            var h = GetRelativeHeight(height, Z1, Z2);
+            var center = Bottom.Center + h * (Top.Center - Bottom.Center);
+            var radius = Bottom.Radius + h * (Top.Radius - Bottom.Radius);
+            var min = Bottom.Min + h * (Top.Min - Bottom.Min);
+            var max = Bottom.Max + h * (Top.Max - Bottom.Max);
+
             return new Circle(
-                xyScale * (Bottom.Center + h * (Top.Center - Bottom.Center)),
-                xyScale * (Bottom.Radius + h * (Top.Radius - Bottom.Radius)),
-                xyScale * (Bottom.Min + h * (Top.Min - Bottom.Min)),
-                xyScale * (Bottom.Max + h * (Top.Max - Bottom.Max)),
+                xyScale * center,
+                xyScale * radius,
+                xyScale * min,
+                xyScale * max,
                 Bottom.Material
             );
         }

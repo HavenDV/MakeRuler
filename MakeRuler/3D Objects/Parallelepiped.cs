@@ -26,10 +26,13 @@ namespace MakeRuler
                 return new Object(Constants.AirMaterial);
             }
 
-            var h = (height - Z1) * (Z2 - Z1);
+            var h = GetRelativeHeight(height, Z1, Z2);
+            var min = Bottom.Min + h * (Top.Min - Bottom.Min);
+            var max = Bottom.Max + h * (Top.Max - Bottom.Max);
+
             return new Rect(
-                xyScale * (Bottom.Min + h * (Top.Min - Bottom.Min)),
-                xyScale * (Bottom.Max + h * (Top.Max - Bottom.Max)),
+                xyScale * min,
+                xyScale * max,
                 Bottom.Material
             );
         }

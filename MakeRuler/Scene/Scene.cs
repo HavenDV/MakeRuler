@@ -61,7 +61,8 @@ namespace MakeRuler
                             var slice = new Slice();
                             foreach (var obj in Objects)
                             {
-                                slice.Add(obj.GetObject((sliceId - 1) * Step, XScale));
+                                var obj2D = obj.GetObject((sliceId - 1) * Step, XScale);
+                                slice.Add(obj2D);
                             }
                             slice.Bitmap = slice.ToBitmap();
                             slice.Text = slice.ToText(sliceId, false);

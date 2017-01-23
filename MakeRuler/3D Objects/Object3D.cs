@@ -1,4 +1,5 @@
 using MakeRuler.Extensions;
+using System;
 
 namespace MakeRuler
 {
@@ -20,6 +21,11 @@ namespace MakeRuler
 
         public int maxZ2 {
             get { return Z2.RoundMax(); }
+        }
+
+        public static double GetRelativeHeight(double height, double min, double max)
+        {
+            return (height - min) / Math.Max(max - min, 1.0);
         }
 
         abstract public Object GetObject(double h, double xyScale = 1.0);
