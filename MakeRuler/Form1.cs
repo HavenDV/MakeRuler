@@ -26,10 +26,11 @@ namespace MakeRuler
         private async Task<Scene> CreateScene1()
         {
             //Create scene with dimensions 0.5 * 0.5 * 5.0
-            var scene = new Scene(0.5, 0.5, 5.0);
+            var scene = new Scene(1.0, 1.0, 1.0);
             var height = 300.0;
 
             //CORG(2) = 'table';
+            /*
             var radius = 10;
             scene.AddObject(new Parallelepiped(
                 new Rect(0, 0, 360, 160 + radius, Constants.AirMaterial),
@@ -60,13 +61,13 @@ namespace MakeRuler
             ));
             var inclinionFix = 40;
             //*/
-
-            var inclinionFix = 0;
+            /*
             scene.AddObject(new Parallelepiped(
                 new Rect(0, 160, 360, 160 + radius, 2),
                 0, height
             ));
-
+            */
+            var inclinionFix = 0;
             //CORG(1) = 'phantom';
             scene.AddObject(new Cylinder(
                 new Circle(80, 80, 80, 1),
@@ -125,9 +126,9 @@ namespace MakeRuler
 
         private Scene AddObjects(Scene scene, double z1, double z2, double radius, double thickness = 10.0)
         {
-            var holeRadius = 6.0;
-            var dist = 10.0 + holeRadius;
-            var offset = 230.0;
+            var holeRadius = 6.5;
+            var dist = 10.0;
+            var offset = 390.0 - radius;
 
             //CORG(8) = 'air';
             scene.AddObject(new Cylinder(
@@ -204,7 +205,7 @@ namespace MakeRuler
             //Create scene with dimensions 0.5 * 0.5 * 5.0
             var scene = new Scene(1.0, 1.0, 150.0);
 
-            scene = AddObjects(scene, 0, 150, 160, 10.0);
+            scene = AddObjects(scene, 0, 150, 160, 5.0);
 
             return await scene.WithComputedSlices();
         }
@@ -217,7 +218,7 @@ namespace MakeRuler
                         () =>
                         {
                             slice.Value.Bitmap = slice.Value.Bitmap ?? slice.Value.ToBitmap();
-                            slice.Value.PerspectiveBitmap = slice.Value.Bitmap.ToPerspective().WithBorder(Color.Black);
+                            slice.Value.PerspectiveBitmap = slice.Value.Bitmap.ToPerspective();
                             slice.Value.Text = slice.Value.Text ?? slice.Value.ToText(slice.Key, false);
                             return slice.Key;
                         }
@@ -229,8 +230,8 @@ namespace MakeRuler
         private async void CreateButton_Click(object sender, EventArgs e)
         {
             var scene = 
-                //Scene.FromFile("CTDIcone(4).data");
-                await CreateScene2();
+                //Scene.FromFile("CTDIcone(5).data");
+                await CreateScene1();
             await ComputeData(scene);
             scene.ToFile("output.txt");
 
@@ -256,7 +257,7 @@ namespace MakeRuler
 
             TopPictureBox.Image = TopPictureBox.Image ?? bitmap;
             graphics = Graphics.FromImage(TopPictureBox.Image);
-            graphics.DrawImage(bitmap.WithBorder(Color.Black), new Point(0, 0));
+            graphics.DrawImage(bitmap, new Point(0, 0));
             Refresh();
 
             Thread.Sleep(sleep);
